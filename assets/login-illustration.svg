@@ -1,0 +1,33 @@
+<svg width="220" height="220" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @keyframes floatY { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-10px); } }
+    @keyframes pulseSoft { 0%,100%{ opacity:.5; } 50%{ opacity:1; } }
+    @keyframes ringSpin { from{ transform: rotate(0deg); } to{ transform: rotate(360deg); } }
+    .ring{ transform-origin: 110px 112px; animation: ringSpin 22s linear infinite; }
+    .cap{ animation: floatY 4s ease-in-out infinite; transform-origin: 110px 70px; }
+    .spark{ animation: pulseSoft 2.2s ease-in-out infinite; }
+  </style>
+
+  <circle class="ring" cx="110" cy="112" r="86" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity="0.25" stroke-dasharray="3 9"/>
+  <circle cx="110" cy="112" r="62" fill="#FFFFFF" opacity="0.10"/>
+
+  <!-- open book -->
+  <g transform="translate(48 118)">
+    <path d="M62 8 C42 -2 18 -4 0 2 L0 78 C18 72 42 74 62 84 Z" fill="#FFFFFF" opacity="0.95"/>
+    <path d="M62 8 C82 -2 106 -4 124 2 L124 78 C106 72 82 74 62 84 Z" fill="#FFFFFF" opacity="0.75"/>
+    <line x1="62" y1="8" x2="62" y2="84" stroke="#155EEF" stroke-width="2" opacity="0.4"/>
+  </g>
+
+  <!-- graduation cap -->
+  <g class="cap" transform="translate(66 28)">
+    <path d="M0 14 L44 0 L88 14 L44 28 Z" fill="#FFFFFF"/>
+    <path d="M14 19 L14 36 C14 44 27 50 44 50 C61 50 74 44 74 36 L74 19 L44 30 Z" fill="#FFFFFF" opacity="0.85"/>
+    <line x1="82" y1="12" x2="82" y2="32" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="82" cy="35" r="3" fill="#FFFFFF"/>
+  </g>
+
+  <!-- sparkles -->
+  <circle class="spark" cx="176" cy="70" r="4" fill="#FFFFFF"/>
+  <circle class="spark" cx="30" cy="86" r="3" fill="#FFFFFF"/>
+  <circle class="spark" cx="184" cy="150" r="3.5" fill="#FFFFFF"/>
+</svg>

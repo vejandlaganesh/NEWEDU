@@ -1,0 +1,17 @@
+<svg width="110" height="110" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#155EEF"/>
+      <stop offset="100%" stop-color="#00C897"/>
+    </linearGradient>
+  </defs>
+  <rect x="3" y="3" width="104" height="104" rx="28" fill="url(#logoGrad)"/>
+  <rect x="3" y="3" width="104" height="104" rx="28" fill="white" opacity="0.04"/>
+  <!-- graduation cap glyph -->
+  <g transform="translate(55 47)">
+    <path d="M-30 -8 L0 -22 L30 -8 L0 6 Z" fill="#FFFFFF"/>
+    <path d="M-16 -1 L-16 15 C-16 21 -8 26 0 26 C8 26 16 21 16 15 L16 -1 L0 8 Z" fill="#FFFFFF" opacity="0.92"/>
+    <line x1="26" y1="-5" x2="26" y2="16" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="26" cy="19" r="3" fill="#FFFFFF"/>
+  </g>
+</svg>

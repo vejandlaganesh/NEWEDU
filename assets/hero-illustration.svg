@@ -1,0 +1,88 @@
+<svg width="560" height="480" viewBox="0 0 560 480" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @keyframes floatY { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-14px); } }
+    @keyframes floatY2 { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(12px); } }
+    @keyframes pulseSoft { 0%,100%{ opacity:.55; } 50%{ opacity:.9; } }
+    @keyframes spinSlow { from{ transform: rotate(0deg); } to{ transform: rotate(360deg); } }
+    @keyframes dashMove { to{ stroke-dashoffset: -300; } }
+    .blob{ animation: pulseSoft 5s ease-in-out infinite; }
+    .cap{ animation: floatY 4.5s ease-in-out infinite; transform-origin: 420px 100px; }
+    .bulb{ animation: floatY2 5.5s ease-in-out infinite; transform-origin: 95px 150px; }
+    .chat{ animation: floatY 4s ease-in-out infinite; transform-origin: 470px 250px; }
+    .book{ animation: floatY2 6s ease-in-out infinite; transform-origin: 90px 360px; }
+    .orbit{ stroke-dasharray: 6 10; animation: dashMove 14s linear infinite; }
+    .spark{ animation: pulseSoft 2.4s ease-in-out infinite; }
+  </style>
+
+  <defs>
+    <linearGradient id="heroGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#155EEF"/>
+      <stop offset="100%" stop-color="#00C897"/>
+    </linearGradient>
+    <linearGradient id="screenGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#EAF1FF"/>
+      <stop offset="100%" stop-color="#E5FBF3"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ambient blobs -->
+  <circle class="blob" cx="150" cy="120" r="120" fill="#155EEF" opacity="0.08"/>
+  <circle class="blob" cx="440" cy="360" r="140" fill="#00C897" opacity="0.09"/>
+
+  <!-- orbit path connecting the floating elements -->
+  <ellipse class="orbit" cx="280" cy="250" rx="230" ry="185" fill="none" stroke="#155EEF" stroke-width="2" opacity="0.25"/>
+
+  <!-- laptop -->
+  <g transform="translate(150 210)">
+    <rect x="0" y="0" width="260" height="165" rx="14" fill="#1B2A4A"/>
+    <rect x="10" y="10" width="240" height="130" rx="6" fill="url(#screenGrad)"/>
+    <rect x="-18" y="165" width="296" height="16" rx="8" fill="#233459"/>
+    <!-- growth chart on screen -->
+    <rect x="34" y="95" width="20" height="35" rx="3" fill="#155EEF"/>
+    <rect x="66" y="75" width="20" height="55" rx="3" fill="#00C897"/>
+    <rect x="98" y="55" width="20" height="75" rx="3" fill="#155EEF"/>
+    <rect x="130" y="35" width="20" height="95" rx="3" fill="#00C897"/>
+    <path d="M34 92 L86 70 L118 50 L150 30" stroke="#1B2A4A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/>
+  </g>
+
+  <!-- graduation cap floating above laptop -->
+  <g class="cap" transform="translate(360 60)">
+    <path d="M0 20 L60 0 L120 20 L60 40 Z" fill="url(#heroGrad)"/>
+    <path d="M20 28 L20 55 C20 68 40 76 60 76 C80 76 100 68 100 55 L100 28 L60 44 Z" fill="#155EEF"/>
+    <line x1="112" y1="16" x2="112" y2="46" stroke="#00C897" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="112" cy="50" r="4" fill="#00C897"/>
+  </g>
+
+  <!-- lightbulb (AI ideas) -->
+  <g class="bulb" transform="translate(55 105)">
+    <circle cx="40" cy="40" r="38" fill="#FFFFFF"/>
+    <circle cx="40" cy="40" r="38" fill="#00C897" opacity="0.12"/>
+    <path d="M40 16 C25 16 16 27 16 39 C16 48 21 53 25 58 C28 61 29 64 29 68 L51 68 C51 64 52 61 55 58 C59 53 64 48 64 39 C64 27 55 16 40 16 Z" fill="#00C897"/>
+    <rect x="29" y="70" width="22" height="8" rx="3" fill="#1B2A4A"/>
+    <rect x="32" y="80" width="16" height="5" rx="2" fill="#1B2A4A" opacity="0.6"/>
+  </g>
+
+  <!-- chat bubble (AI tutor) -->
+  <g class="chat" transform="translate(430 210)">
+    <rect x="0" y="0" width="90" height="64" rx="18" fill="#FFFFFF"/>
+    <rect x="0" y="0" width="90" height="64" rx="18" fill="#155EEF" opacity="0.08"/>
+    <path d="M18 64 L18 80 L38 64 Z" fill="#FFFFFF"/>
+    <circle class="spark" cx="27" cy="32" r="6" fill="#155EEF"/>
+    <circle class="spark" cx="45" cy="32" r="6" fill="#00C897"/>
+    <circle class="spark" cx="63" cy="32" r="6" fill="#155EEF"/>
+  </g>
+
+  <!-- open book (projects / self-study) -->
+  <g class="book" transform="translate(40 330)">
+    <path d="M45 10 C30 2 12 0 0 4 L0 66 C12 62 30 64 45 72 Z" fill="#155EEF"/>
+    <path d="M45 10 C60 2 78 0 90 4 L90 66 C78 62 60 64 45 72 Z" fill="#00C897"/>
+    <path d="M45 10 L45 72" stroke="#FFFFFF" stroke-width="2" opacity="0.5"/>
+  </g>
+
+  <!-- sparkle accents -->
+  <g fill="#155EEF">
+    <circle class="spark" cx="500" cy="120" r="4"/>
+    <circle class="spark" cx="120" cy="420" r="5"/>
+    <circle class="spark" cx="480" cy="400" r="3.5"/>
+  </g>
+</svg>

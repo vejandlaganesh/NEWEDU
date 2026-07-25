@@ -1,0 +1,321 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #155EEF, #00C897);
+    background-size: 200% 200%;
+    animation: gradientMove 12s ease infinite;
+    padding: 20px;
+}
+
+/* ===========================
+   Container
+=========================== */
+
+.container {
+    width: 900px;
+    max-width: 100%;
+    min-height: 550px;
+    display: flex;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,.18);
+    animation: containerIn .7s ease;
+}
+
+/* ===========================
+   Left Section
+=========================== */
+
+.left {
+    flex: 1;
+    background: linear-gradient(135deg, #155EEF, #00C897);
+    color: #fff;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px;
+    text-align: center;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.left::before,
+.left::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+}
+
+.left::before {
+    width: 220px;
+    height: 220px;
+    top: -70px;
+    right: -70px;
+}
+
+.left::after {
+    width: 260px;
+    height: 260px;
+    bottom: -90px;
+    left: -90px;
+}
+
+.left h1 {
+    font-size: 46px;
+    margin-bottom: 20px;
+    z-index: 1;
+}
+
+.left p {
+    line-height: 1.8;
+    font-size: 18px;
+    z-index: 1;
+}
+
+.left img {
+    width: 220px;
+    margin-top: 35px;
+    z-index: 1;
+}
+
+/* ===========================
+   Right Section
+=========================== */
+
+.right {
+    flex: 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 360px;
+}
+
+.login-box h2 {
+    color: #155EEF;
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.login-box p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+/* ===========================
+   Input Fields
+=========================== */
+
+.input-box {
+    margin-bottom: 18px;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: .3s;
+}
+
+.input-box input:focus {
+    border-color: #155EEF;
+    outline: none;
+    box-shadow: 0 0 10px rgba(21,94,239,.2);
+}
+
+/* ===========================
+   Button
+=========================== */
+
+.login-btn {
+    width: 100%;
+    padding: 15px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #155EEF;
+    color: #fff;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: .3s;
+}
+
+.login-btn:hover {
+    background: #0D47C4;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(21,94,239,.3);
+}
+
+/* ===========================
+   Bottom Link
+=========================== */
+
+.signup {
+    margin-top: 22px;
+    text-align: center;
+}
+
+.signup a {
+    color: #155EEF;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.signup a:hover {
+    text-decoration: underline;
+}
+
+/* ===========================
+   Focus
+=========================== */
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+    outline: 2px solid #155EEF;
+    outline-offset: 3px;
+}
+
+/* ===========================
+   Animations
+=========================== */
+
+@keyframes gradientMove {
+
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+
+}
+
+@keyframes containerIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width:768px) {
+
+    .container {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .left,
+    .right {
+        width: 100%;
+    }
+
+    .left {
+        padding: 35px 25px;
+    }
+
+    .left h1 {
+        font-size: 38px;
+    }
+
+    .left img {
+        width: 170px;
+    }
+
+    .right {
+        padding: 30px 20px;
+    }
+
+}
+
+/* Password information */
+.password-info{
+    margin-top:-5px;
+    margin-bottom:20px;
+    color:#666;
+    font-size:14px;
+}
+
+.password-info p{
+    margin-bottom:8px;
+    font-weight:500;
+}
+
+.password-info ul{
+    padding-left:20px;
+    margin:0;
+}
+
+.password-info li{
+    margin-bottom:5px;
+}
+
+/* Make all inputs look the same */
+.input-box{
+    margin-bottom:18px;
+}
+
+.input-box input{
+    width:100%;
+    height:55px;
+    padding:0 18px;
+    border:1px solid #dcdcdc;
+    border-radius:12px;
+    font-size:16px;
+    font-family:'Poppins',sans-serif;
+    outline:none;
+    transition:.3s;
+    box-sizing:border-box;
+}
+
+.input-box input:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,.15);
+}

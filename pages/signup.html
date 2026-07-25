@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewEdu | Sign Up</title>
+
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/signup.css">
+
+    <script src="../js/signup.js" defer></script>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="left">
+
+            <h1>NewEdu</h1>
+
+            <p>
+                Learn Smarter.<br>
+                Build Skills.<br>
+                Shape Your Future.
+            </p>
+
+            <img
+                src="../assets/login-illustration.svg"
+                alt="Education Illustration">
+
+        </div>
+
+        <div class="right">
+
+            <div class="login-box">
+
+                <h2>Create Account</h2>
+
+                <p>
+                    Start your learning journey with NewEdu.
+                </p>
+
+                <form id="signupForm">
+
+                    <div class="input-box">
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="Full Name"
+                            required>
+                    </div>
+
+                    <div class="input-box">
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Email Address"
+                            required>
+                    </div>
+
+                    <div class="input-box">
+                        <input
+                            type="tel"
+                            id="phone"
+                            placeholder="Phone Number"
+                            maxlength="10"
+                            inputmode="numeric"
+                            autocomplete="tel"
+                            pattern="[0-9]{10}"
+                            required>
+                    </div>
+
+                    <div class="input-box">
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Password"
+                            required>
+                    </div>
+
+                    <div class="password-info">
+
+                        <p>Password must contain:</p>
+
+                        <ul>
+                            <li>Minimum 8 characters</li>
+                            <li>One uppercase letter (A-Z)</li>
+                            <li>One lowercase letter (a-z)</li>
+                            <li>One number (0-9)</li>
+                            <li>One special character (@, #, $, %, etc.)</li>
+                        </ul>
+
+                    </div>
+
+                    <div class="input-box">
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Confirm Password"
+                            required>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="login-btn">
+
+                        Create Account
+
+                    </button>
+
+                    <div class="signup">
+
+                        Already have an account?
+
+                        <a href="login.html">
+                            Login
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

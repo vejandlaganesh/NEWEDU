@@ -1,0 +1,681 @@
+/* ===========================
+   Root Variables
+=========================== */
+
+:root {
+    --blue: #155EEF;
+    --blue-dark: #0D47C4;
+    --green: #00C897;
+    --green-alt: #1DB954;
+}
+
+/* ===========================
+   Global Styles
+=========================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #f8fbff;
+}
+
+::selection {
+    background: var(--blue);
+    color: #fff;
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* ===========================
+   Navigation Bar
+=========================== */
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    background: #fff;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: padding 0.35s ease,
+        background 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+nav.scrolled {
+    padding: 14px 8%;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    box-shadow: 0 8px 30px rgba(21, 94, 239, 0.12);
+}
+
+/* ===========================
+   Logo
+=========================== */
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo img {
+    width: 48px;
+    transition: transform 0.45s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.logo:hover img {
+    transform: rotate(-8deg) scale(1.08);
+}
+
+.logo h2 {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.logo span:first-child {
+    color: var(--blue);
+}
+
+.logo span:last-child {
+    color: var(--green-alt);
+}
+
+/* ===========================
+   Navigation Menu
+=========================== */
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 35px;
+}
+
+nav ul li {
+    position: relative;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color .3s ease;
+}
+
+nav ul li a:hover {
+    color: var(--blue);
+}
+
+nav ul li a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg,
+            var(--blue),
+            var(--green-alt));
+    transition: width .3s ease;
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+}
+
+/* ===========================
+   Login Button
+=========================== */
+
+.login {
+    display: inline-block;
+    padding: 12px 28px;
+    background: var(--blue);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: transform .3s ease,
+        box-shadow .3s ease;
+}
+
+.login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(21, 94, 239, .35);
+}
+
+/* ===========================
+   Mobile Toggle
+=========================== */
+
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-toggle span {
+    width: 100%;
+    height: 3px;
+    background: var(--blue);
+    border-radius: 2px;
+    transition: all .3s ease;
+}
+
+.nav-toggle.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ===========================
+   Hero Section
+=========================== */
+
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 60px;
+
+    width: 90%;
+    max-width: 1300px;
+
+    margin: 0 auto;
+    padding: 80px 0 40px;
+
+    min-height: calc(100vh - 90px);
+
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before,
+.hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+}
+
+.hero::before {
+    width: 340px;
+    height: 340px;
+    background: var(--blue);
+    opacity: .08;
+    top: -120px;
+    left: -100px;
+}
+
+.hero::after {
+    width: 380px;
+    height: 380px;
+    background: var(--green);
+    opacity: .08;
+    right: -100px;
+    bottom: -140px;
+}
+
+.hero .left,
+.hero .right {
+    position: relative;
+    z-index: 1;
+}
+
+.left {
+    flex: 1;
+}
+
+.right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right img,
+.hero-img {
+    width: 100%;
+    max-width: 600px;
+    filter: drop-shadow(0 25px 30px rgba(21, 94, 239, .18));
+    animation:
+        heroFloat 6s ease-in-out infinite,
+        fadeUp 1s ease .2s both;
+}
+
+.left h1 {
+    font-size: 54px;
+    line-height: 68px;
+    margin-bottom: 20px;
+    animation: fadeUp .8s ease both;
+}
+
+.green {
+    color: var(--green-alt);
+}
+
+.blue {
+    background: linear-gradient(
+        90deg,
+        var(--blue),
+        var(--green-alt),
+        var(--blue)
+    );
+
+    background-size: 200% auto;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    animation: gradientShift 6s linear infinite;
+}
+
+.left p {
+    margin-top: 25px;
+    font-size: 18px;
+    line-height: 30px;
+    color: #555;
+
+    animation: fadeUp .8s ease .15s both;
+}
+
+.btn {
+    display: inline-block;
+
+    margin-top: 40px;
+    padding: 15px 35px;
+
+    background: var(--blue);
+    color: #fff;
+
+    text-decoration: none;
+    font-size: 18px;
+
+    border-radius: 12px;
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease;
+
+    animation: fadeUp .8s ease .3s both;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 26px rgba(21, 94, 239, .35);
+}
+
+.btn .ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    background: rgba(255, 255, 255, .55);
+    pointer-events: none;
+    animation: rippleAnim .6s linear;
+}
+
+/* ===========================
+   Features Section
+=========================== */
+
+.features {
+    padding: 80px 8%;
+    background: #fff;
+    text-align: center;
+}
+
+.features h2 {
+    position: relative;
+    display: inline-block;
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.features h2::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    margin: 14px auto 0;
+    border-radius: 4px;
+    background: linear-gradient(
+        90deg,
+        var(--blue),
+        var(--green-alt)
+    );
+}
+
+.features > p {
+    font-size: 18px;
+    color: #666;
+}
+
+/* ===========================
+   Cards
+=========================== */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px;
+    margin-top: 50px;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card {
+    position: relative;
+    background: #fff;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+
+    transition:
+        transform .4s ease,
+        box-shadow .4s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 22px 40px rgba(21, 94, 239, .16);
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 15px;
+    right: 15px;
+
+    height: 3px;
+
+    border-radius: 0 0 3px 3px;
+
+    background: linear-gradient(
+        90deg,
+        var(--blue),
+        var(--green-alt)
+    );
+
+    transform: scaleX(0);
+    transform-origin: center;
+
+    transition: transform .4s ease;
+}
+
+.card:hover::before {
+    transform: scaleX(1);
+}
+
+.card h3 {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--blue);
+
+    transition: transform .35s ease;
+}
+
+.card:hover h3 {
+    transform: translateY(-3px) scale(1.04);
+}
+
+.card p {
+    margin-top: 15px;
+    color: #666;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* ===========================
+   Reveal Animation
+=========================== */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+
+    transition:
+        opacity .7s ease,
+        transform .7s ease;
+}
+
+.reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===========================
+   Footer
+=========================== */
+
+footer {
+    position: relative;
+
+    margin-top: 60px;
+    padding: 25px;
+
+    background: var(--blue);
+    color: #fff;
+
+    text-align: center;
+}
+
+footer::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 5px;
+
+    background: linear-gradient(
+        90deg,
+        var(--blue),
+        var(--green-alt),
+        var(--green),
+        var(--blue)
+    );
+
+    background-size: 300% 100%;
+
+    animation: gradientShift 8s linear infinite;
+}
+
+/* ===========================
+   Animations
+=========================== */
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+@keyframes heroFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-16px);
+    }
+
+}
+
+@keyframes gradientShift {
+
+    to {
+        background-position: 200% center;
+    }
+
+}
+
+@keyframes rippleAnim {
+
+    to {
+        transform: scale(3);
+        opacity: 0;
+    }
+
+}
+
+/* ===========================
+   Responsive Design
+=========================== */
+
+@media (max-width: 900px) {
+
+    nav {
+        flex-wrap: wrap;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    nav ul {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 0;
+        text-align: center;
+        order: 3;
+        margin-top: 20px;
+    }
+
+    nav ul.active {
+        display: flex;
+    }
+
+    nav ul li {
+        padding: 12px 0;
+        border-top: 1px solid #eef1f7;
+    }
+
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+        padding-top: 50px;
+    }
+
+    .left {
+        width: 100%;
+    }
+
+    .left h1 {
+        font-size: 42px;
+        line-height: 56px;
+    }
+
+    .left p {
+        font-size: 17px;
+    }
+
+    .right img {
+        max-width: 350px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .features h2 {
+        font-size: 34px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    nav {
+        padding: 18px 5%;
+    }
+
+    .logo h2 {
+        font-size: 24px;
+    }
+
+    .login {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .left h1 {
+        font-size: 34px;
+        line-height: 46px;
+    }
+
+    .left p {
+        font-size: 16px;
+        line-height: 28px;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .right img {
+        max-width: 280px;
+    }
+
+    .features {
+        padding: 60px 5%;
+    }
+
+    .card {
+        padding: 25px;
+    }
+
+    footer {
+        font-size: 14px;
+    }
+}

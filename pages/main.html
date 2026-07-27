@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NewEdu Career Guidance — Find the career that fits you</title>
+<meta name="description" content="AI-powered career, course and college guidance for students from Class 6 to Class 12." />
+
+<!-- Fonts: Poppins carries headings/personality, Inter carries body copy, JetBrains Mono carries data/figures -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%232455E8'/%3E%3Cstop offset='1' stop-color='%2312B76A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='46' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ============================== NAV ============================== -->
+<header class="site-header" id="siteHeader">
+  <nav class="nav container" aria-label="Primary">
+    <a href="#top" class="brand" aria-label="NewEdu home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" width="34" height="34"><circle cx="20" cy="20" r="18" fill="url(#navGrad)"/><path d="M20 8 L20 32 M8 20 L32 20" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/><circle cx="20" cy="20" r="5.5" fill="#fff"/><defs><linearGradient id="navGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2455E8"/><stop offset="1" stop-color="#12B76A"/></linearGradient></defs></svg>
+      </span>
+      <span class="brand-name">NewEdu<span class="brand-sub">Career Guidance</span></span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="nav-links" id="navLinks">
+      <a href="#streams">Streams</a>
+      <a href="#browse">Browse Careers</a>
+      <a href="#ai-guide">AI Guide</a>
+      <a href="#resources">Resources</a>
+      <a href="#faq">FAQ</a>
+    </div>
+
+    <div class="nav-tools">
+      <div class="nav-search">
+        <svg class="icon" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.6" y2="16.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input type="text" id="navSearchInput" placeholder="Search careers, courses, colleges…" autocomplete="off" aria-label="Search careers, courses or colleges">
+        <div class="search-suggest" id="navSuggest" hidden></div>
+      </div>
+      <button class="icon-btn" id="savedBtn" aria-label="View saved careers" title="Saved careers">
+        <svg viewBox="0 0 24 24" width="19" height="19"><path d="M6 3.5h12a1 1 0 0 1 1 1V21l-7-4.2L5 21V4.5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <span class="badge" id="savedCount" hidden>0</span>
+      </button>
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" width="19" height="19"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="12" y1="1.6" x2="12" y2="4.4"/><line x1="12" y1="19.6" x2="12" y2="22.4"/><line x1="1.6" y1="12" x2="4.4" y2="12"/><line x1="19.6" y1="12" x2="22.4" y2="12"/><line x1="4.5" y1="4.5" x2="6.4" y2="6.4"/><line x1="17.6" y1="17.6" x2="19.5" y2="19.5"/><line x1="4.5" y1="19.5" x2="6.4" y2="17.6"/><line x1="17.6" y1="6.4" x2="19.5" y2="4.5"/></g></svg>
+        <svg class="moon" viewBox="0 0 24 24" width="19" height="19" hidden><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- ============================== HERO ============================== -->
+  <section class="hero" id="top">
+    <div class="hero-orbits" aria-hidden="true">
+      <span class="orbit orbit-1"></span><span class="orbit orbit-2"></span><span class="orbit orbit-3"></span>
+      <span class="orbit-dot d1"></span><span class="orbit-dot d2"></span><span class="orbit-dot d3"></span><span class="orbit-dot d4"></span>
+    </div>
+    <div class="container hero-inner">
+      <p class="eyebrow">AI-powered guidance · Class 6–12</p>
+      <h1>Career <span class="grad-text">Guidance</span></h1>
+      <p class="hero-sub">Discover the streams, courses, colleges and careers that fit <em>you</em> — not just what everyone else is choosing.</p>
+
+      <div class="hero-search">
+        <svg class="icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.6" y2="16.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input type="text" id="heroSearchInput" placeholder="Try 'AI Engineer', 'MBBS', or 'Design'…" autocomplete="off" aria-label="Search careers, courses or colleges">
+        <button class="btn btn-primary" id="heroSearchBtn">Search</button>
+        <div class="search-suggest" id="heroSuggest" hidden></div>
+      </div>
+
+      <div class="hero-actions">
+        <button class="btn btn-gradient btn-lg" id="startQuizBtn">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 2 14.5 9H21l-5.2 4.2 2 7L12 16l-5.8 4.2 2-7L3 9h6.5Z" fill="currentColor"/></svg>
+          Get my AI Career Recommendation
+        </button>
+        <a href="#streams" class="btn btn-ghost btn-lg">Browse streams ↓</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== STATS ============================== -->
+  <section class="stats container" aria-label="Platform statistics">
+    <div class="stat-card" data-stat="careers"><span class="stat-num" id="statCareers">0</span><span class="stat-label">Careers Mapped</span></div>
+    <div class="stat-card" data-stat="courses"><span class="stat-num" id="statCourses">0</span><span class="stat-label">UG Courses</span></div>
+    <div class="stat-card" data-stat="exams"><span class="stat-num" id="statExams">0</span><span class="stat-label">Entrance Exams</span></div>
+    <div class="stat-card" data-stat="colleges"><span class="stat-num" id="statColleges">0</span><span class="stat-label">Top Colleges</span></div>
+  </section>
+
+  <!-- ============================== STREAMS ============================== -->
+  <section class="section" id="streams">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Step 1</p>
+        <h2>Explore career streams</h2>
+        <p class="section-sub">Every stream opens a different set of degrees, exams and careers. Tap one to see the full breakdown.</p>
+      </div>
+      <div class="streams-grid" id="streamsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============================== BROWSE / SEARCH & FILTER ============================== -->
+  <section class="section section-alt" id="browse">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Step 2</p>
+        <h2>Browse all careers</h2>
+        <p class="section-sub">Search and filter across every career on NewEdu — by stream, field, sector, salary, interest, work style and future demand.</p>
+      </div>
+
+      <div class="browse-toolbar">
+        <div class="browse-search">
+          <svg class="icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.6" y2="16.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input type="text" id="browseSearchInput" placeholder="Search careers, courses or colleges…" autocomplete="off" aria-label="Search within careers">
+        </div>
+        <div class="browse-view-toggle" role="group" aria-label="View mode">
+          <button class="view-btn active" data-view="grid" id="viewGridBtn">Cards</button>
+          <button class="view-btn" data-view="chart" id="viewChartBtn">Salary chart</button>
+        </div>
+        <button class="btn btn-outline" id="filtersToggle" aria-expanded="false" aria-controls="filtersPanel">
+          <svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Filters <span class="filter-count" id="filterCount" hidden>0</span>
+        </button>
+      </div>
+
+      <div class="filters-panel" id="filtersPanel" hidden>
+        <div class="filter-group">
+          <label for="fStream">Stream</label>
+          <select id="fStream"><option value="all">All streams</option></select>
+        </div>
+        <div class="filter-group">
+          <label for="fField">Field</label>
+          <select id="fField"><option value="all">All fields</option></select>
+        </div>
+        <div class="filter-group">
+          <label for="fSector">Government / Private</label>
+          <select id="fSector"><option value="all">Both</option><option value="Government">Government</option><option value="Private">Private</option></select>
+        </div>
+        <div class="filter-group">
+          <label for="fSalary">Salary range</label>
+          <select id="fSalary">
+            <option value="all">Any salary</option>
+            <option value="0-5">Up to ₹5L /yr</option>
+            <option value="5-15">₹5L – ₹15L /yr</option>
+            <option value="15-25">₹15L – ₹25L /yr</option>
+            <option value="25-999">₹25L+ /yr</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="fInterest">Interest</label>
+          <select id="fInterest"><option value="all">Any interest</option></select>
+        </div>
+        <div class="filter-group">
+          <label for="fWork">Work type</label>
+          <select id="fWork"><option value="all">Any work type</option></select>
+        </div>
+        <div class="filter-group">
+          <label for="fGrowth">Future demand</label>
+          <select id="fGrowth">
+            <option value="all">Any demand</option>
+            <option value="Steady">Steady</option>
+            <option value="Growing">Growing</option>
+            <option value="High Growth">High Growth</option>
+            <option value="Very High Growth">Very High Growth</option>
+          </select>
+        </div>
+        <button class="btn btn-text" id="clearFilters">Clear all</button>
+      </div>
+
+      <p class="results-meta" id="resultsMeta" aria-live="polite"></p>
+
+      <div class="careers-grid" id="careersGrid"></div>
+      <div id="chartView" class="chart-view" hidden></div>
+
+      <div class="load-more-wrap">
+        <button class="btn btn-outline" id="loadMoreBtn">Show more careers</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== AI GUIDE ============================== -->
+  <section class="section ai-section" id="ai-guide">
+    <div class="container ai-inner">
+      <div class="ai-copy">
+        <p class="eyebrow">AI Career Recommendation</p>
+        <h2>Not sure where to start?</h2>
+        <p class="section-sub">Answer a few quick questions about what you enjoy. NewEdu's matching engine scores every career against your answers — live, right in your browser — and points you to your closest fits.</p>
+        <button class="btn btn-gradient btn-lg" id="startQuizBtn2">Take the 2-minute quiz</button>
+        <p class="ai-note">Your answers stay on this device — nothing is uploaded anywhere.</p>
+      </div>
+      <div class="ai-visual" aria-hidden="true" id="aiCompassVisual"></div>
+    </div>
+  </section>
+
+  <!-- ============================== RESOURCES ============================== -->
+  <section class="section section-alt" id="resources">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Good to know</p>
+        <h2>Scholarships, internships & certifications</h2>
+        <p class="section-sub">A starting point for funding, real-world experience and credentials — worth exploring alongside any stream.</p>
+      </div>
+      <div class="resource-grid">
+        <div class="resource-card">
+          <h3>Scholarships</h3>
+          <ul>
+            <li>National Scholarship Portal (Govt. of India) — merit &amp; means-based scholarships across states</li>
+            <li>State-level merit scholarships through your school/college</li>
+            <li>Institution-specific scholarships offered by many colleges and universities</li>
+          </ul>
+        </div>
+        <div class="resource-card">
+          <h3>Internships</h3>
+          <ul>
+            <li>Internshala — India's largest student internship marketplace</li>
+            <li>AICTE Internship Portal for technical students</li>
+            <li>Direct outreach to startups and local businesses in your field of interest</li>
+          </ul>
+        </div>
+        <div class="resource-card">
+          <h3>Certifications worth exploring</h3>
+          <ul>
+            <li>NPTEL / SWAYAM — free courses from top Indian institutes</li>
+            <li>Coursera &amp; Google/Meta career certificates for tech &amp; digital skills</li>
+            <li>Skill India (NSDC) certifications for hands-on trades</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== FAQ ============================== -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">FAQ</p>
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="faq-list" id="faqList"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <span class="brand-name footer-brand">NewEdu Career Explorer</span>
+      <p class="footer-note">Salary, growth and college data shown across this site are indicative ranges meant to guide early career exploration — not official statistics. Always cross-check with official sources before making decisions.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#streams">Streams</a>
+      <a href="#browse">Browse Careers</a>
+      <a href="#ai-guide">AI Guide</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================== COMPARE TRAY ============================== -->
+<div class="compare-tray" id="compareTray" hidden>
+  <div class="compare-tray-inner">
+    <span class="compare-tray-label">Compare (<span id="compareCount">0</span>/3)</span>
+    <div class="compare-chips" id="compareChips"></div>
+    <button class="btn btn-gradient" id="compareGoBtn" disabled>Compare now</button>
+    <button class="icon-btn" id="compareClearBtn" aria-label="Clear comparison">✕</button>
+  </div>
+</div>
+
+<!-- ============================== MODALS ============================== -->
+<div class="modal-backdrop" id="modalBackdrop" hidden></div>
+
+<div class="modal" id="streamModal" role="dialog" aria-modal="true" aria-labelledby="streamModalTitle" hidden>
+  <div class="modal-card modal-wide">
+    <button class="modal-close" data-close aria-label="Close">✕</button>
+    <div id="streamModalBody"></div>
+  </div>
+</div>
+
+<div class="modal" id="careerModal" role="dialog" aria-modal="true" aria-labelledby="careerModalTitle" hidden>
+  <div class="modal-card modal-wide">
+    <button class="modal-close" data-close aria-label="Close">✕</button>
+    <div id="careerModalBody"></div>
+  </div>
+</div>
+
+<div class="modal" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="quizModalTitle" hidden>
+  <div class="modal-card">
+    <button class="modal-close" data-close aria-label="Close">✕</button>
+    <div id="quizModalBody"></div>
+  </div>
+</div>
+
+<div class="modal" id="compareModal" role="dialog" aria-modal="true" aria-labelledby="compareModalTitle" hidden>
+  <div class="modal-card modal-wide">
+    <button class="modal-close" data-close aria-label="Close">✕</button>
+    <div id="compareModalBody"></div>
+  </div>
+</div>
+
+<div class="modal" id="savedModal" role="dialog" aria-modal="true" aria-labelledby="savedModalTitle" hidden>
+  <div class="modal-card">
+    <button class="modal-close" data-close aria-label="Close">✕</button>
+    <div id="savedModalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<div class="print-only" id="printArea"></div>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

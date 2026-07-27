@@ -1,16 +1,11 @@
 require("dotenv").config();
-console.log(process.env.DB_HOST);
-console.log(process.env.DB_USER);
-console.log(process.env.DB_PASSWORD);
-console.log(process.env.DB_NAME);
 
 const express = require("express");
-const mysql = require("mysql2");
 const bcrypt = require("bcryptjs");
 const cors = require("cors");
+const db = require("./config/db");
 
 const app = express();
-
 const PORT = process.env.PORT || 3000;
 
 /* ===========================
@@ -19,27 +14,13 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-
 /* ===========================
-   MySQL Connection
+   Middleware
 =========================== */
 
-const db = mysql.createConnection({
-    host: process.env.DB_HOST || "localhost",
-    user: process.env.DB_USER || "root",
-    password: process.env.DB_PASSWORD || "",
-    database: process.env.DB_NAME || "newedu"
-});
+app.use(cors());
+app.use(express.json());
 
-db.connect((err) => {
-    if (err) {
-        console.error("❌ MySQL Connection Failed");
-        console.error(err);
-        process.exit(1);
-    }
-
-    console.log("✅ MySQL Connected Successfully");
-});
 
 /* ===========================
    Home Route

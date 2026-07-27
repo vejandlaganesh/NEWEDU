@@ -140,6 +140,8 @@ Contributions are welcome!
 
 **B.Tech – Computer Science & Engineering (AI & ML)**
 
+**Linkdin:** www.linkedin.com/in/vejandla-ganesh
+
 **GitHub:** https://github.com/vejandlaganesh
 
 ---

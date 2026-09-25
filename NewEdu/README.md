@@ -851,6 +851,10 @@ GitHub:
 
 ---
 
+<div align="center">
+
 ## ⭐ NewEdu
 
 **Learn Today • Build Skills • Shape Your Future**
+
+</div>

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block extra_css %}
+<style>
+    .teacher-layout { display: flex; flex-direction: column; min-height: 100vh; }
+    .teacher-nav { background: #2c3e50; color: white; padding: 1rem; }
+    .teacher-nav h3 { color: #ecf0f1; border-bottom: 1px solid #34495e; padding-bottom: 10px; }
+    .teacher-nav ul { list-style: none; display: flex; gap: 1rem; flex-wrap: wrap; padding-left: 0; }
+    .teacher-nav li { margin-bottom: 0.5rem; }
+    .teacher-nav a { color: #bdc3c7; text-decoration: none; padding: 5px 10px; display: block; border-radius: 4px; }
+    .teacher-nav a:hover, .teacher-nav a.active { color: white; background-color: #34495e; }
+    .teacher-content { flex: 1; padding: 2rem; background-color: #f8f9fa; }
+    .kpi-card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-left: 4px solid var(--primary-color); }
+    .kpi-card h4 { margin: 0; color: #7f8c8d; font-size: 0.9rem; text-transform: uppercase; }
+    .kpi-card .value { font-size: 2rem; font-weight: bold; color: #2c3e50; margin-top: 10px; }
+    @media(min-width: 768px) {
+        .teacher-layout { flex-direction: row; }
+        .teacher-nav { width: 250px; flex-shrink: 0; min-height: 100vh; }
+        .teacher-nav ul { flex-direction: column; }
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="teacher-layout">
+    <nav class="teacher-nav">
+        <h3>Educator Portal</h3>
+        <ul>
+            <li><a href="{% url 'teacher_dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'teacher_classes' %}">My Classes</a></li>
+            <li><a href="{% url 'teacher_subjects' %}">My Subjects</a></li>
+            <li><a href="{% url 'teacher_students' %}">Students</a></li>
+            <li><a href="{% url 'teacher_materials' %}">Learning Materials</a></li>
+            <li><a href="{% url 'teacher_assignments' %}">Assignments</a></li>
+            <li><a href="{% url 'teacher_quizzes' %}">Quizzes</a></li>
+            <li><a href="{% url 'teacher_reports' %}">Reports & Analytics</a></li>
+            <li><a href="{% url 'teacher_ai_tools' %}">AI Content Tools</a></li>
+            <li><a href="{% url 'teacher_notifications' %}">Notifications</a></li>
+            <li><a href="{% url 'teacher_profile' %}">Profile</a></li>
+            <li><a href="{% url 'teacher_settings' %}">Settings</a></li>
+        </ul>
+    </nav>
+    <div class="teacher-content">
+        {% block teacher_content %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

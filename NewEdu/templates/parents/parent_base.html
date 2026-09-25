@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block extra_css %}
+<style>
+    .parent-layout { display: flex; flex-direction: column; min-height: 100vh; }
+    .parent-nav { background: #8e44ad; color: white; padding: 1rem; }
+    .parent-nav h3 { color: #f39c12; border-bottom: 1px solid #9b59b6; padding-bottom: 10px; }
+    .parent-nav ul { list-style: none; display: flex; gap: 1rem; flex-wrap: wrap; padding-left: 0; }
+    .parent-nav li { margin-bottom: 0.5rem; }
+    .parent-nav a { color: #ecf0f1; text-decoration: none; padding: 5px 10px; display: block; border-radius: 4px; }
+    .parent-nav a:hover, .parent-nav a.active { color: white; background-color: #9b59b6; }
+    .parent-content { flex: 1; padding: 2rem; background-color: #f9f9f9; }
+    .child-selector { margin-bottom: 2rem; background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 1rem; }
+    .child-selector select { padding: 0.5rem; font-size: 1rem; border: 1px solid #ddd; border-radius: 4px; }
+    @media(min-width: 768px) {
+        .parent-layout { flex-direction: row; }
+        .parent-nav { width: 250px; flex-shrink: 0; min-height: 100vh; }
+        .parent-nav ul { flex-direction: column; }
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="parent-layout">
+    <nav class="parent-nav">
+        <h3>Parent Portal</h3>
+        <ul>
+            <li><a href="{% url 'parent_dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'parent_assignments' %}">Assignments</a></li>
+            <li><a href="{% url 'parent_quizzes' %}">Quizzes</a></li>
+            <li><a href="{% url 'parent_results' %}">Results</a></li>
+            <li><a href="{% url 'parent_reports' %}">Reports & Progress</a></li>
+            <li><a href="{% url 'parent_notifications' %}">Notifications</a></li>
+            <li><a href="{% url 'parent_profile' %}">Profile</a></li>
+            <li><a href="{% url 'parent_settings' %}">Settings</a></li>
+        </ul>
+    </nav>
+    <div class="parent-content">
+        {% if children %}
+            <div class="child-selector">
+                <strong>Viewing:</strong>
+                <form method="get" id="childSelectForm" style="margin: 0;">
+                    <select name="child_id" onchange="document.getElementById('childSelectForm').submit();">
+                        {% for child in children %}
+                            <option value="{{ child.id }}" {% if selected_child and selected_child.id == child.id %}selected{% endif %}>
+                                {{ child.user.first_name }} {{ child.user.last_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+            {% block parent_content %}{% endblock %}
+        {% else %}
+            <div class="card">
+                <h2>Welcome, {{ request.user.first_name }}</h2>
+                <p>You currently have no children linked to your account. Please contact the school administrator to link your account with your children.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

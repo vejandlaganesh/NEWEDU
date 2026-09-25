@@ -1,0 +1,14 @@
+{% extends 'core/admin_base.html' %}
+{% block title %}Create User - NEWEDU{% endblock %}
+{% block admin_content %}
+<h2>Create New User</h2>
+<div class="card" style="max-width: 500px; margin-top: 1rem;">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p class="text-muted" style="font-size: 0.9em; margin-bottom: 1rem;">Note: Selecting a role (Student, Teacher, Parent) will automatically create the corresponding profile linked to this user.</p>
+        <button type="submit" class="btn">Create User</button>
+        <a href="{% url 'admin_users' %}" style="margin-left: 10px; color: #7f8c8d; text-decoration: none;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

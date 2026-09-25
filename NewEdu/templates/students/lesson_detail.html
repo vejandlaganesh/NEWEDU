@@ -1,0 +1,28 @@
+{% extends 'students/student_base.html' %}
+{% block title %}{{ lesson.title }} - NEWEDU{% endblock %}
+{% block student_content %}
+<h2>Lesson {{ lesson.order }}: {{ lesson.title }}</h2>
+<p><a href="{% url 'student_chapter_detail' lesson.chapter.id %}">&larr; Back to {{ lesson.chapter.title }}</a></p>
+
+<div class="card" style="margin-top: 1rem;">
+    {% if lesson.content %}
+        {{ lesson.content|linebreaks }}
+    {% else %}
+        <p>No content provided for this lesson.</p>
+    {% endif %}
+</div>
+
+{% if lesson.learning_materials.all %}
+<div class="card" style="margin-top:1rem;">
+    <h3>Learning Materials</h3>
+    {% for material in lesson.learning_materials.all %}
+        {% if material.is_published %}<div style="padding:10px 0;border-bottom:1px solid #eee;">
+            <strong>{{ material.title }}</strong> <span class="text-muted">{{ material.get_material_type_display }}</span>
+            {% if material.description %}<p>{{ material.description }}</p>{% endif %}
+            {% if material.file %}<a href="{{ material.file.url }}" target="_blank" rel="noopener">Open file</a>{% elif material.external_url %}<a href="{{ material.external_url }}" target="_blank" rel="noopener">Open resource</a>{% elif material.text_content %}{{ material.text_content|linebreaks }}{% endif %}
+        </div>{% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+</div>
+{% endblock %}

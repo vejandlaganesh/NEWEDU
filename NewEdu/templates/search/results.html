@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block title %}Search Results - NEWEDU{% endblock %}
+
+{% block content %}
+<div class="search-results-container" style="max-width: 900px; margin: 0 auto; padding: 2rem 0;">
+    <h2>Search Results {% if not empty_query %}for "{{ query }}"{% endif %}</h2>
+
+    {% if empty_query %}
+        <div class="card" style="padding: 2rem; text-align: center; margin-top: 2rem;">
+            <p>Please enter a search query.</p>
+        </div>
+    {% elif not has_results %}
+        <div class="card" style="padding: 2rem; text-align: center; margin-top: 2rem;">
+            <p>No results found for "{{ query }}".</p>
+        </div>
+    {% else %}
+        
+        {% if results.subjects %}
+        <section class="result-category" style="margin-top: 2rem;">
+            <h3>Subjects <span style="font-size: 1rem; color: #666;">({{ results.subjects|length }})</span></h3>
+            <div class="card" style="padding: 1rem;">
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                {% for item in results.subjects %}
+                    <li style="padding: 0.75rem; border-bottom: 1px solid #eee;">
+                        <a href="{{ item.url }}" style="font-weight: bold; text-decoration: none; color: var(--primary-color);">{{ item.title }}</a>
+                        <span style="background: #e9ecef; font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; margin-left: 10px;">{{ item.type }}</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if results.chapters %}
+        <section class="result-category" style="margin-top: 2rem;">
+            <h3>Chapters <span style="font-size: 1rem; color: #666;">({{ results.chapters|length }})</span></h3>
+            <div class="card" style="padding: 1rem;">
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                {% for item in results.chapters %}
+                    <li style="padding: 0.75rem; border-bottom: 1px solid #eee;">
+                        <div>
+                            <a href="{{ item.url }}" style="font-weight: bold; text-decoration: none; color: var(--primary-color);">{{ item.title }}</a>
+                            <span style="background: #e9ecef; font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; margin-left: 10px;">{{ item.type }}</span>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">{{ item.context }}</div>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if results.lessons %}
+        <section class="result-category" style="margin-top: 2rem;">
+            <h3>Lessons <span style="font-size: 1rem; color: #666;">({{ results.lessons|length }})</span></h3>
+            <div class="card" style="padding: 1rem;">
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                {% for item in results.lessons %}
+                    <li style="padding: 0.75rem; border-bottom: 1px solid #eee;">
+                        <div>
+                            <a href="{{ item.url }}" style="font-weight: bold; text-decoration: none; color: var(--primary-color);">{{ item.title }}</a>
+                            <span style="background: #e9ecef; font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; margin-left: 10px;">{{ item.type }}</span>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">{{ item.context }}</div>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if results.assignments %}
+        <section class="result-category" style="margin-top: 2rem;">
+            <h3>Assignments <span style="font-size: 1rem; color: #666;">({{ results.assignments|length }})</span></h3>
+            <div class="card" style="padding: 1rem;">
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                {% for item in results.assignments %}
+                    <li style="padding: 0.75rem; border-bottom: 1px solid #eee;">
+                        <div>
+                            <a href="{{ item.url }}" style="font-weight: bold; text-decoration: none; color: var(--primary-color);">{{ item.title }}</a>
+                            <span style="background: #e9ecef; font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; margin-left: 10px;">{{ item.type }}</span>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">{{ item.context }}</div>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if results.quizzes %}
+        <section class="result-category" style="margin-top: 2rem;">
+            <h3>Quizzes <span style="font-size: 1rem; color: #666;">({{ results.quizzes|length }})</span></h3>
+            <div class="card" style="padding: 1rem;">
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                {% for item in results.quizzes %}
+                    <li style="padding: 0.75rem; border-bottom: 1px solid #eee;">
+                        <div>
+                            <a href="{{ item.url }}" style="font-weight: bold; text-decoration: none; color: var(--primary-color);">{{ item.title }}</a>
+                            <span style="background: #e9ecef; font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; margin-left: 10px;">{{ item.type }}</span>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #666; margin-top: 5px;">{{ item.context }}</div>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        </section>
+        {% endif %}
+        {% if results.materials %}
+        <section class="result-category" style="margin-top: 2rem;">
+            <h3>Learning Materials <span style="font-size: 1rem; color: #666;">({{ results.materials|length }})</span></h3>
+            <div class="card" style="padding: 1rem;">
+                <ul style="list-style:none;padding:0;margin:0;">
+                {% for item in results.materials %}
+                    <li style="padding:0.75rem;border-bottom:1px solid #eee;">
+                        <a href="{{ item.url }}" style="font-weight:bold;text-decoration:none;color:var(--primary-color);">{{ item.title }}</a>
+                        <span style="background:#e9ecef;font-size:.8rem;padding:2px 6px;border-radius:4px;margin-left:10px;">{{ item.type }}</span>
+                        <div style="font-size:.9rem;color:#666;margin-top:5px;">{{ item.context }}</div>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        </section>
+        {% endif %}
+
+    {% endif %}
+</div>
+{% endblock %}

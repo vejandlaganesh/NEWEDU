@@ -1,0 +1,91 @@
+{% extends 'teachers/teacher_base.html' %}
+{% block title %}{{ quiz.title }} - NEWEDU{% endblock %}
+{% block teacher_content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>{{ quiz.title }}</h2>
+    <a href="{% url 'teacher_quizzes' %}" class="btn" style="background-color: #6c757d;">&larr; Back</a>
+</div>
+
+<div class="card" style="margin-top: 1rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <p><strong>Status:</strong> {% if quiz.is_published %}Published{% else %}Draft{% endif %}</p>
+            <p><strong>Description:</strong> {{ quiz.description }}</p>
+            <p><strong>Duration:</strong> {{ quiz.duration }} minutes | <strong>Passing Score:</strong> {{ quiz.passing_score }}%</p>
+        </div>
+        {% if not quiz.is_published %}
+        <div>
+            <form action="{% url 'teacher_quiz_publish' quiz.pk %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to publish this quiz? It will notify enrolled students.');">Publish Quiz</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card" style="margin-top: 1rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3>Questions ({{ questions.count }})</h3>
+        {% if not quiz.has_attempts %}
+            <a href="{% url 'teacher_question_add' quiz.id %}" class="btn">+ Add Question</a>
+        {% else %}
+            <span class="text-muted">Questions locked (attempts exist)</span>
+        {% endif %}
+    </div>
+    
+    {% if questions %}
+        <ul style="margin-top: 1rem;">
+            {% for q in questions %}
+                <li style="margin-bottom: 15px; padding: 10px; border: 1px solid #eee;">
+                    <strong>{{ forloop.counter }}. {{ q.text }}</strong> ({{ q.marks }} marks)
+                    <ul>
+                        <li>A. {{ q.option_a }} {% if q.correct_option == 'A' %}✅{% endif %}</li>
+                        <li>B. {{ q.option_b }} {% if q.correct_option == 'B' %}✅{% endif %}</li>
+                        <li>C. {{ q.option_c }} {% if q.correct_option == 'C' %}✅{% endif %}</li>
+                        <li>D. {{ q.option_d }} {% if q.correct_option == 'D' %}✅{% endif %}</li>
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No questions added yet.</p>
+    {% endif %}
+</div>
+
+<div class="card" style="margin-top: 1rem;">
+    <h3>Student Results</h3>
+    {% if attempts %}
+        <table style="width: 100%; text-align: left; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 2px solid #ccc;">
+                    <th>Student</th>
+                    <th>Status</th>
+                    <th>Score</th>
+                    <th>%</th>
+                    <th>Passed</th>
+                    <th>Completed</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attempt in attempts %}
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td>{{ attempt.student.user.get_full_name }}</td>
+                    <td>{{ attempt.get_status_display }}</td>
+                    {% if attempt.status == 'COMPLETED' %}
+                        <td>{{ attempt.result.score }}</td>
+                        <td>{{ attempt.result.percentage }}%</td>
+                        <td>{% if attempt.result.passed %}Yes{% else %}No{% endif %}</td>
+                        <td>{{ attempt.end_time|date:"M d, Y H:i" }}</td>
+                    {% else %}
+                        <td colspan="4" class="text-muted">In Progress (Expires: {{ attempt.expires_at|date:"H:i" }})</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No attempts yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

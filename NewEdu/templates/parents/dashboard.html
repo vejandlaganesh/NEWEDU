@@ -1,0 +1,38 @@
+{% extends 'parents/parent_base.html' %}
+{% block title %}Parent Dashboard - NEWEDU{% endblock %}
+{% block parent_content %}
+<h2>{{ selected_child.user.first_name }}'s Academic Status</h2>
+
+{% if enrollment %}
+    <div class="card" style="margin-bottom: 2rem;">
+        <h3>Current Enrollment</h3>
+        <p><strong>Class:</strong> {{ enrollment.class_level.name }}</p>
+        <p><strong>Section:</strong> {{ enrollment.section.name }}</p>
+        <p><strong>Academic Year:</strong> {{ enrollment.academic_year.name }}</p>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+        <div class="card">
+            <h3>Recent Results</h3>
+            {% if recent_results %}{% for r in recent_results %}<p><strong>{{ r.attempt.quiz.title }}</strong> — {{ r.percentage }}%</p>{% endfor %}{% else %}<p class="text-muted">No results yet.</p>{% endif %}
+        </div>
+        <div class="card">
+            <h3>Upcoming Quizzes</h3>
+            <p>{{ upcoming_quizzes }} upcoming published quiz{{ upcoming_quizzes|pluralize }}.</p>
+        </div>
+        <div class="card">
+            <h3>Pending Assignments</h3>
+            <p>{{ pending_assignments }} pending assignment{{ pending_assignments|pluralize }}.</p>
+        </div>
+        <div class="card">
+            <h3>Latest Progress Report</h3>
+            <p>Use <a href="{% url 'parent_reports' %}">Reports & Progress</a> for detailed analytics.</p>
+        </div>
+    </div>
+{% else %}
+    <div class="card">
+        <h3>Not Enrolled</h3>
+        <p>{{ selected_child.user.first_name }} is not currently enrolled in any class for the active academic year.</p>
+    </div>
+{% endif %}
+{% endblock %}

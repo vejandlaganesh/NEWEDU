@@ -1,0 +1,46 @@
+{% extends 'teachers/teacher_base.html' %}
+{% block title %}Learning Materials - NEWEDU{% endblock %}
+{% block teacher_content %}
+<h2>Manage Learning Materials</h2>
+<p class="text-muted">Manage chapters, lessons, and reusable learning resources for your assigned subjects.</p><a href="{% url 'teacher_material_create' %}" class="btn" style="display:inline-block;margin-bottom:1rem;">+ Add Learning Material</a>
+
+<div style="margin-top: 1rem;">
+    {% for cs in class_subjects %}
+        <div class="card" style="margin-bottom: 1.5rem;">
+            <h3>{{ cs.subject.name }} ({{ cs.class_level.name }})</h3>
+            <a href="{% url 'teacher_chapter_create' cs.id %}" class="btn" style="padding: 5px 10px; font-size: 0.9em; margin-bottom: 10px; display: inline-block;">+ Add Chapter</a>
+            
+            <div style="margin-left: 1rem; border-left: 2px solid #eee; padding-left: 1rem;">
+                {% for chapter in cs.chapters.all %}
+                    <div style="margin-bottom: 1rem; padding: 10px; background: #fdfdfd; border: 1px solid #eee; border-radius: 4px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong>Chapter {{ chapter.order }}: {{ chapter.title }}</strong>
+                            <div>
+                                <a href="{% url 'teacher_lesson_create' chapter.id %}" class="btn" style="padding: 3px 8px; font-size: 0.8em; margin-right: 5px;">+ Add Lesson</a>
+                                <a href="{% url 'teacher_chapter_edit' chapter.id %}" class="btn" style="padding: 3px 8px; font-size: 0.8em; background: #95a5a6;">Edit</a>
+                            </div>
+                        </div>
+                        
+                        <ul style="list-style-type: disc; margin-top: 10px; padding-left: 20px;">
+                            {% for lesson in chapter.lessons.all %}
+                                <li style="margin-bottom: 5px;">
+                                    Lesson {{ lesson.order }}: {{ lesson.title }} 
+                                    <a href="{% url 'teacher_lesson_edit' lesson.id %}" style="font-size: 0.8em; color: var(--primary-color); margin-left: 10px;">[Edit]</a>
+                                </li>
+                            {% empty %}
+                                <li class="text-muted">No lessons in this chapter.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% empty %}
+                    <p class="text-muted">No chapters created for this subject yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% empty %}
+        <div class="card">
+            <p>You have no subjects assigned to manage materials for.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

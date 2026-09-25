@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Notifications - NEWEDU{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto; padding: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>Your Notifications</h2>
+        <form action="{% url 'notification_mark_all_read' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn" style="background-color: #28a745; color: white;">Mark All as Read</button>
+        </form>
+    </div>
+
+    {% if notifications %}
+        <div style="background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden;">
+            {% for notification in notifications %}
+                <div style="padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background-color: {% if not notification.is_read %}#f8f9fa{% else %}white{% endif %}; border-left: 4px solid {% if not notification.is_read %}var(--primary-color){% else %}transparent{% endif %};">
+                    <div>
+                        <div style="margin-bottom: 5px;">
+                            <span style="background-color: #e9ecef; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; margin-right: 10px;">{{ notification.get_notification_type_display }}</span>
+                            <strong style="font-size: 1.1rem;">{{ notification.title }}</strong>
+                        </div>
+                        <p style="margin: 5px 0; color: #555;">{{ notification.message }}</p>
+                        <small style="color: #999;">{{ notification.created_at|date:"M d, Y H:i" }}</small>
+                    </div>
+                    <div style="margin-left: 15px; flex-shrink: 0;">
+                        <form action="{% url 'notification_mark_read' notification.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn" style="background-color: {% if notification.is_read %}#6c757d{% else %}var(--primary-color){% endif %}; color: white;">
+                                {% if notification.link_url %}
+                                    {% if not notification.is_read %}View & Mark Read{% else %}View Again{% endif %}
+                                {% else %}
+                                    {% if not notification.is_read %}Mark Read{% else %}Read{% endif %}
+                                {% endif %}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        {% if is_paginated %}
+        <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+            {% if page_obj.has_previous %}
+                <a href="?page=1" class="btn">&laquo; First</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn">Previous</a>
+            {% endif %}
+            
+            <span style="padding: 10px;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="btn">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="btn">Last &raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    {% else %}
+        <div style="background: white; padding: 30px; text-align: center; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <p>You have no notifications.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends 'parents/parent_base.html' %}
+{% block title %}Reports & Analytics - NEWEDU{% endblock %}
+
+{% block parent_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Reports & Analytics - {{ selected_child.user.first_name }} {{ selected_child.user.last_name }}</h2>
+    <div>
+        <button type="button" class="btn btn-secondary" onclick="window.print()">Print / Save Report</button>
+    </div>
+</div>
+
+{% if no_data %}
+<div class="alert alert-info">
+    Not enough assessment data to generate analytics for {{ selected_child.user.first_name }}. There is no active enrollment for the current year.
+</div>
+{% elif not performance.assignments_completed and not performance.quizzes_completed %}
+<div class="alert alert-info">
+    Not enough assessment data to generate analytics for {{ selected_child.user.first_name }}.
+</div>
+{% else %}
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white h-100 shadow-sm border-0">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                <h5 class="card-title">Overall Assessment Average</h5>
+                <h2 class="display-4 font-weight-bold">
+                    {% if performance.overall_assessment_avg != None %}
+                        {{ performance.overall_assessment_avg }}%
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white h-100 shadow-sm border-0">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                <h5 class="card-title">Assignment Average</h5>
+                <h2 class="display-4 font-weight-bold">
+                    {% if performance.avg_assignment_score != None %}
+                        {{ performance.avg_assignment_score }}%
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </h2>
+                <small>{{ performance.assignments_completed }} Completed</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-info text-white h-100 shadow-sm border-0">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                <h5 class="card-title">Quiz Average</h5>
+                <h2 class="display-4 font-weight-bold">
+                    {% if performance.avg_quiz_score != None %}
+                        {{ performance.avg_quiz_score }}%
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </h2>
+                <small>{{ performance.quizzes_completed }} Completed</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Subject Performance</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="subjectChart"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Assessment Score Trend</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="trendChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ subject_performance|json_script:"subject-data" }}
+{{ assessment_trend|json_script:"trend-data" }}
+
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if performance.assignments_completed or performance.quizzes_completed %}
+<!-- Using cdnjs for Chart.js 4.4.1 with known SRI -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHW0nZ/FngOADg325b/2q0e2y6cQ9T25tL8F/0oT54zD3l3D0A/N/D9Uj7pB5Uj8H5o4B5v0g8k8q2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const subjectData = JSON.parse(document.getElementById('subject-data').textContent);
+    const trendData = JSON.parse(document.getElementById('trend-data').textContent);
+    
+    // Process Subject Data
+    const subjectLabels = subjectData.map(d => d.subject_name);
+    const subjectOverall = subjectData.map(d => d.overall_avg);
+    
+    const ctxSubject = document.getElementById('subjectChart').getContext('2d');
+    new Chart(ctxSubject, {
+        type: 'bar',
+        data: {
+            labels: subjectLabels,
+            datasets: [{
+                label: 'Overall Average %',
+                data: subjectOverall,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            }
+        }
+    });
+    
+    // Process Trend Data
+    const trendLabels = trendData.map(d => d.date);
+    const trendScores = trendData.map(d => d.score);
+    const trendTitles = trendData.map(d => d.title);
+    
+    const ctxTrend = document.getElementById('trendChart').getContext('2d');
+    new Chart(ctxTrend, {
+        type: 'line',
+        data: {
+            labels: trendLabels,
+            datasets: [{
+                label: 'Score %',
+                data: trendScores,
+                fill: false,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let title = trendTitles[context.dataIndex];
+                            return `${title}: ${context.parsed.y}%`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            }
+        }
+    });
+});
+</script>
+{% endif %}
+{% endblock %}

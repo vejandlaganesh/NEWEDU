@@ -1,0 +1,31 @@
+{% extends 'teachers/teacher_base.html' %}
+{% block title %}Quizzes - NEWEDU{% endblock %}
+{% block teacher_content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>My Quizzes</h2>
+    <a href="{% url 'teacher_quiz_add' %}" class="btn">+ Create Quiz</a>
+</div>
+
+<div class="card" style="margin-top: 1rem;">
+    {% if quizzes %}
+        <ul>
+            {% for quiz in quizzes %}
+                <li style="margin-bottom: 10px;">
+                    <strong><a href="{% url 'teacher_quiz_detail' quiz.id %}">{{ quiz.title }}</a></strong>
+                    <span class="badge {% if quiz.is_published %}badge-success{% else %}badge-warning{% endif %}">
+                        {% if quiz.is_published %}Published{% else %}Draft{% endif %}
+                    </span>
+                    <br>
+                    <span class="text-muted">
+                        {{ quiz.class_subject.subject.name }} 
+                        {% if quiz.section %}({{ quiz.section.name }}){% else %}(All Sections){% endif %}
+                        | Duration: {{ quiz.duration }} min
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have not created any quizzes yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

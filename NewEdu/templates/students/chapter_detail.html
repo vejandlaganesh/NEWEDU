@@ -1,0 +1,19 @@
+{% extends 'students/student_base.html' %}
+{% block title %}{{ chapter.title }} - NEWEDU{% endblock %}
+{% block student_content %}
+<h2>Chapter {{ chapter.order }}: {{ chapter.title }}</h2>
+<p><a href="{% url 'student_subject_detail' chapter.class_subject.id %}">&larr; Back to {{ chapter.class_subject.subject.name }}</a></p>
+
+<div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+    {% for lesson in chapter.lessons.all %}
+        <div class="card">
+            <h3>Lesson {{ lesson.order }}: {{ lesson.title }}</h3>
+            <a href="{% url 'student_lesson_detail' lesson.id %}" class="btn">Start Lesson</a>
+        </div>
+    {% empty %}
+        <div class="card">
+            <p>No lessons available for this chapter.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

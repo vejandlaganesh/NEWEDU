@@ -1,0 +1,17 @@
+{% extends 'teachers/teacher_base.html' %}
+{% block title %}Manage Chapter - NEWEDU{% endblock %}
+{% block teacher_content %}
+<h2>{% if object %}Edit Chapter{% else %}Create New Chapter{% endif %}</h2>
+{% if class_subject %}
+    <p>For Subject: <strong>{{ class_subject.subject.name }} ({{ class_subject.class_level.name }})</strong></p>
+{% endif %}
+
+<div class="card" style="max-width: 600px; margin-top: 1rem;">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Save Chapter</button>
+        <a href="{% url 'teacher_materials' %}" style="margin-left: 10px; color: #7f8c8d; text-decoration: none;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

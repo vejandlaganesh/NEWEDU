@@ -1,0 +1,17 @@
+{% extends 'core/admin_base.html' %}
+{% block title %}Class Subjects - NEWEDU{% endblock %}
+{% block admin_content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>Class Subjects</h2>
+    <a href="{% url 'admin_class_subject_create' %}" class="btn">+ Add Class Subject</a>
+</div>
+<div class="card" style="margin-top: 1rem;">
+    <ul>
+        {% for cs in class_subjects %}
+            <li>Class: {{ cs.class_level.name }} - Subject: {{ cs.subject.name }} <a href="{% url 'admin_class_subject_edit' cs.id %}">[Edit]</a></li>
+        {% empty %}
+            <li>No class subjects defined.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

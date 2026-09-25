@@ -1,0 +1,13 @@
+{% extends 'core/admin_base.html' %}
+{% block title %}Manage Section - NEWEDU{% endblock %}
+{% block admin_content %}
+<h2>{% if object %}Edit{% else %}Create{% endif %} Section</h2>
+<div class="card" style="max-width: 500px; margin-top: 1rem;">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Save</button>
+        <a href="{% url 'admin_sections' %}" style="margin-left: 10px; color: #7f8c8d; text-decoration: none;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

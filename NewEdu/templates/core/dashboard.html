@@ -1,0 +1,28 @@
+{% extends 'core/admin_base.html' %}
+{% block title %}Admin Dashboard - NEWEDU{% endblock %}
+{% block admin_content %}
+<h2>System Overview</h2>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+    <div class="kpi-card">
+        <h4>Total Students</h4>
+        <div class="value">{{ total_students }}</div>
+    </div>
+    <div class="kpi-card">
+        <h4>Total Teachers</h4>
+        <div class="value">{{ total_teachers }}</div>
+    </div>
+    <div class="kpi-card">
+        <h4>Total Parents</h4>
+        <div class="value">{{ total_parents }}</div>
+    </div>
+    <div class="kpi-card">
+        <h4>Total Classes</h4>
+        <div class="value">{{ total_classes }}</div>
+    </div>
+    <div class="kpi-card">
+        <h4>Total Subjects</h4>
+        <div class="value">{{ total_subjects }}</div>
+    </div>
+</div>
+{% endblock %}

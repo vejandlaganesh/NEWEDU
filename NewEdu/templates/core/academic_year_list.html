@@ -1,0 +1,19 @@
+{% extends 'core/admin_base.html' %}
+{% block title %}Academic Years - NEWEDU{% endblock %}
+{% block admin_content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>Academic Years</h2>
+    <a href="{% url 'admin_academic_year_create' %}" class="btn">+ Add Academic Year</a>
+</div>
+<div class="card" style="margin-top: 1rem;">
+    <ul>
+        {% for yr in academic_years %}
+            <li>{{ yr.name }} ({{ yr.start_date }} to {{ yr.end_date }}) - {% if yr.is_active %}<strong>Active</strong>{% else %}Inactive{% endif %} 
+                <a href="{% url 'admin_academic_year_edit' yr.id %}">[Edit]</a>
+            </li>
+        {% empty %}
+            <li>No academic years defined.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

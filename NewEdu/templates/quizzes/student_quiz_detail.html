@@ -1,0 +1,66 @@
+{% extends 'students/student_base.html' %}
+{% block title %}{{ quiz.title }} - NEWEDU{% endblock %}
+{% block student_content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>{{ quiz.title }}</h2>
+    <a href="{% url 'student_quizzes' %}" class="btn" style="background-color: #6c757d;">&larr; Back</a>
+</div>
+
+<div class="card" style="margin-top: 1rem;">
+    <h3>Instructions</h3>
+    <p>{{ quiz.description }}</p>
+    <ul>
+        <li><strong>Questions:</strong> {{ quiz.questions.count }}</li>
+        <li><strong>Duration:</strong> {{ quiz.duration }} minutes</li>
+        <li><strong>Passing Score:</strong> {{ quiz.passing_score }}%</li>
+        <li><strong>Max Attempts:</strong> {{ quiz.max_attempts }}</li>
+    </ul>
+    
+    {% if can_attempt %}
+        <form method="post" action="{% url 'student_quiz_start' quiz.id %}" style="margin-top: 15px;">
+            {% csrf_token %}
+            <button type="submit" class="btn" style="background-color: #28a745;">Start Quiz</button>
+        </form>
+    {% else %}
+        <p class="text-danger"><strong>You have reached the maximum number of attempts for this quiz.</strong></p>
+    {% endif %}
+</div>
+
+{% if attempts %}
+<div class="card" style="margin-top: 1rem;">
+    <h3>Previous Attempts</h3>
+    <table style="width: 100%; text-align: left; border-collapse: collapse;">
+        <thead>
+            <tr style="border-bottom: 2px solid #ccc;">
+                <th>Attempt</th>
+                <th>Status</th>
+                <th>Score</th>
+                <th>Passed</th>
+                <th>Completed</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for attempt in attempts %}
+            <tr style="border-bottom: 1px solid #eee;">
+                <td>#{{ attempt.attempt_number }}</td>
+                <td>{{ attempt.get_status_display }}</td>
+                {% if attempt.status == 'COMPLETED' %}
+                    <td>{{ attempt.result.percentage }}%</td>
+                    <td>{% if attempt.result.passed %}Yes{% else %}No{% endif %}</td>
+                    <td>{{ attempt.end_time|date:"M d, Y H:i" }}</td>
+                    <td><a href="{% url 'student_quiz_result' attempt.id %}">View Result</a></td>
+                {% else %}
+                    <td colspan="3" class="text-muted">In Progress</td>
+                    <td>
+                        <a href="{% url 'student_quiz_take' attempt.id %}" class="btn" style="padding: 2px 10px; font-size: 12px;">Resume</a>
+                    </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+{% endblock %}

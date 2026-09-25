@@ -1,0 +1,18 @@
+{% extends 'students/student_base.html' %}
+{% block title %}My Subjects - NEWEDU{% endblock %}
+{% block student_content %}
+<h2>My Subjects</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
+    {% for cs in subjects %}
+        <div class="card">
+            <h3>{{ cs.subject.name }}</h3>
+            <p>Code: {{ cs.subject.code }}</p>
+            <a href="{% url 'student_subject_detail' cs.id %}" class="btn">View Chapters</a>
+        </div>
+    {% empty %}
+        <div class="card" style="grid-column: 1 / -1;">
+            <p>You have no subjects assigned.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,1001 @@
+{% extends 'students/student_base.html' %}
+
+{% block title %}My Profile - NEWEDU{% endblock %}
+
+{% block student_content %}
+
+<style>
+    /* =========================================================
+       NEWEDU STUDENT PROFILE
+    ========================================================= */
+
+    .profile-page {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 8px 0 45px;
+    }
+
+    /* ---------------------------------------------------------
+       PROFILE HEADER
+    --------------------------------------------------------- */
+
+    .profile-hero {
+        position: relative;
+        overflow: hidden;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        min-height: 170px;
+
+        padding: 28px 32px;
+
+        margin-bottom: 22px;
+
+        border-radius: 19px;
+
+        background:
+            radial-gradient(circle at 88% 25%,
+                rgba(255, 255, 255, .18),
+                transparent 25%),
+            linear-gradient(135deg,
+                #173f77 0%,
+                #2864d7 65%,
+                #4c82e3 100%);
+
+        box-shadow:
+            0 12px 30px rgba(32, 76, 137, .15);
+
+        color: #fff;
+    }
+
+    .profile-hero::before {
+        content: "";
+
+        position: absolute;
+
+        width: 210px;
+        height: 210px;
+
+        right: -70px;
+        top: -100px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(255, 255, 255, .07);
+    }
+
+    .profile-hero::after {
+        content: "";
+
+        position: absolute;
+
+        width: 130px;
+        height: 130px;
+
+        right: 190px;
+        bottom: -95px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(255, 255, 255, .05);
+    }
+
+    .profile-hero-content {
+        position: relative;
+        z-index: 2;
+
+        display: flex;
+        align-items: center;
+
+        gap: 18px;
+    }
+
+    /* ---------------------------------------------------------
+       AVATAR
+    --------------------------------------------------------- */
+
+    .profile-avatar {
+        width: 72px;
+        height: 72px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 20px;
+
+        background: rgba(255, 255, 255, .15);
+
+        border:
+            1px solid rgba(255, 255, 255, .25);
+
+        color: #fff;
+
+        font-size: 26px;
+
+        font-weight: 750;
+
+        box-shadow:
+            inset 0 0 0 5px rgba(255, 255, 255, .04);
+    }
+
+    .profile-heading {
+        margin: 0;
+
+        color: #fff;
+
+        font-size: 27px;
+
+        line-height: 1.15;
+
+        font-weight: 750;
+
+        letter-spacing: -.6px;
+    }
+
+    .profile-subheading {
+        margin-top: 7px;
+
+        color: #dce9ff;
+
+        font-size: 13px;
+    }
+
+    .profile-status {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 6px;
+
+        margin-top: 11px;
+
+        padding: 5px 10px;
+
+        border-radius: 20px;
+
+        background:
+            rgba(255, 255, 255, .12);
+
+        color: #e8f2ff;
+
+        font-size: 10px;
+
+        font-weight: 650;
+    }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+
+        border-radius: 50%;
+
+        background: #72e5a1;
+    }
+
+
+    /* ---------------------------------------------------------
+       MAIN GRID
+    --------------------------------------------------------- */
+
+    .profile-layout {
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 1.7fr) minmax(260px, .8fr);
+
+        gap: 20px;
+
+        align-items: start;
+    }
+
+
+    /* ---------------------------------------------------------
+       CARD
+    --------------------------------------------------------- */
+
+    .profile-card {
+        overflow: hidden;
+
+        border:
+            1px solid #e0e8f3;
+
+        border-radius: 16px;
+
+        background: #fff;
+
+        box-shadow:
+            0 6px 22px rgba(35, 67, 110, .045);
+    }
+
+    .card-header {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        padding: 18px 21px;
+
+        border-bottom:
+            1px solid #edf1f6;
+    }
+
+    .card-header-icon {
+        width: 36px;
+        height: 36px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 9px;
+
+        background: #edf4ff;
+
+        color: #2864d7;
+
+        font-size: 16px;
+    }
+
+    .card-header h2 {
+        margin: 0;
+
+        color: #1b2b45;
+
+        font-size: 15px;
+
+        font-weight: 720;
+    }
+
+    .card-header p {
+        margin: 3px 0 0;
+
+        color: #8996a8;
+
+        font-size: 10px;
+    }
+
+
+    /* ---------------------------------------------------------
+       FORM
+    --------------------------------------------------------- */
+
+    .profile-form {
+        padding: 22px;
+    }
+
+    .form-row {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 17px;
+    }
+
+    .form-group {
+        margin-bottom: 17px;
+    }
+
+    .form-group.full {
+        grid-column: 1 / -1;
+    }
+
+    .form-label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #33445d;
+
+        font-size: 12px;
+
+        font-weight: 650;
+    }
+
+    .required {
+        color: #2864d7;
+    }
+
+    /*
+       Django form.as_p compatibility.
+    */
+
+    .profile-form p {
+        margin: 0 0 17px;
+    }
+
+    .profile-form label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #33445d;
+
+        font-size: 12px;
+
+        font-weight: 650;
+    }
+
+    .profile-form input,
+    .profile-form select,
+    .profile-form textarea {
+
+        width: 100%;
+
+        min-height: 44px;
+
+        padding: 10px 12px;
+
+        border:
+            1px solid #d9e3ef;
+
+        border-radius: 9px;
+
+        outline: none;
+
+        background: #fbfcfe;
+
+        color: #243650;
+
+        font-family: inherit;
+
+        font-size: 13px;
+
+        transition:
+            border-color .2s ease,
+            box-shadow .2s ease,
+            background .2s ease;
+
+    }
+
+    .profile-form textarea {
+        min-height: 100px;
+
+        resize: vertical;
+    }
+
+    .profile-form input:focus,
+    .profile-form select:focus,
+    .profile-form textarea:focus {
+
+        border-color: #2864d7;
+
+        background: #fff;
+
+        box-shadow:
+            0 0 0 3px rgba(40, 100, 215, .10);
+
+    }
+
+    .profile-form input:disabled,
+    .profile-form input[readonly] {
+
+        background: #f3f6fa;
+
+        color: #7d899a;
+
+        cursor: not-allowed;
+    }
+
+    .helptext {
+        display: block;
+
+        margin-top: 5px;
+
+        color: #8b98a9;
+
+        font-size: 10px;
+
+        line-height: 1.45;
+    }
+
+    .errorlist {
+        list-style: none;
+
+        margin: 5px 0 0;
+
+        padding: 0;
+
+        color: #d94b4b;
+
+        font-size: 10px;
+    }
+
+
+    /* ---------------------------------------------------------
+       FORM ACTIONS
+    --------------------------------------------------------- */
+
+    .form-actions {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 15px;
+
+        padding-top: 5px;
+
+        margin-top: 5px;
+
+        border-top:
+            1px solid #edf1f6;
+    }
+
+    .save-button {
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 8px;
+
+        min-height: 43px;
+
+        padding: 0 20px;
+
+        border: none;
+
+        border-radius: 9px;
+
+        background: #2864d7;
+
+        color: #fff;
+
+        cursor: pointer;
+
+        font-family: inherit;
+
+        font-size: 12px;
+
+        font-weight: 650;
+
+        box-shadow:
+            0 6px 15px rgba(40, 100, 215, .16);
+
+        transition: .2s ease;
+    }
+
+    .save-button:hover {
+        background: #1f57bf;
+
+        transform:
+            translateY(-1px);
+    }
+
+    .cancel-button {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        min-height: 43px;
+
+        padding: 0 18px;
+
+        border:
+            1px solid #dce5f0;
+
+        border-radius: 9px;
+
+        background: #fff;
+
+        color: #5e6d82;
+
+        font-size: 12px;
+
+        font-weight: 600;
+
+        text-decoration: none;
+    }
+
+    .cancel-button:hover {
+        background: #f7f9fc;
+
+        color: #33445d;
+    }
+
+
+    /* ---------------------------------------------------------
+       SIDE INFORMATION
+    --------------------------------------------------------- */
+
+    .info-card {
+        overflow: hidden;
+
+        border:
+            1px solid #e0e8f3;
+
+        border-radius: 16px;
+
+        background: #fff;
+
+        box-shadow:
+            0 6px 22px rgba(35, 67, 110, .045);
+    }
+
+    .info-header {
+        padding: 18px 20px;
+
+        border-bottom:
+            1px solid #edf1f6;
+    }
+
+    .info-header h3 {
+        margin: 0;
+
+        color: #1b2b45;
+
+        font-size: 15px;
+
+        font-weight: 720;
+    }
+
+    .info-header p {
+        margin-top: 4px;
+
+        color: #8996a8;
+
+        font-size: 10px;
+    }
+
+    .info-list {
+        padding: 7px 20px 14px;
+    }
+
+    .info-item {
+        display: flex;
+
+        align-items: flex-start;
+
+        gap: 11px;
+
+        padding: 14px 0;
+
+        border-bottom:
+            1px solid #f0f3f7;
+    }
+
+    .info-item:last-child {
+        border-bottom: none;
+    }
+
+    .info-icon {
+        width: 33px;
+        height: 33px;
+
+        flex-shrink: 0;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 9px;
+
+        background: #edf4ff;
+
+        color: #2864d7;
+
+        font-size: 14px;
+    }
+
+    .info-title {
+        color: #35465f;
+
+        font-size: 11px;
+
+        font-weight: 700;
+    }
+
+    .info-text {
+        margin-top: 3px;
+
+        color: #8794a7;
+
+        font-size: 10px;
+
+        line-height: 1.5;
+    }
+
+
+    /* ---------------------------------------------------------
+       ACCOUNT CARD
+    --------------------------------------------------------- */
+
+    .account-card {
+        margin-top: 20px;
+
+        padding: 20px;
+
+        border:
+            1px solid #e0e8f3;
+
+        border-radius: 16px;
+
+        background:
+            linear-gradient(145deg,
+                #f7faff,
+                #eef5ff);
+    }
+
+    .account-card h3 {
+        margin: 0;
+
+        color: #243752;
+
+        font-size: 14px;
+
+        font-weight: 720;
+    }
+
+    .account-card p {
+        margin-top: 6px;
+
+        color: #78879c;
+
+        font-size: 10px;
+
+        line-height: 1.55;
+    }
+
+    .account-link {
+        display: inline-flex;
+
+        align-items: center;
+
+        margin-top: 14px;
+
+        color: #2864d7;
+
+        font-size: 11px;
+
+        font-weight: 650;
+
+        text-decoration: none;
+    }
+
+    .account-link:hover {
+        text-decoration: underline;
+    }
+
+
+    /* ---------------------------------------------------------
+       RESPONSIVE
+    --------------------------------------------------------- */
+
+    @media (max-width: 900px) {
+
+        .profile-layout {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+
+    @media (max-width: 650px) {
+
+        .profile-page {
+            padding-bottom: 25px;
+        }
+
+        .profile-hero {
+            padding: 23px 19px;
+
+            border-radius: 14px;
+        }
+
+        .profile-avatar {
+            width: 58px;
+            height: 58px;
+
+            border-radius: 16px;
+
+            font-size: 21px;
+        }
+
+        .profile-heading {
+            font-size: 23px;
+        }
+
+        .profile-subheading {
+            font-size: 11px;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+
+            align-items: stretch;
+        }
+
+        .save-button,
+        .cancel-button {
+            width: 100%;
+        }
+
+    }
+</style>
+
+
+<div class="profile-page">
+
+
+    <!-- =====================================================
+         PROFILE HERO
+    ====================================================== -->
+
+    <section class="profile-hero">
+
+        <div class="profile-hero-content">
+
+
+            <div class="profile-avatar">
+
+                {% if request.user.first_name %}
+                {{ request.user.first_name|first|upper }}
+                {% else %}
+                S
+                {% endif %}
+
+            </div>
+
+
+            <div>
+
+                <h1 class="profile-heading">
+                    My Profile
+                </h1>
+
+                <p class="profile-subheading">
+                    Manage your personal information and student account.
+                </p>
+
+                <div class="profile-status">
+
+                    <span class="status-dot"></span>
+
+                    Student Account
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         PROFILE CONTENT
+    ====================================================== -->
+
+    <div class="profile-layout">
+
+
+        <!-- =================================================
+             LEFT — FORM
+        ================================================== -->
+
+        <section class="profile-card">
+
+
+            <div class="card-header">
+
+                <div class="card-header-icon">
+                    👤
+                </div>
+
+                <div>
+
+                    <h2>
+                        Personal Information
+                    </h2>
+
+                    <p>
+                        Update the information associated with your profile.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form method="post" class="profile-form">
+
+                {% csrf_token %}
+
+
+                {{ form.as_p }}
+
+
+                <div class="form-actions">
+
+                    <a href="{% url 'student_dashboard' %}" class="cancel-button">
+                        Cancel
+                    </a>
+
+
+                    <button type="submit" class="save-button">
+
+                        <span>
+                            ✓
+                        </span>
+
+                        Save Changes
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+
+        <!-- =================================================
+             RIGHT — INFORMATION
+        ================================================== -->
+
+        <aside>
+
+
+            <!-- PROFILE INFORMATION -->
+
+            <section class="info-card">
+
+                <div class="info-header">
+
+                    <h3>
+                        Profile Information
+                    </h3>
+
+                    <p>
+                        Keep your account information up to date.
+                    </p>
+
+                </div>
+
+
+                <div class="info-list">
+
+
+                    <div class="info-item">
+
+                        <div class="info-icon">
+                            ✉
+                        </div>
+
+                        <div>
+
+                            <div class="info-title">
+                                Email Address
+                            </div>
+
+                            <div class="info-text">
+                                {{ request.user.email }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <div class="info-icon">
+                            🎓
+                        </div>
+
+                        <div>
+
+                            <div class="info-title">
+                                Account Role
+                            </div>
+
+                            <div class="info-text">
+                                Student
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {% if enrollment %}
+
+                    <div class="info-item">
+
+                        <div class="info-icon">
+                            📚
+                        </div>
+
+                        <div>
+
+                            <div class="info-title">
+                                Current Class
+                            </div>
+
+                            <div class="info-text">
+                                {{ enrollment.class_level.name }}
+                                {% if enrollment.section %}
+                                · Section {{ enrollment.section.name }}
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="info-item">
+
+                        <div class="info-icon">
+                            📅
+                        </div>
+
+                        <div>
+
+                            <div class="info-title">
+                                Academic Year
+                            </div>
+
+                            <div class="info-text">
+                                {{ enrollment.academic_year.name }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ACCOUNT HELP -->
+
+            <section class="account-card">
+
+                <h3>
+                    Need to update something else?
+                </h3>
+
+                <p>
+                    Some account details may be managed by your
+                    administrator to keep your academic records accurate.
+                </p>
+
+                <a href="mailto:support@newedu.com" class="account-link">
+                    Contact Support →
+                </a>
+
+            </section>
+
+
+        </aside>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

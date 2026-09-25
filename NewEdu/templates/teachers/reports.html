@@ -1,0 +1,183 @@
+{% extends 'teachers/teacher_base.html' %}
+{% block title %}Teacher Reports & Analytics - NEWEDU{% endblock %}
+
+{% block teacher_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Reports & Analytics</h2>
+    <div>
+        <button type="button" class="btn btn-secondary" onclick="window.print()">Print / Save Report</button>
+    </div>
+</div>
+
+{% if no_data %}
+<div class="alert alert-info">
+    Not enough assessment data to generate analytics. There is no active academic year.
+</div>
+{% elif not class_performance and not assignment_stats %}
+<div class="alert alert-info">
+    Not enough assessment data to generate analytics. You do not have assigned classes with assessment data.
+</div>
+{% else %}
+
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Class Performance Comparison</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="classChart" style="max-height: 400px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Assignment Statistics</h5>
+            </div>
+            <div class="card-body">
+                {% if assignment_stats %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Assignment</th>
+                                <th>Due Date</th>
+                                <th>Completion</th>
+                                <th>Avg Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stat in assignment_stats %}
+                            <tr>
+                                <td>{{ stat.title }}</td>
+                                <td>{{ stat.due_date|date:"M d, Y" }}</td>
+                                <td>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar {% if stat.completion_rate < 50 %}bg-danger{% elif stat.completion_rate < 80 %}bg-warning{% else %}bg-success{% endif %}" 
+                                             role="progressbar" 
+                                             style="width: {{ stat.completion_rate|floatformat:0 }}%;" 
+                                             aria-valuenow="{{ stat.completion_rate|floatformat:0 }}" 
+                                             aria-valuemin="0" 
+                                             aria-valuemax="100">
+                                            {{ stat.completion_rate|floatformat:0 }}%
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">{{ stat.submitted_count }} / {{ stat.total_students }}</small>
+                                </td>
+                                <td>
+                                    {% if stat.avg_score != None %}{{ stat.avg_score }}%{% else %}N/A{% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No assignments created yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Weak Topics (Needs Attention)</h5>
+            </div>
+            <div class="card-body">
+                {% if weak_topics %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Chapter / Topic</th>
+                                <th>Subject</th>
+                                <th>Avg Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for topic in weak_topics %}
+                            <tr>
+                                <td>{{ topic.chapter_name }}</td>
+                                <td>{{ topic.subject_name }}</td>
+                                <td>
+                                    <span class="badge bg-danger">{{ topic.overall_avg }}%</span>
+                                    <small class="d-block text-muted">{{ topic.data_points }} data points</small>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No weak topics identified. (Requires min 3 data points averaging below 60%)</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ class_performance|json_script:"class-data" }}
+
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if class_performance or assignment_stats %}
+<!-- Using cdnjs for Chart.js 4.4.1 with known SRI -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHW0nZ/FngOADg325b/2q0e2y6cQ9T25tL8F/0oT54zD3l3D0A/N/D9Uj7pB5Uj8H5o4B5v0g8k8q2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const classDataElem = document.getElementById('class-data');
+    if (!classDataElem) return;
+    
+    const classData = JSON.parse(classDataElem.textContent);
+    
+    if (classData && classData.length > 0) {
+        const labels = classData.map(d => d.section_name);
+        const assignAvgs = classData.map(d => d.avg_assignment || 0);
+        const quizAvgs = classData.map(d => d.avg_quiz || 0);
+        
+        const ctxClass = document.getElementById('classChart').getContext('2d');
+        new Chart(ctxClass, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Avg Assignment %',
+                        data: assignAvgs,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Avg Quiz %',
+                        data: quizAvgs,
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    }
+});
+</script>
+{% endif %}
+{% endblock %}

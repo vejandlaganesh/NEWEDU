@@ -1,0 +1,449 @@
+{% extends 'students/student_base.html' %}
+{% block title %}AI Study Assistant | NEWEDU{% endblock %}
+{% block student_content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/ai_assistant.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row ai-container">
+        <!-- Sidebar -->
+        <div class="col-md-3 border-end ai-sidebar bg-light d-flex flex-column">
+            <div class="p-3 border-bottom">
+                <button class="btn btn-primary w-100" id="btn-new-chat">
+                    <i class="fas fa-plus"></i> New Chat
+                </button>
+            </div>
+            <div class="flex-grow-1 overflow-auto p-3">
+                <h6 class="text-muted text-uppercase small font-weight-bold mb-3">Recent Conversations</h6>
+                <div id="conversation-list">
+                    {% if active_conversation %}
+                        <a href="?conv={{ active_conversation.id }}" class="d-block p-2 rounded mb-1 bg-primary text-white text-decoration-none text-truncate">
+                            <i class="fas fa-comment-dots me-2"></i> {{ active_conversation.title|default:"New Conversation" }}
+                        </a>
+                    {% endif %}
+                    {% for conv in past_conversations %}
+                        <a href="?conv={{ conv.id }}" class="d-block p-2 rounded mb-1 text-dark text-decoration-none text-truncate {% if not active_conversation or conv.id != active_conversation.id %}ai-conv-link{% endif %}">
+                            <i class="fas fa-history me-2"></i> {{ conv.title|default:"Archived Conversation" }}
+                        </a>
+                    {% empty %}
+                        {% if not active_conversation %}
+                            <p class="text-muted small">No past conversations.</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Chat Area -->
+        <div class="col-md-9 d-flex flex-column bg-white ai-main position-relative">
+            <!-- Chat Header & Recommendation Tab -->
+            <div class="p-3 border-bottom">
+                <ul class="nav nav-tabs" id="aiTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="chat-tab" data-bs-toggle="tab" data-bs-target="#chat-panel" type="button" role="tab">
+                            <i class="fas fa-robot text-primary me-2"></i> Chat
+                            {% if active_conversation %}
+                                <span class="badge bg-secondary ms-2" id="current-conv-badge">Active</span>
+                            {% endif %}
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="plan-tab" data-bs-toggle="tab" data-bs-target="#plan-panel" type="button" role="tab">
+                            <i class="fas fa-bullseye text-success me-2"></i> Personalized Plan
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="tab-content flex-grow-1 d-flex flex-column" id="aiTabContent" style="overflow: hidden;">
+                <!-- Chat Panel -->
+                <div class="tab-pane fade show active flex-grow-1 d-flex flex-column h-100" id="chat-panel" role="tabpanel">
+                    <div class="p-2 bg-light border-bottom d-flex justify-content-end align-items-center">
+                        <select id="subject-context" class="form-select form-select-sm me-3" style="width: auto;">
+                            <option value="">-- General --</option>
+                            {% for sub in subjects %}
+                                <option value="{{ sub.id }}">{{ sub.subject.name }}</option>
+                            {% endfor %}
+                        </select>
+                        {% if active_conversation and not active_conversation.is_archived %}
+                        <button class="btn btn-outline-danger btn-sm" id="btn-clear-chat">
+                            <i class="fas fa-trash-alt"></i> Clear Chat
+                        </button>
+                        {% endif %}
+                    </div>
+            
+            <!-- Chat History -->
+            <div class="flex-grow-1 p-4 overflow-auto" id="chat-history">
+                {% if not active_conversation or not messages %}
+                    <div class="text-center text-muted mt-5" id="welcome-message">
+                        <i class="fas fa-graduation-cap fa-4x mb-3 text-primary"></i>
+                        <h4>Welcome to your AI Study Assistant!</h4>
+                        <p>Ask me anything about your subjects, request explanations, or get step-by-step help.</p>
+                    </div>
+                {% endif %}
+                
+                {% for msg in messages %}
+                    <div class="chat-message mb-4 {% if msg.role == 'USER' %}text-end{% endif %}">
+                        <div class="d-inline-block p-3 rounded-3 {% if msg.role == 'USER' %}bg-primary text-white text-start{% else %}bg-light border text-dark{% endif %}" style="max-width: 80%;">
+                            <div class="small fw-bold mb-1 {% if msg.role == 'USER' %}text-light{% else %}text-primary{% endif %}">
+                                {% if msg.role == 'USER' %}You{% else %}AI Assistant{% endif %}
+                            </div>
+                            <div class="msg-content">{{ msg.content|linebreaksbr }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Error State Alert -->
+            <div class="position-absolute bottom-0 start-50 translate-middle-x w-75 p-2" style="z-index: 10;">
+                <div id="chat-error" class="alert alert-danger d-none alert-dismissible fade show shadow" role="alert">
+                    <span id="chat-error-text"></span>
+                    <button type="button" class="btn-close" onclick="document.getElementById('chat-error').classList.add('d-none')"></button>
+                </div>
+            </div>
+            
+            <!-- Input Area -->
+            <div class="p-3 border-top bg-light">
+                <form id="chat-form" class="d-flex">
+                    {% csrf_token %}
+                    <input type="hidden" id="conversation-id" value="{{ active_conversation.id|default:'' }}">
+                    <input type="hidden" id="is-archived" value="{% if active_conversation and active_conversation.is_archived %}true{% else %}false{% endif %}">
+                    <textarea class="form-control me-2" id="chat-input" rows="1" placeholder="{% if active_conversation and active_conversation.is_archived %}This conversation is archived.{% else %}Type your question here...{% endif %}" required {% if active_conversation and active_conversation.is_archived %}disabled{% endif %} style="resize: none;"></textarea>
+                    <button type="submit" class="btn btn-primary" id="btn-send" {% if active_conversation and active_conversation.is_archived %}disabled{% endif %}>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+                <div class="text-muted small mt-1 text-center">AI can make mistakes. Verify important information.</div>
+            </div>
+                </div>
+                
+                <!-- Personalized Plan Panel -->
+                <div class="tab-pane fade h-100 p-4 overflow-auto" id="plan-panel" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4>Your Personalized Learning Plan</h4>
+                        <button class="btn btn-success" id="btn-generate-plan">
+                            <i class="fas fa-sync-alt"></i> Generate New Plan
+                        </button>
+                    </div>
+                    
+                    <div id="plan-alert" class="alert d-none"></div>
+                    
+                    {% if latest_recommendation %}
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">AI Recommendation (Generated {{ latest_recommendation.created_at|date:"M d, Y" }})</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info mb-4">
+                                    <strong><i class="fas fa-database me-2"></i>Based on Verified Performance:</strong><br>
+                                    <ul class="mb-0 mt-2">
+                                        <li>Overall Assignment Average: {{ latest_recommendation.source_data.overall_assignment_avg|default:"N/A" }}%</li>
+                                        <li>Overall Quiz Average: {{ latest_recommendation.source_data.overall_quiz_avg|default:"N/A" }}%</li>
+                                        {% if latest_recommendation.source_data.weak_topics %}
+                                            <li class="mt-2">Identified Areas for Improvement:
+                                                <ul>
+                                                {% for topic in latest_recommendation.source_data.weak_topics %}
+                                                    <li>{{ topic.chapter }} ({{ topic.subject }}) &mdash; {{ topic.score }}%</li>
+                                                {% endfor %}
+                                                </ul>
+                                            </li>
+                                        {% else %}
+                                            <li class="mt-2">No specific weak topics identified. Keep up the good work!</li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <h6 class="text-success border-bottom pb-2">Strengths</h6>
+                                        <ul>
+                                            {% for strength in latest_recommendation.recommendation.strengths %}
+                                                <li>{{ strength }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <h6 class="text-danger border-bottom pb-2">Areas to Review</h6>
+                                        <ul>
+                                            {% for weakness in latest_recommendation.recommendation.weaknesses %}
+                                                <li>{{ weakness }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <h6 class="text-primary border-bottom pb-2 mt-3">Actionable Advice</h6>
+                                <ul>
+                                    {% for advice in latest_recommendation.recommendation.actionable_advice %}
+                                        <li>{{ advice }}</li>
+                                    {% endfor %}
+                                </ul>
+                                
+                                {% if latest_recommendation.recommendation.recommended_topics %}
+                                <h6 class="text-warning border-bottom pb-2 mt-3">Recommended Chapters to Revisit</h6>
+                                <ul>
+                                    {% for topic in latest_recommendation.recommendation.recommended_topics %}
+                                        <li><strong>{{ topic }}</strong></li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                                
+                                <div class="mt-4 p-3 bg-light rounded text-center fst-italic">
+                                    "{{ latest_recommendation.recommendation.encouragement_message }}"
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="text-center text-muted mt-5">
+                            <i class="fas fa-clipboard-list fa-4x mb-3 text-secondary"></i>
+                            <h5>No learning plan generated yet.</h5>
+                            <p>Click "Generate New Plan" to get personalized advice based on your grades.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const chatForm = document.getElementById("chat-form");
+        const chatInput = document.getElementById("chat-input");
+        const chatHistory = document.getElementById("chat-history");
+        const btnSend = document.getElementById("btn-send");
+        const errorAlert = document.getElementById("chat-error");
+        const errorText = document.getElementById("chat-error-text");
+        const convIdInput = document.getElementById("conversation-id");
+        const btnClearChat = document.getElementById("btn-clear-chat");
+        const btnNewChat = document.getElementById("btn-new-chat");
+        const subjectContext = document.getElementById("subject-context");
+        
+        // Auto-scroll to bottom
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+        
+        // Allow Enter to send, Shift+Enter for newline
+        chatInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                if(chatInput.value.trim() !== '') {
+                    chatForm.dispatchEvent(new Event('submit'));
+                }
+            }
+        });
+        
+        // Handle Chat Submit
+        chatForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const message = chatInput.value.trim();
+            if (!message) return;
+            
+            // Hide previous errors
+            errorAlert.classList.add('d-none');
+            
+            // Remove welcome message if exists
+            const welcomeMsg = document.getElementById('welcome-message');
+            if (welcomeMsg) welcomeMsg.remove();
+            
+            // Append User Message to UI
+            appendMessage('USER', message);
+            
+            // Clear input and disable
+            chatInput.value = '';
+            chatInput.disabled = true;
+            btnSend.disabled = true;
+            
+            // Show loading state
+            const loadingId = appendLoading();
+            
+            // Prepare payload
+            const payload = {
+                message: message,
+                conversation_id: convIdInput.value || null,
+                subject_id: subjectContext.value || null
+            };
+            
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            fetch("{% url 'ai_chat' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                const isJson = response.headers.get('content-type')?.includes('application/json');
+                const data = isJson ? response.json() : null;
+                
+                if (!response.ok) {
+                    return data.then(errData => {
+                        let errMsg = "The AI assistant is temporarily unavailable. Please try again.";
+                        if (errData && errData.error) errMsg = errData.error;
+                        throw new Error(errMsg);
+                    });
+                }
+                return data;
+            })
+            .then(data => {
+                // Remove loading bubble
+                removeElement(loadingId);
+                
+                if(data.success) {
+                    // Update conv ID if it was new
+                    if (!convIdInput.value && data.conversation_id) {
+                        convIdInput.value = data.conversation_id;
+                    }
+                    appendMessage('MODEL', data.message);
+                } else {
+                    showError(data.error || "An error occurred.");
+                }
+            })
+            .catch(error => {
+                removeElement(loadingId);
+                showError(error.message);
+            })
+            .finally(() => {
+                chatInput.disabled = false;
+                btnSend.disabled = false;
+                chatInput.focus();
+            });
+        });
+        
+        // Handle Clear/Archive Chat
+        if (btnClearChat) {
+            btnClearChat.addEventListener("click", function() {
+                const convId = convIdInput.value;
+                if (!convId) return;
+                
+                if (confirm("Are you sure you want to clear and archive this conversation?")) {
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                    fetch("{% url 'ai_chat_archive' %}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": csrfToken
+                        },
+                        body: JSON.stringify({ conversation_id: convId })
+                    })
+                    .then(r => r.json())
+                    .then(data => {
+                        if(data.success) {
+                            window.location.href = "{% url 'student_ai_assistant' %}"; // Reload to get fresh context
+                        } else {
+                            showError(data.error);
+                        }
+                    }).catch(e => showError("Failed to archive conversation."));
+                }
+            });
+        }
+        
+        // Handle New Chat
+        btnNewChat.addEventListener("click", function() {
+            window.location.href = "{% url 'student_ai_assistant' %}?new=1";
+        });
+        
+        // Helper Functions
+        function appendMessage(role, content) {
+            const div = document.createElement('div');
+            div.className = `chat-message mb-4 ${role === 'USER' ? 'text-end' : ''}`;
+            
+            const innerDiv = document.createElement('div');
+            innerDiv.className = `d-inline-block p-3 rounded-3 ${role === 'USER' ? 'bg-primary text-white text-start' : 'bg-light border text-dark'}`;
+            innerDiv.style.maxWidth = '80%';
+            
+            const headerDiv = document.createElement('div');
+            headerDiv.className = `small fw-bold mb-1 ${role === 'USER' ? 'text-light' : 'text-primary'}`;
+            headerDiv.textContent = role === 'USER' ? 'You' : 'AI Assistant';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'msg-content';
+            contentDiv.innerHTML = content.replace(/\n/g, '<br>');
+            
+            innerDiv.appendChild(headerDiv);
+            innerDiv.appendChild(contentDiv);
+            div.appendChild(innerDiv);
+            
+            chatHistory.appendChild(div);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+        
+        function appendLoading() {
+            const id = 'loading-' + Date.now();
+            const div = document.createElement('div');
+            div.id = id;
+            div.className = `chat-message mb-4`;
+            
+            div.innerHTML = `
+                <div class="d-inline-block p-3 rounded-3 bg-light border text-dark" style="max-width: 80%;">
+                    <div class="small fw-bold mb-1 text-primary">AI Assistant</div>
+                    <div class="msg-content text-muted">
+                        <i class="fas fa-circle-notch fa-spin"></i> Thinking...
+                    </div>
+                </div>
+            `;
+            chatHistory.appendChild(div);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+            return id;
+        }
+        
+        function removeElement(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+        
+        function showError(msg) {
+            errorText.textContent = msg;
+            errorAlert.classList.remove('d-none');
+        }
+        
+        // Handle Generate Plan
+        const btnGeneratePlan = document.getElementById('btn-generate-plan');
+        const planAlert = document.getElementById('plan-alert');
+        
+        if (btnGeneratePlan) {
+            btnGeneratePlan.addEventListener('click', function() {
+                this.disabled = true;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+                
+                planAlert.classList.add('d-none');
+                planAlert.className = 'alert d-none';
+                
+                fetch("{% url 'student_ai_assistant' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: JSON.stringify({})
+                })
+                .then(res => res.json().then(data => ({ status: res.status, body: data })))
+                .then(obj => {
+                    if (obj.status === 200) {
+                        planAlert.classList.remove('d-none');
+                        planAlert.classList.add('alert-success');
+                        planAlert.textContent = 'Plan generated successfully! Reloading...';
+                        setTimeout(() => window.location.reload(), 1500);
+                    } else {
+                        planAlert.classList.remove('d-none');
+                        planAlert.classList.add('alert-danger');
+                        planAlert.textContent = obj.body.error || 'Failed to generate plan.';
+                        btnGeneratePlan.disabled = false;
+                        btnGeneratePlan.innerHTML = '<i class="fas fa-sync-alt"></i> Generate New Plan';
+                    }
+                })
+                .catch(err => {
+                    planAlert.classList.remove('d-none');
+                    planAlert.classList.add('alert-danger');
+                    planAlert.textContent = 'A network error occurred.';
+                    btnGeneratePlan.disabled = false;
+                    btnGeneratePlan.innerHTML = '<i class="fas fa-sync-alt"></i> Generate New Plan';
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

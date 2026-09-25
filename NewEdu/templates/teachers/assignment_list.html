@@ -1,0 +1,24 @@
+{% extends 'teachers/teacher_base.html' %}
+{% block title %}Assignments - NEWEDU{% endblock %}
+{% block teacher_content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>Assignments</h2>
+    <a href="{% url 'teacher_assignment_create' %}" class="btn">+ Create Assignment</a>
+</div>
+
+<div class="card" style="margin-top: 1rem;">
+    {% if assignments %}
+        <ul>
+            {% for assignment in assignments %}
+                <li style="margin-bottom: 10px;">
+                    <strong><a href="{% url 'teacher_assignment_detail' assignment.id %}">{{ assignment.title }}</a></strong>
+                    <br>
+                    <span class="text-muted">Due: {{ assignment.due_date }} | {{ assignment.class_subject.subject.name }} ({{ assignment.section.name }})</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have not created any assignments yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

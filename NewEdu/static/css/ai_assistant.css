@@ -1,0 +1,37 @@
+.ai-container {
+    height: 80vh;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ai-sidebar {
+    height: 100%;
+}
+
+.ai-main {
+    height: 100%;
+}
+
+.chat-message {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.msg-content {
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+#chat-history {
+    scroll-behavior: smooth;
+    padding-bottom: 60px; /* Space for the error overlay if any */
+}
+
+.ai-conv-link:hover {
+    background-color: #f8f9fa;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

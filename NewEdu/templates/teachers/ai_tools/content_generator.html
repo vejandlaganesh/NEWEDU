@@ -1,0 +1,267 @@
+{% extends 'teachers/teacher_base.html' %}
+{% block title %}AI Content Generator - NEWEDU{% endblock %}
+
+{% block extra_css %}
+{{ block.super }}
+<style>
+    .generator-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+    .form-section, .preview-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+    .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #cbd4df;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .btn-primary { background: #2864d7; color: white; }
+    .btn-secondary { background: #eef2f6; color: #4e5b70; }
+    .btn-success { background: #2ecc71; color: white; }
+    
+    .loading-overlay {
+        display: none;
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(255,255,255,0.8);
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        z-index: 10;
+    }
+    .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #2864d7;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    
+    .preview-content {
+        min-height: 300px;
+        border: 1px dashed #cbd4df;
+        padding: 1rem;
+        border-radius: 4px;
+        background: #f8fbff;
+        overflow-y: auto;
+        max-height: 600px;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+{% endblock %}
+
+{% block teacher_content %}
+<div style="margin-bottom: 2rem;">
+    <h2>AI Content Generator</h2>
+    <p class="text-muted"><a href="{% url 'teacher_ai_tools' %}">&larr; Back to AI Tools</a></p>
+</div>
+
+<div class="generator-layout">
+    <!-- FORM -->
+    <div class="form-section" style="position: relative;">
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+            <p style="margin-top: 1rem; font-weight: 600; color: #2864d7;">Generating Content...</p>
+        </div>
+        
+        <form id="generatorForm">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label>Class & Subject</label>
+                <select class="form-control" id="classSubjectSelect" required>
+                    <option value="">Select assigned class/subject...</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Chapter (Optional)</label>
+                <select class="form-control" id="chapterSelect">
+                    <option value="">Select chapter...</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Topic</label>
+                <input type="text" class="form-control" id="topicInput" placeholder="e.g. Newton's First Law" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Content Type</label>
+                <select class="form-control" id="contentTypeSelect" required>
+                    <option value="Explanation">Explanation</option>
+                    <option value="Lesson Outline">Lesson Outline</option>
+                    <option value="Practice Questions">Practice Questions</option>
+                    <option value="Summary">Summary</option>
+                    <option value="Worksheet">Worksheet</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Difficulty</label>
+                <select class="form-control" id="difficultySelect" required>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Generate Content</button>
+        </form>
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="form-section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="margin: 0;">Preview</h3>
+            <button class="btn btn-success" id="btnSave" style="display: none;">Approve & Save Draft</button>
+        </div>
+        
+        <div class="preview-content" id="previewArea">
+            <p class="text-muted" style="text-align: center; margin-top: 2rem;">Fill out the form and click Generate to see a preview here.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const classSubjectSelect = document.getElementById('classSubjectSelect');
+    const chapterSelect = document.getElementById('chapterSelect');
+    const generatorForm = document.getElementById('generatorForm');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const previewArea = document.getElementById('previewArea');
+    const btnSave = document.getElementById('btnSave');
+    
+    let generatedData = null; // Store for saving
+    
+    // 1. Fetch Subjects
+    fetch('{% url "teacher_ai_api_subjects" %}')
+        .then(res => res.json())
+        .then(data => {
+            data.subjects.forEach(sub => {
+                const opt = document.createElement('option');
+                opt.value = sub.id;
+                opt.textContent = sub.display;
+                classSubjectSelect.appendChild(opt);
+            });
+        });
+        
+    // 2. Fetch Chapters when Subject changes
+    classSubjectSelect.addEventListener('change', function() {
+        chapterSelect.innerHTML = '<option value="">Select chapter...</option>';
+        if(!this.value) return;
+        
+        fetch(`{% url "teacher_ai_api_chapters" %}?class_subject_id=${this.value}`)
+            .then(res => res.json())
+            .then(data => {
+                if(data.chapters) {
+                    data.chapters.forEach(ch => {
+                        const opt = document.createElement('option');
+                        opt.value = ch.id;
+                        opt.textContent = ch.title;
+                        chapterSelect.appendChild(opt);
+                    });
+                }
+            });
+    });
+    
+    // 3. Submit Generation
+    generatorForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const payload = {
+            class_subject_id: classSubjectSelect.value,
+            chapter_id: chapterSelect.value,
+            topic: document.getElementById('topicInput').value,
+            content_type: document.getElementById('contentTypeSelect').value,
+            difficulty: document.getElementById('difficultySelect').value,
+        };
+        
+        loadingOverlay.style.display = 'flex';
+        btnSave.style.display = 'none';
+        
+        fetch('{% url "teacher_ai_content" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.json())
+        .then(data => {
+            loadingOverlay.style.display = 'none';
+            if(data.error) {
+                previewArea.innerHTML = `<p style="color:red;">Error: ${data.error}</p>`;
+            } else {
+                generatedData = { ...payload, title: data.title, content: data.content };
+                
+                // Render Markdown
+                previewArea.innerHTML = `
+                    <h2 style="margin-top:0; color: #143b72;">${data.title}</h2>
+                    <div style="font-size: 15px; line-height: 1.6;">${marked.parse(data.content)}</div>
+                `;
+                btnSave.style.display = 'block';
+            }
+        })
+        .catch(err => {
+            loadingOverlay.style.display = 'none';
+            previewArea.innerHTML = `<p style="color:red;">Failed to generate content.</p>`;
+        });
+    });
+    
+    // 4. Save Draft
+    btnSave.addEventListener('click', function() {
+        if(!generatedData) return;
+        
+        this.textContent = 'Saving...';
+        this.disabled = true;
+        
+        fetch('{% url "teacher_ai_content_save" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify(generatedData)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.error) {
+                alert("Error saving: " + data.error);
+                this.textContent = 'Approve & Save Draft';
+                this.disabled = false;
+            } else {
+                alert("Content saved as Draft successfully!");
+                window.location.href = '{% url "teacher_ai_tools" %}';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

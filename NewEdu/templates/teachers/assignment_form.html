@@ -1,0 +1,14 @@
+{% extends 'teachers/teacher_base.html' %}
+{% block title %}Create Assignment - NEWEDU{% endblock %}
+{% block teacher_content %}
+<h2>Create Assignment</h2>
+
+<div class="card" style="max-width: 600px; margin-top: 1rem;">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Publish Assignment</button>
+        <a href="{% url 'teacher_assignments' %}" style="margin-left: 10px; color: #7f8c8d; text-decoration: none;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

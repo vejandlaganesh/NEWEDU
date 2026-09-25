@@ -1,0 +1,38 @@
+{% extends 'students/student_base.html' %}
+{% block title %}Result: {{ attempt.quiz.title }}{% endblock %}
+{% block student_content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>Quiz Result: {{ attempt.quiz.title }}</h2>
+    <a href="{% url 'student_quiz_detail' attempt.quiz.id %}" class="btn" style="background-color: #6c757d;">&larr; Back to Quiz</a>
+</div>
+
+<div class="card" style="margin-top: 1rem; text-align: center;">
+    {% if attempt.result.passed %}
+        <h1 style="color: #28a745; margin: 0;">PASSED</h1>
+    {% else %}
+        <h1 style="color: #dc3545; margin: 0;">FAILED</h1>
+    {% endif %}
+    
+    <h2 style="margin-top: 10px; font-size: 3em;">{{ attempt.result.percentage }}%</h2>
+    <p>Score: {{ attempt.result.score }} | Required: {{ attempt.quiz.passing_score }}%</p>
+</div>
+
+<div class="card" style="margin-top: 1rem; display: flex; justify-content: space-around; text-align: center;">
+    <div>
+        <h3>{{ attempt.result.correct_answers }}</h3>
+        <p class="text-muted">Correct</p>
+    </div>
+    <div>
+        <h3>{{ attempt.result.incorrect_answers }}</h3>
+        <p class="text-muted">Incorrect</p>
+    </div>
+    <div>
+        <h3>{{ attempt.result.attempted_questions }}</h3>
+        <p class="text-muted">Attempted</p>
+    </div>
+    <div>
+        <h3>{{ attempt.result.completion_time }}</h3>
+        <p class="text-muted">Time Taken</p>
+    </div>
+</div>
+{% endblock %}

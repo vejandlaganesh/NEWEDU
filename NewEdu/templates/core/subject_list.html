@@ -1,0 +1,17 @@
+{% extends 'core/admin_base.html' %}
+{% block title %}Subjects - NEWEDU{% endblock %}
+{% block admin_content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>Subjects</h2>
+    <a href="{% url 'admin_subject_create' %}" class="btn">+ Add Subject</a>
+</div>
+<div class="card" style="margin-top: 1rem;">
+    <ul>
+        {% for sub in subjects %}
+            <li>{{ sub.name }} (Code: {{ sub.code }}) <a href="{% url 'admin_subject_edit' sub.id %}">[Edit]</a></li>
+        {% empty %}
+            <li>No subjects defined.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

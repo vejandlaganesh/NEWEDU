@@ -1,0 +1,17 @@
+{% extends 'teachers/teacher_base.html' %}
+{% block title %}Manage Lesson - NEWEDU{% endblock %}
+{% block teacher_content %}
+<h2>{% if object %}Edit Lesson{% else %}Create New Lesson{% endif %}</h2>
+{% if chapter %}
+    <p>For Chapter: <strong>{{ chapter.title }}</strong></p>
+{% endif %}
+
+<div class="card" style="max-width: 800px; margin-top: 1rem;">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Save Lesson</button>
+        <a href="{% url 'teacher_materials' %}" style="margin-left: 10px; color: #7f8c8d; text-decoration: none;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,2072 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Portal - NEWEDU{% endblock %}
+
+{% block extra_css %}
+
+<style>
+    :root {
+        --student-sidebar: 250px;
+        --student-topbar: 72px;
+
+        --student-primary: #2864d7;
+        --student-sidebar-bg: #293f54;
+        --student-bg: #f6f8fc;
+
+        --student-text: #1d3049;
+        --student-muted: #7b8a9d;
+    }
+
+
+    /* =========================================================
+       PAGE RESET
+    ========================================================= */
+
+    body {
+        overflow: hidden;
+    }
+
+
+    /* =========================================================
+       FIXED TOPBAR
+    ========================================================= */
+
+    .student-topbar {
+
+        position: fixed;
+
+        top: 0;
+        left: 0;
+        right: 0;
+
+        height: var(--student-topbar);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        padding: 0 30px;
+
+        background: #ffffff;
+
+        border-bottom: 1px solid #e8edf4;
+
+        box-shadow:
+            0 3px 15px rgba(30, 55, 90, .055);
+
+        z-index: 1000;
+
+        box-sizing: border-box;
+    }
+
+
+    /* =========================================================
+       TOPBAR BRAND
+    ========================================================= */
+
+    .student-topbar-brand {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 11px;
+
+        text-decoration: none;
+
+        min-width: 210px;
+    }
+
+
+    .student-topbar-logo {
+
+        width: 40px;
+        height: 40px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background:
+            linear-gradient(135deg,
+                #17447f,
+                #2864d7);
+
+        color: #ffffff;
+
+        font-size: 17px;
+
+        font-weight: 800;
+
+        box-shadow:
+            0 4px 10px rgba(40, 100, 215, .16);
+    }
+
+
+    .student-topbar-brand-text {
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        line-height: 1.1;
+    }
+
+
+    .student-topbar-brand-name {
+
+        color: #173d70;
+
+        font-size: 18px;
+
+        font-weight: 800;
+
+        letter-spacing: -.4px;
+    }
+
+
+    .student-topbar-brand-subtitle {
+
+        margin-top: 4px;
+
+        color: #8795a8;
+
+        font-size: 9px;
+
+        letter-spacing: .2px;
+    }
+
+
+    /* =========================================================
+       TOPBAR RIGHT
+    ========================================================= */
+
+    .student-topbar-right {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 18px;
+
+        height: 100%;
+    }
+
+
+    /* =========================================================
+       NOTIFICATION
+    ========================================================= */
+
+    .student-notification {
+
+        position: relative;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        width: 40px;
+        height: 40px;
+
+        border-radius: 10px;
+
+        color: #51647c;
+
+        text-decoration: none;
+
+        transition:
+            background .2s ease,
+            color .2s ease;
+    }
+
+
+    .student-notification:hover {
+
+        background: #f0f5fc;
+
+        color: var(--student-primary);
+    }
+
+
+    .student-notification-icon {
+
+        font-size: 20px;
+
+        line-height: 1;
+    }
+
+
+    .notification-badge {
+
+        position: absolute;
+
+        top: 3px;
+        right: 2px;
+
+        min-width: 17px;
+        height: 17px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        padding: 0 4px;
+
+        border-radius: 20px;
+
+        background: #e54848;
+
+        color: #ffffff;
+
+        border: 2px solid #ffffff;
+
+        font-size: 8px;
+
+        font-weight: 750;
+
+        line-height: 1;
+    }
+
+
+    /* =========================================================
+       SEPARATOR
+    ========================================================= */
+
+    .topbar-separator {
+
+        width: 1px;
+
+        height: 32px;
+
+        background: #e7ecf3;
+    }
+
+
+    /* =========================================================
+       PROFILE AREA
+    ========================================================= */
+
+    .student-profile-wrapper {
+
+        position: relative;
+    }
+
+
+    .student-profile-button {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        padding: 5px 8px 5px 6px;
+
+        border: none;
+
+        border-radius: 11px;
+
+        background: transparent;
+
+        cursor: pointer;
+
+        font-family: inherit;
+
+        transition:
+            background .2s ease;
+    }
+
+
+    .student-profile-button:hover {
+
+        background: #f5f7fb;
+    }
+
+
+    .student-topbar-avatar {
+
+        width: 39px;
+        height: 39px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 50%;
+
+        background:
+            linear-gradient(135deg,
+                #2864d7,
+                #4c82df);
+
+        color: #ffffff;
+
+        font-size: 14px;
+
+        font-weight: 750;
+
+        box-shadow:
+            0 3px 8px rgba(40, 100, 215, .16);
+    }
+
+
+    .student-profile-info {
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        line-height: 1.15;
+    }
+
+
+    .student-profile-name {
+
+        color: #263951;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        max-width: 120px;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+    }
+
+
+    .student-profile-role {
+
+        margin-top: 3px;
+
+        color: #8b98a9;
+
+        font-size: 9px;
+    }
+
+
+    .profile-chevron {
+
+        margin-left: 3px;
+
+        color: #8996a8;
+
+        font-size: 11px;
+
+        transition:
+            transform .2s ease;
+    }
+
+
+    .student-profile-button.open .profile-chevron {
+
+        transform:
+            rotate(180deg);
+    }
+
+
+    /* =========================================================
+       PROFILE DROPDOWN
+    ========================================================= */
+
+    .student-profile-dropdown {
+
+        position: absolute;
+
+        top: calc(100% + 9px);
+
+        right: 0;
+
+        width: 230px;
+
+        padding: 8px;
+
+        border:
+            1px solid #e3e9f1;
+
+        border-radius: 13px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 15px 35px rgba(30, 55, 90, .13);
+
+        opacity: 0;
+
+        visibility: hidden;
+
+        transform:
+            translateY(-6px);
+
+        transition:
+            opacity .18s ease,
+            visibility .18s ease,
+            transform .18s ease;
+
+        z-index: 1200;
+    }
+
+
+    .student-profile-dropdown.show {
+
+        opacity: 1;
+
+        visibility: visible;
+
+        transform:
+            translateY(0);
+    }
+
+
+    /* Dropdown user info */
+
+    .dropdown-user {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        padding: 11px;
+
+        margin-bottom: 6px;
+
+        border-radius: 9px;
+
+        background: #f7f9fc;
+    }
+
+
+    .dropdown-user-avatar {
+
+        width: 36px;
+        height: 36px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        flex-shrink: 0;
+
+        border-radius: 50%;
+
+        background: #2864d7;
+
+        color: #ffffff;
+
+        font-size: 12px;
+
+        font-weight: 700;
+    }
+
+
+    .dropdown-user-name {
+
+        color: #243752;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+    }
+
+
+    .dropdown-user-email {
+
+        margin-top: 3px;
+
+        color: #8996a8;
+
+        font-size: 9px;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+    }
+
+
+    /* Dropdown links */
+
+    .profile-dropdown-link {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        width: 100%;
+
+        min-height: 38px;
+
+        padding: 0 10px;
+
+        border-radius: 8px;
+
+        color: #4d5f75;
+
+        text-decoration: none;
+
+        font-size: 11px;
+
+        font-weight: 550;
+
+        box-sizing: border-box;
+
+        transition:
+            background .18s ease,
+            color .18s ease;
+    }
+
+
+    .profile-dropdown-link:hover {
+
+        background: #f2f6fc;
+
+        color: #2864d7;
+    }
+
+
+    .profile-dropdown-icon {
+
+        width: 25px;
+        height: 25px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 7px;
+
+        background: #edf4ff;
+
+        color: #2864d7;
+
+        font-size: 11px;
+    }
+
+
+    .profile-dropdown-divider {
+
+        height: 1px;
+
+        margin: 6px 4px;
+
+        background: #edf0f4;
+    }
+
+
+    .logout-link {
+
+        color: #d64b4b;
+    }
+
+
+    .logout-link:hover {
+
+        background: #fff3f3;
+
+        color: #c73737;
+    }
+
+
+    .logout-link .profile-dropdown-icon {
+
+        background: #fff0f0;
+
+        color: #d64b4b;
+    }
+
+
+    /* =========================================================
+       FIXED SIDEBAR
+    ========================================================= */
+
+    .student-nav {
+
+        position: fixed;
+
+        top: var(--student-topbar);
+
+        left: 0;
+
+        bottom: 0;
+
+        width: var(--student-sidebar);
+
+        padding: 24px 14px;
+
+        background: #293f54;
+
+        color: #ffffff;
+
+        box-sizing: border-box;
+
+        overflow-y: auto;
+
+        z-index: 900;
+    }
+
+
+    /* =========================================================
+       SIDEBAR BRAND
+    ========================================================= */
+
+    .student-brand {
+
+        padding:
+            4px 16px 21px;
+
+        margin-bottom: 15px;
+
+        border-bottom:
+            1px solid rgba(255, 255, 255, .09);
+    }
+
+
+    .student-brand-title {
+
+        color: #ffffff;
+
+        font-size: 19px;
+
+        font-weight: 750;
+
+        letter-spacing: -.3px;
+    }
+
+
+    .student-brand-subtitle {
+
+        margin-top: 5px;
+
+        color:
+            rgba(255, 255, 255, .48);
+
+        font-size: 9px;
+
+        letter-spacing: .2px;
+    }
+
+
+    /* =========================================================
+       SIDEBAR NAV
+    ========================================================= */
+
+    .student-nav ul {
+
+        list-style: none;
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 4px;
+
+        padding: 0;
+
+        margin: 0;
+    }
+
+
+    .student-nav li {
+
+        margin: 0;
+
+        padding: 0;
+    }
+
+
+    .student-nav a {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 11px;
+
+        width: 100%;
+
+        min-height: 43px;
+
+        padding: 0 13px;
+
+        border-radius: 8px;
+
+        color:
+            rgba(255, 255, 255, .83);
+
+        text-decoration: none;
+
+        font-size: 12px;
+
+        font-weight: 550;
+
+        transition:
+            background .2s ease,
+            color .2s ease,
+            transform .2s ease;
+    }
+
+
+    .student-nav a:hover {
+
+        color: #ffffff;
+
+        background:
+            rgba(255, 255, 255, .08);
+
+        transform:
+            translateX(2px);
+    }
+
+
+    .student-nav a.active {
+
+        color: #ffffff;
+
+        background: #2864d7;
+
+        box-shadow:
+            0 5px 14px rgba(0, 0, 0, .12);
+    }
+
+
+    .nav-icon {
+
+        width: 27px;
+        height: 27px;
+
+        flex-shrink: 0;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 7px;
+
+        background:
+            rgba(255, 255, 255, .08);
+
+        color: #ffffff;
+
+        font-size: 12px;
+    }
+
+
+    .student-nav a.active .nav-icon {
+
+        background:
+            rgba(255, 255, 255, .14);
+    }
+
+
+    .nav-text {
+
+        flex: 1;
+    }
+
+
+    /* =========================================================
+       MAIN CONTENT
+    ========================================================= */
+
+    .student-content {
+
+        position: fixed;
+
+        top: var(--student-topbar);
+
+        left: var(--student-sidebar);
+
+        right: 0;
+
+        bottom: 0;
+
+        padding:
+            30px 38px 50px;
+
+        background: var(--student-bg);
+
+        overflow-y: auto;
+
+        overflow-x: hidden;
+
+        box-sizing: border-box;
+    }
+
+
+    .student-content>.container {
+
+        width: 100% !important;
+
+        max-width: none !important;
+
+        margin: 0 !important;
+
+        padding: 0 !important;
+
+        box-sizing: border-box;
+    }
+
+
+    .student-content .student-page,
+    .student-content .student-dashboard,
+    .student-content .profile-page {
+
+        width: 100% !important;
+
+        max-width: none !important;
+
+        margin-left: 0 !important;
+
+        margin-right: 0 !important;
+    }
+
+
+    /* =========================================================
+       SCROLLBARS
+    ========================================================= */
+
+    .student-nav::-webkit-scrollbar,
+    .student-content::-webkit-scrollbar {
+
+        width: 6px;
+    }
+
+
+    .student-nav::-webkit-scrollbar-thumb,
+    .student-content::-webkit-scrollbar-thumb {
+
+        border-radius: 10px;
+
+        background:
+            rgba(100, 116, 139, .25);
+    }
+
+    /* =========================================================
+   TOPBAR SEARCH
+========================================================= */
+
+    .student-search {
+
+        position: relative;
+
+        width: min(430px, 38vw);
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+    .student-search input {
+
+        width: 100%;
+
+        height: 40px;
+
+        padding:
+            0 42px 0 40px;
+
+        border:
+            1px solid #dfe6ef;
+
+        border-radius: 10px;
+
+        outline: none;
+
+        background: #f7f9fc;
+
+        color: #243752;
+
+        font-family: inherit;
+
+        font-size: 11px;
+
+        box-sizing: border-box;
+
+        transition:
+            background .2s ease,
+            border-color .2s ease,
+            box-shadow .2s ease;
+    }
+
+
+    .student-search input::placeholder {
+
+        color: #9aa7b7;
+    }
+
+
+    .student-search input:focus {
+
+        background: #ffffff;
+
+        border-color:
+            #2864d7;
+
+        box-shadow:
+            0 0 0 3px rgba(40, 100, 215, .08);
+    }
+
+
+    .student-search-icon {
+
+        position: absolute;
+
+        left: 14px;
+
+        top: 50%;
+
+        transform:
+            translateY(-50%);
+
+        color: #7c8da2;
+
+        font-size: 20px;
+
+        line-height: 1;
+
+        pointer-events: none;
+    }
+
+
+    .student-search-shortcut {
+
+        position: absolute;
+
+        right: 11px;
+
+        top: 50%;
+
+        transform:
+            translateY(-50%);
+
+        width: 21px;
+
+        height: 21px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border:
+            1px solid #dbe3ed;
+
+        border-radius: 5px;
+
+        background: #ffffff;
+
+        color: #8b98a9;
+
+        font-size: 11px;
+
+        font-weight: 650;
+
+        pointer-events: none;
+    }
+
+
+    /* =========================================================
+   SEARCH RESULTS
+========================================================= */
+
+    .student-search-results {
+
+        position: absolute;
+
+        top: calc(100% + 8px);
+
+        left: 0;
+        right: 0;
+
+        display: none;
+
+        max-height: 360px;
+
+        overflow-y: auto;
+
+        padding: 7px;
+
+        border:
+            1px solid #e1e7ef;
+
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 15px 35px rgba(25, 50, 85, .13);
+
+        z-index: 1500;
+    }
+
+
+    .student-search-results.show {
+
+        display: block;
+    }
+
+
+    .search-result {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 11px;
+
+        padding: 10px;
+
+        border-radius: 8px;
+
+        text-decoration: none;
+
+        transition:
+            background .15s ease;
+    }
+
+
+    .search-result:hover {
+
+        background: #f3f7fd;
+    }
+
+
+    .search-result-icon {
+
+        width: 32px;
+        height: 32px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        flex-shrink: 0;
+
+        border-radius: 8px;
+
+        background: #edf4ff;
+
+        color: #2864d7;
+
+        font-size: 13px;
+    }
+
+
+    .search-result-title {
+
+        color: #293b53;
+
+        font-size: 11px;
+
+        font-weight: 700;
+    }
+
+
+    .search-result-type {
+
+        margin-top: 3px;
+
+        color: #8a98aa;
+
+        font-size: 9px;
+    }
+
+
+    .search-empty {
+
+        padding: 20px;
+
+        text-align: center;
+
+        color: #8b98a9;
+
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+   TABLET
+========================================================= */
+
+    @media (max-width: 1000px) {
+
+        .student-search {
+
+            width: min(350px, 32vw);
+        }
+
+    }
+
+
+    /* =========================================================
+   MOBILE
+========================================================= */
+
+    @media (max-width: 767px) {
+
+        .student-search {
+
+            flex: 1;
+
+            width: auto;
+
+            margin:
+                0 8px;
+        }
+
+
+        .student-search input {
+
+            height: 36px;
+
+            padding-left: 35px;
+
+            font-size: 10px;
+        }
+
+
+        .student-search input::placeholder {
+
+            font-size: 9px;
+        }
+
+
+        .student-search-icon {
+
+            left: 11px;
+
+            font-size: 17px;
+        }
+
+
+        .student-search-shortcut {
+
+            display: none;
+        }
+
+    }
+
+    /* =========================================================
+       TABLET
+    ========================================================= */
+
+    @media (max-width: 1000px) {
+
+        :root {
+
+            --student-sidebar: 220px;
+        }
+
+        .student-content {
+
+            padding:
+                25px 25px 40px;
+        }
+
+        .student-topbar {
+
+            padding:
+                0 20px;
+        }
+
+        .student-profile-info {
+
+            display: none;
+        }
+
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media (max-width: 767px) {
+
+        body {
+
+            overflow: auto;
+        }
+
+
+        :root {
+
+            --student-topbar: 62px;
+        }
+
+
+        .student-topbar {
+
+            height:
+                var(--student-topbar);
+
+            padding:
+                0 14px;
+        }
+
+
+        .student-topbar-brand {
+
+            min-width: auto;
+        }
+
+
+        .student-topbar-logo {
+
+            width: 34px;
+            height: 34px;
+
+            font-size: 14px;
+        }
+
+
+        .student-topbar-brand-name {
+
+            font-size: 15px;
+        }
+
+
+        .student-topbar-brand-subtitle {
+
+            display: none;
+        }
+
+
+        .student-topbar-right {
+
+            gap: 5px;
+        }
+
+
+        .topbar-separator {
+
+            display: none;
+        }
+
+
+        .student-notification {
+
+            width: 37px;
+            height: 37px;
+        }
+
+
+        .student-profile-button {
+
+            padding:
+                4px;
+        }
+
+
+        .student-profile-role,
+        .student-profile-name,
+        .profile-chevron {
+
+            display: none;
+        }
+
+
+        .student-topbar-avatar {
+
+            width: 34px;
+            height: 34px;
+        }
+
+
+        .student-profile-dropdown {
+
+            right: 0;
+
+            width: 220px;
+        }
+
+
+        /* Mobile sidebar */
+
+        .student-nav {
+
+            position: fixed;
+
+            top: var(--student-topbar);
+
+            left: 0;
+            right: 0;
+
+            bottom: auto;
+
+            width: 100%;
+
+            height: 64px;
+
+            min-height: 64px;
+
+            padding:
+                9px 12px;
+
+            overflow-x: auto;
+
+            overflow-y: hidden;
+        }
+
+
+        .student-brand {
+
+            display: none;
+        }
+
+
+        .student-nav ul {
+
+            flex-direction: row;
+
+            gap: 6px;
+
+            width: max-content;
+        }
+
+
+        .student-nav li {
+
+            flex-shrink: 0;
+        }
+
+
+        .student-nav a {
+
+            width: auto;
+
+            min-width: max-content;
+
+            min-height: 45px;
+
+            padding:
+                0 12px;
+        }
+
+
+        .student-content {
+
+            position: relative;
+
+            top: auto;
+            left: auto;
+            right: auto;
+            bottom: auto;
+
+            width: 100%;
+
+            min-height:
+                calc(100vh - 126px);
+
+            margin-top: 126px;
+
+            padding:
+                20px 15px 35px;
+
+            overflow: visible;
+        }
+
+    }
+
+
+    /* =========================================================
+       SMALL MOBILE
+    ========================================================= */
+
+    @media (max-width: 480px) {
+
+        .student-content {
+
+            padding:
+                16px 12px 30px;
+        }
+
+    }
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="student-portal">
+
+
+    <!-- =====================================================
+         FIXED TOPBAR
+    ====================================================== -->
+
+    <header class="student-topbar">
+
+
+        <!-- BRAND -->
+
+        <a href="{% url 'student_dashboard' %}" class="student-topbar-brand">
+
+            <div class="student-topbar-logo">
+                N
+            </div>
+
+            <div class="student-topbar-brand-text">
+
+                <span class="student-topbar-brand-name">
+                    NEWEDU
+                </span>
+
+                <span class="student-topbar-brand-subtitle">
+                    Learning · Growth · Success
+                </span>
+
+            </div>
+
+        </a>
+
+        <!-- SEARCH -->
+
+        <div class="student-search">
+
+            <span class="student-search-icon">
+                ⌕
+            </span>
+
+            <input type="search" id="studentGlobalSearch" placeholder="Search subjects, lessons, assignments..."
+                autocomplete="off">
+
+            <span class="student-search-shortcut">
+                /
+            </span>
+
+            <div class="student-search-results" id="studentSearchResults"></div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+
+        <div class="student-topbar-right">
+
+
+            <!-- NOTIFICATION -->
+
+            <a href="{% url 'student_notifications' %}" class="student-notification" aria-label="Notifications">
+
+                <span class="student-notification-icon">
+                    🔔
+                </span>
+
+                {% if unread_notifications_count %}
+                <span class="notification-badge">
+                    {{ unread_notifications_count }}
+                </span>
+                {% endif %}
+
+            </a>
+
+
+            <div class="topbar-separator"></div>
+
+
+            <!-- PROFILE -->
+
+            <div class="student-profile-wrapper">
+
+
+                <button type="button" class="student-profile-button" id="studentProfileButton" aria-expanded="false">
+
+                    <div class="student-topbar-avatar">
+
+                        {% if request.user.first_name %}
+                        {{ request.user.first_name|first|upper }}
+                        {% else %}
+                        S
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="student-profile-info">
+
+                        <span class="student-profile-name">
+
+                            {{ request.user.first_name|default:"Student" }}
+                            {% if request.user.last_name %}
+                            {{ request.user.last_name }}
+                            {% endif %}
+
+                        </span>
+
+                        <span class="student-profile-role">
+                            Student
+                        </span>
+
+                    </div>
+
+
+                    <span class="profile-chevron">
+                        ▾
+                    </span>
+
+                </button>
+
+
+                <!-- PROFILE DROPDOWN -->
+
+                <div class="student-profile-dropdown" id="studentProfileDropdown">
+
+
+                    <div class="dropdown-user">
+
+
+                        <div class="dropdown-user-avatar">
+
+                            {% if request.user.first_name %}
+                            {{ request.user.first_name|first|upper }}
+                            {% else %}
+                            S
+                            {% endif %}
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="dropdown-user-name">
+
+                                {{ request.user.first_name|default:"Student" }}
+                                {{ request.user.last_name }}
+
+                            </div>
+
+                            <div class="dropdown-user-email">
+
+                                {{ request.user.email }}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <a href="{% url 'student_profile' %}" class="profile-dropdown-link">
+
+                        <span class="profile-dropdown-icon">
+                            ●
+                        </span>
+
+                        My Profile
+
+                    </a>
+
+
+                    <a href="{% url 'student_settings' %}" class="profile-dropdown-link">
+
+                        <span class="profile-dropdown-icon">
+                            ⚙
+                        </span>
+
+                        Settings
+
+                    </a>
+
+
+                    <div class="profile-dropdown-divider"></div>
+
+
+                    <a href="{% url 'accounts:login' %}" class="profile-dropdown-link logout-link">
+
+                        <span class="profile-dropdown-icon">
+                            ↪
+                        </span>
+
+                        Logout
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         FIXED SIDEBAR
+    ====================================================== -->
+
+    <nav class="student-nav">
+
+
+        <div class="student-brand">
+
+            <div class="student-brand-title">
+                Student Portal
+            </div>
+
+            <div class="student-brand-subtitle">
+                NEWEDU Learning Space
+            </div>
+
+        </div>
+
+
+        <ul>
+
+
+            <li>
+                <a href="{% url 'student_dashboard' %}">
+                    <span class="nav-icon">▦</span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{% url 'student_subjects' %}">
+                    <span class="nav-icon">◫</span>
+                    <span class="nav-text">My Subjects</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{% url 'student_assignments' %}">
+                    <span class="nav-icon">✓</span>
+                    <span class="nav-text">Assignments</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{% url 'student_quizzes' %}">
+                    <span class="nav-icon">?</span>
+                    <span class="nav-text">Quizzes</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{% url 'student_results' %}">
+                    <span class="nav-icon">★</span>
+                    <span class="nav-text">Results</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{% url 'student_reports' %}">
+                    <span class="nav-icon">▥</span>
+                    <span class="nav-text">Reports</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{% url 'student_ai_assistant' %}">
+                    <span class="nav-icon">✦</span>
+                    <span class="nav-text">AI Assistant</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{% url 'student_notifications' %}">
+                    <span class="nav-icon">♢</span>
+                    <span class="nav-text">Notifications</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{% url 'student_profile' %}">
+                    <span class="nav-icon">●</span>
+                    <span class="nav-text">Profile</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{% url 'student_settings' %}">
+                    <span class="nav-icon">⚙</span>
+                    <span class="nav-text">Settings</span>
+                </a>
+            </li>
+
+
+        </ul>
+
+    </nav>
+
+
+
+    <!-- =====================================================
+         SCROLLABLE MAIN CONTENT
+    ====================================================== -->
+
+    <main class="student-content">
+
+        <div class="container">
+
+            {% block student_content %}
+            {% endblock %}
+
+        </div>
+
+    </main>
+
+
+</div>
+
+
+<!-- =========================================================
+     PROFILE DROPDOWN JAVASCRIPT
+========================================================== -->
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const profileButton =
+            document.getElementById("studentProfileButton");
+
+        const profileDropdown =
+            document.getElementById("studentProfileDropdown");
+
+
+        if (!profileButton || !profileDropdown) {
+            return;
+        }
+
+
+        profileButton.addEventListener("click", function (event) {
+
+            event.stopPropagation();
+
+            const isOpen =
+                profileDropdown.classList.contains("show");
+
+            profileDropdown.classList.toggle(
+                "show",
+                !isOpen
+            );
+
+            profileButton.classList.toggle(
+                "open",
+                !isOpen
+            );
+
+            profileButton.setAttribute(
+                "aria-expanded",
+                String(!isOpen)
+            );
+
+        });
+
+
+        document.addEventListener("click", function (event) {
+
+            if (
+                !profileDropdown.contains(event.target) &&
+                !profileButton.contains(event.target)
+            ) {
+
+                profileDropdown.classList.remove("show");
+
+                profileButton.classList.remove("open");
+
+                profileButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            }
+
+        });
+
+
+        document.addEventListener("keydown", function (event) {
+
+            if (event.key === "Escape") {
+
+                profileDropdown.classList.remove("show");
+
+                profileButton.classList.remove("open");
+
+                profileButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            }
+
+        });
+
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const searchInput =
+            document.getElementById("studentGlobalSearch");
+
+        const searchResults =
+            document.getElementById("studentSearchResults");
+
+
+        if (!searchInput || !searchResults) {
+            return;
+        }
+
+
+        /* ---------------------------------------------------------
+           Temporary frontend search data
+    
+           Replace this later with a Django search endpoint.
+        --------------------------------------------------------- */
+
+        const searchItems = [
+
+            {
+                title: "My Subjects",
+                type: "Subjects",
+                url: "{% url 'student_subjects' %}",
+                icon: "◫"
+            },
+
+            {
+                title: "Assignments",
+                type: "Learning",
+                url: "{% url 'student_assignments' %}",
+                icon: "✓"
+            },
+
+            {
+                title: "Quizzes",
+                type: "Learning",
+                url: "{% url 'student_quizzes' %}",
+                icon: "?"
+            },
+
+            {
+                title: "Results",
+                type: "Performance",
+                url: "{% url 'student_results' %}",
+                icon: "★"
+            },
+
+            {
+                title: "Reports",
+                type: "Performance",
+                url: "{% url 'student_reports' %}",
+                icon: "▥"
+            },
+
+            {
+                title: "AI Assistant",
+                type: "AI Learning",
+                url: "{% url 'student_ai_assistant' %}",
+                icon: "✦"
+            },
+
+            {
+                title: "Notifications",
+                type: "Updates",
+                url: "{% url 'student_notifications' %}",
+                icon: "♢"
+            },
+
+            {
+                title: "My Profile",
+                type: "Account",
+                url: "{% url 'student_profile' %}",
+                icon: "●"
+            },
+
+            {
+                title: "Settings",
+                type: "Account",
+                url: "{% url 'student_settings' %}",
+                icon: "⚙"
+            }
+
+        ];
+
+
+        function performSearch(value) {
+
+            const query =
+                value.trim().toLowerCase();
+
+
+            if (!query) {
+
+                searchResults.innerHTML = "";
+
+                searchResults.classList.remove("show");
+
+                return;
+            }
+
+
+            const matches =
+                searchItems.filter(function (item) {
+
+                    return (
+                        item.title
+                            .toLowerCase()
+                            .includes(query)
+                        ||
+                        item.type
+                            .toLowerCase()
+                            .includes(query)
+                    );
+
+                });
+
+
+            if (!matches.length) {
+
+                searchResults.innerHTML = `
+                <div class="search-empty">
+                    No results found
+                </div>
+            `;
+
+                searchResults.classList.add("show");
+
+                return;
+            }
+
+
+            searchResults.innerHTML =
+                matches.map(function (item) {
+
+                    return `
+                    <a
+                        href="${item.url}"
+                        class="search-result"
+                    >
+
+                        <span class="search-result-icon">
+                            ${item.icon}
+                        </span>
+
+                        <span>
+
+                            <div class="search-result-title">
+                                ${item.title}
+                            </div>
+
+                            <div class="search-result-type">
+                                ${item.type}
+                            </div>
+
+                        </span>
+
+                    </a>
+                `;
+
+                }).join("");
+
+
+            searchResults.classList.add("show");
+        }
+
+
+        searchInput.addEventListener(
+            "input",
+            function () {
+
+                performSearch(
+                    searchInput.value
+                );
+
+            }
+        );
+
+
+        /* "/" keyboard shortcut */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "/" &&
+                    document.activeElement !== searchInput &&
+                    !event.ctrlKey &&
+                    !event.altKey &&
+                    !event.metaKey
+                ) {
+
+                    event.preventDefault();
+
+                    searchInput.focus();
+
+                }
+
+            }
+        );
+
+
+        /* Close search */
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    !event.target.closest(
+                        ".student-search"
+                    )
+                ) {
+
+                    searchResults.classList.remove(
+                        "show"
+                    );
+
+                }
+
+            }
+        );
+
+    });
+
+</script>
+
+{% endblock %}

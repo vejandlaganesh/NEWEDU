@@ -1,0 +1,35 @@
+{% extends 'students/student_base.html' %}
+{% block title %}Assignments - NEWEDU{% endblock %}
+{% block student_content %}
+<h2>My Assignments</h2>
+
+<div class="card" style="margin-top: 1rem;">
+    {% if assignments %}
+        <ul>
+            {% for assignment in assignments %}
+                <li style="margin-bottom: 10px;">
+                    <strong><a href="{% url 'student_assignment_detail' assignment.id %}">{{ assignment.title }}</a></strong>
+                    <br>
+                    <span class="text-muted">Due: {{ assignment.due_date }} | {{ assignment.class_subject.subject.name }}</span>
+                    <br>
+                    {% with submission=submissions_map|dictsort:"assignment_id" %}
+                        {% for k, v in submissions_map.items %}
+                            {% if k == assignment.id %}
+                                {% if v.status == 'PENDING' %}<span style="color: #f39c12; font-weight: bold;">Status: Pending</span>
+                                {% elif v.status == 'SUBMITTED' %}<span style="color: #3498db; font-weight: bold;">Status: Submitted</span>
+                                {% elif v.status == 'GRADED' %}<span style="color: #2ecc71; font-weight: bold;">Status: Graded ({{ v.grade }}/{{ assignment.max_score }})</span>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if assignment.id not in submissions_map %}
+                            <span style="color: #f39c12; font-weight: bold;">Status: Pending</span>
+                        {% endif %}
+                    {% endwith %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have no assignments at the moment.</p>
+    {% endif %}
+</div>
+{% endblock %}

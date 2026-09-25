@@ -1,0 +1,35 @@
+{% extends 'teachers/teacher_base.html' %}
+{% block title %}Teacher Dashboard - NEWEDU{% endblock %}
+{% block teacher_content %}
+<h2>Welcome, {{ request.user.first_name }} {{ request.user.last_name }}</h2>
+<p class="text-muted">Here's an overview of your assigned academic areas for the active academic year.</p>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+    <div class="kpi-card">
+        <h4>Assigned Classes</h4>
+        <div class="value">{{ classes_count }}</div>
+    </div>
+    <div class="kpi-card">
+        <h4>Assigned Subjects</h4>
+        <div class="value">{{ subjects_count }}</div>
+    </div>
+    <div class="kpi-card">
+        <h4>Total Students</h4>
+        <div class="value">{{ student_count }}</div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+    <div class="card">
+        <h3>Quick Actions</h3>
+        <ul>
+            <li><a href="{% url 'teacher_materials' %}">Manage Learning Materials</a></li>
+            <li><a href="{% url 'teacher_students' %}">View Student List</a></li>
+        </ul>
+    </div>
+    <div class="card">
+        <h3>Recent Notifications</h3>
+        {% for n in recent_notifications %}<p><strong>{{ n.title }}</strong><br><small>{{ n.created_at|date:"M d, Y H:i" }}</small></p>{% empty %}<p class="text-muted">No recent notifications.</p>{% endfor %}
+    </div>
+</div>
+{% endblock %}

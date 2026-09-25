@@ -1,0 +1,17 @@
+{% extends 'core/admin_base.html' %}
+{% block title %}Classes - NEWEDU{% endblock %}
+{% block admin_content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>Classes</h2>
+    <a href="{% url 'admin_class_create' %}" class="btn">+ Add Class</a>
+</div>
+<div class="card" style="margin-top: 1rem;">
+    <ul>
+        {% for cls in classes %}
+            <li>{{ cls.name }} (Level: {{ cls.level }}) <a href="{% url 'admin_class_edit' cls.id %}">[Edit]</a></li>
+        {% empty %}
+            <li>No classes defined.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

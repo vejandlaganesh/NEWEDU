@@ -1,0 +1,68 @@
+{% extends 'teachers/teacher_base.html' %}
+{% block title %}{{ assignment.title }} - NEWEDU{% endblock %}
+{% block teacher_content %}
+<h2>{{ assignment.title }}</h2>
+<p class="text-muted">{{ assignment.class_subject.subject.name }} ({{ assignment.section.name }}) | Due: {{ assignment.due_date }}</p>
+
+<div class="card" style="margin-bottom: 2rem;">
+    <h3>Description</h3>
+    <p>{{ assignment.description }}</p>
+    {% if assignment.attachment %}
+        <p><strong>Attachment:</strong> <a href="{% url 'secure_download' assignment.attachment.name %}">Download</a></p>
+    {% endif %}
+</div>
+
+<h3>Submissions</h3>
+<div class="card" style="margin-top: 1rem;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+            <tr style="border-bottom: 2px solid #ddd;">
+                <th style="padding: 10px;">Student</th>
+                <th style="padding: 10px;">Status</th>
+                <th style="padding: 10px;">Submitted At</th>
+                <th style="padding: 10px;">Grade</th>
+                <th style="padding: 10px;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for enrollment in enrollments %}
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 10px;">{{ enrollment.student.user.first_name }} {{ enrollment.student.user.last_name }}</td>
+                    <td style="padding: 10px;">
+                        {% with submission=submissions_map|dictsort:"student_id" %}
+                            {% for k, v in submissions_map.items %}
+                                {% if k == enrollment.student.id %}
+                                    {% if v.status == 'PENDING' %}<span style="color: #f39c12;">Pending</span>
+                                    {% elif v.status == 'SUBMITTED' %}<span style="color: #3498db;">Submitted</span>
+                                    {% elif v.status == 'GRADED' %}<span style="color: #2ecc71;">Graded</span>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if enrollment.student.id not in submissions_map %}
+                                <span style="color: #f39c12;">Pending</span>
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                    <td style="padding: 10px;">
+                        {% for k, v in submissions_map.items %}
+                            {% if k == enrollment.student.id %}
+                                {{ v.submitted_at|default:"--" }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td style="padding: 10px;">
+                        {% for k, v in submissions_map.items %}
+                            {% if k == enrollment.student.id %}
+                                {{ v.grade|default:"--" }} / {{ assignment.max_score }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td style="padding: 10px;">
+                        <a href="{% url 'teacher_submission_grade' assignment.id enrollment.student.id %}" class="btn" style="padding: 4px 8px; font-size: 0.8em;">View / Grade</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'students/student_base.html' %}
+{% block title %}Taking Quiz: {{ quiz.title }}{% endblock %}
+{% block student_content %}
+<h2>{{ quiz.title }} (Attempt #{{ attempt.attempt_number }})</h2>
+
+<div class="card" style="background-color: #fdfdff; border-left: 4px solid #0056b3;">
+    <p style="margin: 0;"><strong>Time Remaining:</strong> <span id="timer">Loading...</span></p>
+    <p style="margin: 0; font-size: 0.9em;" class="text-muted">Must submit by {{ attempt.expires_at|time:"H:i:s" }}</p>
+</div>
+
+<div class="card" style="margin-top: 1rem;">
+    <form method="post" id="quiz-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #e0e0e0; border-radius: 5px;">
+                <p><strong>{{ forloop.counter }}. {{ field.label }}</strong></p>
+                <div style="margin-left: 15px;">
+                    {{ field }}
+                </div>
+                {% if field.errors %}
+                    <div class="text-danger">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn" style="background-color: #28a745; width: 100%; font-size: 1.1em; padding: 10px;">Submit Quiz</button>
+    </form>
+</div>
+
+<script>
+    // Simple client side timer display (server enforces deadline)
+    var expiresAt = new Date("{{ attempt.expires_at.isoformat }}").getTime();
+    
+    var x = setInterval(function() {
+        var now = new Date().getTime();
+        var distance = expiresAt - now;
+        
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("timer").innerHTML = "EXPIRED";
+            // Auto submit if expired (server will evaluate)
+            document.getElementById("quiz-form").submit();
+        } else {
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s ";
+        }
+    }, 1000);
+</script>
+{% endblock %}

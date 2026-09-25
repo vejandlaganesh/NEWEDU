@@ -1,0 +1,22 @@
+{% extends 'students/student_base.html' %}
+{% block title %}Quizzes - NEWEDU{% endblock %}
+{% block student_content %}
+<h2>Available Quizzes</h2>
+<div class="card" style="margin-top: 1rem;">
+    {% if quizzes %}
+        <ul>
+            {% for quiz in quizzes %}
+                <li style="margin-bottom: 10px;">
+                    <strong><a href="{% url 'student_quiz_detail' quiz.id %}">{{ quiz.title }}</a></strong>
+                    <br>
+                    <span class="text-muted">
+                        {{ quiz.class_subject.subject.name }} | Duration: {{ quiz.duration }} min
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No quizzes available right now.</p>
+    {% endif %}
+</div>
+{% endblock %}

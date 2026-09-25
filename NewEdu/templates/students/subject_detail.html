@@ -1,0 +1,19 @@
+{% extends 'students/student_base.html' %}
+{% block title %}{{ class_subject.subject.name }} - NEWEDU{% endblock %}
+{% block student_content %}
+<h2>{{ class_subject.subject.name }} Chapters</h2>
+<p><a href="{% url 'student_subjects' %}">&larr; Back to Subjects</a></p>
+
+<div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+    {% for chapter in class_subject.chapters.all %}
+        <div class="card">
+            <h3>Chapter {{ chapter.order }}: {{ chapter.title }}</h3>
+            <a href="{% url 'student_chapter_detail' chapter.id %}" class="btn">View Lessons</a>
+        </div>
+    {% empty %}
+        <div class="card">
+            <p>No chapters available for this subject.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

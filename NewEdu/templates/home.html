@@ -1,0 +1,3424 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NEWEDU | Smarter Way to Learn</title>
+
+    <style>
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            color: #17243d;
+
+            background: #ffffff;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+
+        /* =====================================================
+           VARIABLES
+        ===================================================== */
+
+        :root {
+
+            --blue: #2864d7;
+            --blue-dark: #143b72;
+            --blue-light: #edf5ff;
+
+            --text: #17243d;
+            --muted: #53627a;
+
+            --border: #dce6f5;
+
+            --white: #ffffff;
+
+            --green: #35b66b;
+            --purple: #7c5ce5;
+            --orange: #f5a623;
+
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+            height: 80px;
+
+            background: #ffffff;
+
+            border-bottom:
+                1px solid #e7edf5;
+
+        }
+
+
+        .nav-container {
+
+            width:
+                min(1280px,
+                    calc(100% - 60px));
+
+            height: 100%;
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+
+        /* BRAND */
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .brand-logo {
+
+            position: relative;
+
+            width: 47px;
+
+            height: 47px;
+
+        }
+
+
+        .logo-book {
+
+            position: absolute;
+
+            left: 2px;
+
+            bottom: 3px;
+
+            width: 40px;
+
+            height: 31px;
+
+            border-radius:
+                5px 12px 6px 6px;
+
+            background:
+                linear-gradient(135deg,
+                    #2864d7,
+                    #143b72);
+
+        }
+
+
+        .logo-book::after {
+
+            content: "";
+
+            position: absolute;
+
+            right: 3px;
+
+            top: 3px;
+
+            width: 19px;
+
+            height: 25px;
+
+            background: #ffffff;
+
+            border-radius:
+                9px 3px 3px 3px;
+
+        }
+
+
+        .logo-cap {
+
+            position: absolute;
+
+            top: 1px;
+
+            left: 11px;
+
+            width: 28px;
+
+            height: 17px;
+
+            background: #143b72;
+
+            clip-path:
+                polygon(50% 0,
+                    100% 50%,
+                    50% 100%,
+                    0 50%);
+
+            z-index: 5;
+
+        }
+
+
+        .logo-star {
+
+            position: absolute;
+
+            top: -5px;
+
+            right: -1px;
+
+            color: #f5b51b;
+
+            font-size: 16px;
+
+            z-index: 10;
+
+        }
+
+
+        .brand-name {
+
+            color: #143b72;
+
+            font-size: 26px;
+
+            font-weight: 800;
+
+            letter-spacing: -1px;
+
+            line-height: 1;
+
+        }
+
+
+        .brand-tagline {
+
+            margin-top: 4px;
+
+            color: #3c5272;
+
+            font-size: 10px;
+
+        }
+
+
+        /* NAV LINKS */
+
+        .nav-links {
+
+            margin-left: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 30px;
+
+        }
+
+
+        .nav-link {
+
+            position: relative;
+
+            height: 80px;
+
+            display: flex;
+
+            align-items: center;
+
+            color: #18243a;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            outline: none;
+
+        }
+
+
+        .nav-link:hover {
+
+            color: var(--blue);
+
+        }
+
+
+        .nav-link.active {
+
+            color: var(--blue);
+
+            font-weight: 600;
+
+        }
+
+
+        .nav-link.active::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            right: 0;
+
+            bottom: 0;
+
+            height: 3px;
+
+            border-radius:
+                3px 3px 0 0;
+
+            background:
+                var(--blue);
+
+        }
+
+
+        .nav-link:focus {
+
+            outline: none;
+
+        }
+
+
+        /* ACTIONS */
+
+        .nav-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-left: 27px;
+
+        }
+
+
+        .login-button {
+
+            height: 46px;
+
+            padding:
+                0 24px;
+
+            border:
+                1px solid #cbdcf3;
+
+            border-radius: 8px;
+
+            color: var(--blue);
+
+            background: #ffffff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+
+        .login-button:hover {
+
+            background: #f4f8ff;
+
+        }
+
+
+        .signup-button {
+
+            height: 46px;
+
+            padding:
+                0 26px;
+
+            border-radius: 8px;
+
+            background: var(--blue);
+
+            color: #ffffff;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            box-shadow:
+                0 6px 15px rgba(40, 100, 215, .18);
+
+        }
+
+
+        .signup-button:hover {
+
+            background: #1e57c3;
+
+        }
+
+
+        /* MOBILE MENU */
+
+        .mobile-menu {
+
+            display: none;
+
+            margin-left: auto;
+
+            border: none;
+
+            background: transparent;
+
+            cursor: pointer;
+
+            color: var(--blue-dark);
+
+        }
+
+
+        .mobile-menu svg {
+
+            width: 28px;
+
+            height: 28px;
+
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+
+            position: relative;
+
+            overflow: hidden;
+
+            min-height: 535px;
+
+            background:
+
+                radial-gradient(circle at 82% 30%,
+                    rgba(255, 255, 255, .75),
+                    transparent 28%),
+
+                linear-gradient(135deg,
+                    #f2f7ff 0%,
+                    #e7f0ff 55%,
+                    #f8fbff 100%);
+
+        }
+
+
+        .hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: -80px;
+
+            bottom: -90px;
+
+            width: 200px;
+
+            height: 200px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255, 255, 255, .55);
+
+        }
+
+
+        .hero::after {
+
+            content: "";
+
+            position: absolute;
+
+            right: -100px;
+
+            top: 20px;
+
+            width: 260px;
+
+            height: 260px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255, 255, 255, .4);
+
+        }
+
+
+        .hero-container {
+
+            width:
+                min(1280px,
+                    calc(100% - 60px));
+
+            min-height: 535px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                47% 53%;
+
+            align-items: center;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        /* HERO TEXT */
+
+        .hero-content {
+
+            padding-top: 3px;
+
+        }
+
+
+        .hero-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding:
+                8px 14px;
+
+            border-radius: 30px;
+
+            background: #e2efff;
+
+            color: #1760d8;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+        }
+
+
+        .hero-badge span {
+
+            font-size: 16px;
+
+        }
+
+
+        .hero-title {
+
+            margin-top: 24px;
+
+            color: #172844;
+
+            font-size:
+                clamp(42px,
+                    4.2vw,
+                    57px);
+
+            line-height: 1.08;
+
+            letter-spacing: -2.2px;
+
+            font-weight: 750;
+
+        }
+
+
+        .hero-title .blue {
+
+            color: var(--blue);
+
+        }
+
+
+        .hero-description {
+
+            max-width: 525px;
+
+            margin-top: 22px;
+
+            color: #425776;
+
+            font-size: 16px;
+
+            line-height: 1.65;
+
+        }
+
+
+        /* BUTTONS */
+
+        .hero-buttons {
+
+            display: flex;
+
+            gap: 16px;
+
+            margin-top: 29px;
+
+        }
+
+
+        .primary-button {
+
+            height: 51px;
+
+            padding:
+                0 25px;
+
+            border-radius: 8px;
+
+            background: var(--blue);
+
+            color: #ffffff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            font-size: 14px;
+
+            font-weight: 650;
+
+            box-shadow:
+                0 7px 18px rgba(40, 100, 215, .2);
+
+        }
+
+
+        .primary-button:hover {
+
+            background: #1f59c6;
+
+            transform: translateY(-1px);
+
+        }
+
+
+        .secondary-button {
+
+            height: 51px;
+
+            padding:
+                0 25px;
+
+            border:
+                1px solid #cbdcf3;
+
+            border-radius: 8px;
+
+            background:
+                rgba(255, 255, 255, .8);
+
+            color: var(--blue);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+
+        .secondary-button:hover {
+
+            background: #ffffff;
+
+        }
+
+
+        /* HERO STATS */
+
+        .hero-stats {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 35px;
+
+            margin-top: 30px;
+
+        }
+
+
+        .hero-stat {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+        }
+
+
+        .stat-icon {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 50%;
+
+            background: #e4efff;
+
+            color: var(--blue);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+        .stat-icon svg {
+
+            width: 20px;
+
+            height: 20px;
+
+            fill: none;
+
+            stroke: currentColor;
+
+            stroke-width: 1.8;
+
+        }
+
+
+        .stat-value {
+
+            font-size: 16px;
+
+            font-weight: 750;
+
+            color: #18243a;
+
+        }
+
+
+        .stat-label {
+
+            margin-top: 2px;
+
+            color: #5d6c82;
+
+            font-size: 11px;
+
+        }
+
+
+        /* =====================================================
+           HERO VISUAL
+        ===================================================== */
+
+        .hero-visual {
+
+            position: relative;
+
+            height: 470px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+        .visual-circle {
+
+            position: absolute;
+
+            width: 435px;
+
+            height: 435px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(circle,
+                    #f8fbff 0%,
+                    #e5efff 70%,
+                    transparent 71%);
+
+        }
+
+
+        .visual-circle::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 34px;
+
+            border:
+                1px dashed #bfd5f7;
+
+            border-radius: 50%;
+
+        }
+
+
+        /* FLOATING CARDS */
+
+        .floating-card {
+
+            position: absolute;
+
+            width: 183px;
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(219, 229, 243, .9);
+
+            border-radius: 13px;
+
+            background:
+                rgba(255, 255, 255, .96);
+
+            box-shadow:
+                0 12px 28px rgba(55, 92, 140, .1);
+
+            display: flex;
+
+            gap: 11px;
+
+            z-index: 15;
+
+        }
+
+
+        .floating-card.one {
+
+            left: 0;
+
+            top: 73px;
+
+        }
+
+
+        .floating-card.two {
+
+            right: 0;
+
+            top: 76px;
+
+        }
+
+
+        .floating-card.three {
+
+            left: -17px;
+
+            top: 258px;
+
+        }
+
+
+        .floating-card.four {
+
+            right: -16px;
+
+            top: 258px;
+
+        }
+
+
+        .floating-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            flex-shrink: 0;
+
+            border-radius: 9px;
+
+            color: #ffffff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+        .floating-icon.blue {
+            background: #2870e7;
+        }
+
+        .floating-icon.purple {
+            background: #8063e6;
+        }
+
+        .floating-icon.green {
+            background: #36b76b;
+        }
+
+        .floating-icon.orange {
+            background: #f5a623;
+        }
+
+
+        .floating-icon svg {
+
+            width: 17px;
+
+            height: 17px;
+
+            fill: none;
+
+            stroke: currentColor;
+
+            stroke-width: 1.8;
+
+        }
+
+
+        .floating-title {
+
+            color: #17243c;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .floating-text {
+
+            margin-top: 4px;
+
+            color: #68768d;
+
+            font-size: 10px;
+
+            line-height: 1.45;
+
+        }
+
+
+        /* =====================================================
+           STUDENT ILLUSTRATION
+        ===================================================== */
+
+        .student {
+
+            position: absolute;
+
+            width: 470px;
+
+            height: 420px;
+
+            bottom: 0;
+
+            z-index: 10;
+
+        }
+
+
+        /* HEAD */
+
+        .student-head {
+
+            position: absolute;
+
+            left: 201px;
+
+            top: 43px;
+
+            width: 99px;
+
+            height: 99px;
+
+            border-radius: 50%;
+
+            background: #efb88f;
+
+            z-index: 6;
+
+        }
+
+
+        .student-hair {
+
+            position: absolute;
+
+            left: 187px;
+
+            top: 25px;
+
+            width: 127px;
+
+            height: 137px;
+
+            border-radius:
+                65px 65px 42px 47px;
+
+            background: #17294b;
+
+            z-index: 8;
+
+        }
+
+
+        .student-hair::after {
+
+            content: "";
+
+            position: absolute;
+
+            right: -2px;
+
+            bottom: 9px;
+
+            width: 45px;
+
+            height: 104px;
+
+            border-radius:
+                0 0 45px 45px;
+
+            background: #17294b;
+
+        }
+
+
+        .student-neck {
+
+            position: absolute;
+
+            left: 227px;
+
+            top: 127px;
+
+            width: 42px;
+
+            height: 48px;
+
+            border-radius: 12px;
+
+            background: #e6a77e;
+
+            z-index: 3;
+
+        }
+
+
+        .student-body {
+
+            position: absolute;
+
+            left: 156px;
+
+            top: 137px;
+
+            width: 171px;
+
+            height: 190px;
+
+            border-radius:
+                80px 80px 40px 40px;
+
+            background:
+                linear-gradient(135deg,
+                    #3577e5,
+                    #2258bf);
+
+            z-index: 2;
+
+        }
+
+
+        /* FACE */
+
+        .face {
+
+            position: absolute;
+
+            left: 215px;
+
+            top: 64px;
+
+            width: 72px;
+
+            height: 75px;
+
+            z-index: 12;
+
+        }
+
+
+        .eye {
+
+            position: absolute;
+
+            top: 26px;
+
+            width: 7px;
+
+            height: 9px;
+
+            border-radius: 50%;
+
+            background: #26364f;
+
+        }
+
+
+        .eye.left {
+            left: 16px;
+        }
+
+
+        .eye.right {
+            right: 16px;
+        }
+
+
+        .nose {
+
+            position: absolute;
+
+            left: 33px;
+
+            top: 38px;
+
+            width: 8px;
+
+            height: 8px;
+
+            border-right:
+                1.5px solid #d28d6d;
+
+            border-bottom:
+                1.5px solid #d28d6d;
+
+            transform: rotate(30deg);
+
+        }
+
+
+        .smile {
+
+            position: absolute;
+
+            left: 25px;
+
+            top: 52px;
+
+            width: 22px;
+
+            height: 10px;
+
+            border-bottom:
+                2px solid #d16c66;
+
+            border-radius: 50%;
+
+        }
+
+
+        /* ARMS */
+
+        .arm {
+
+            position: absolute;
+
+            width: 42px;
+
+            height: 112px;
+
+            border-radius: 30px;
+
+            background: #2864d7;
+
+            z-index: 5;
+
+        }
+
+
+        .arm.left {
+
+            left: 138px;
+
+            top: 178px;
+
+            transform:
+                rotate(25deg);
+
+        }
+
+
+        .arm.right {
+
+            left: 306px;
+
+            top: 179px;
+
+            transform:
+                rotate(-28deg);
+
+        }
+
+
+        .hand {
+
+            position: absolute;
+
+            width: 29px;
+
+            height: 29px;
+
+            border-radius: 50%;
+
+            background: #efb78d;
+
+            z-index: 9;
+
+        }
+
+
+        .hand.left {
+
+            left: 121px;
+
+            top: 270px;
+
+        }
+
+
+        .hand.right {
+
+            left: 329px;
+
+            top: 271px;
+
+        }
+
+
+        /* LAPTOP */
+
+        .laptop {
+
+            position: absolute;
+
+            left: 111px;
+
+            top: 235px;
+
+            width: 295px;
+
+            height: 180px;
+
+            z-index: 20;
+
+        }
+
+
+        .laptop-screen {
+
+            position: absolute;
+
+            left: 25px;
+
+            top: 0;
+
+            width: 245px;
+
+            height: 155px;
+
+            border:
+                8px solid #173f78;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 8px 17px rgba(33, 68, 110, .16);
+
+        }
+
+
+        .screen-cap {
+
+            position: absolute;
+
+            left: 61px;
+
+            top: 36px;
+
+            width: 44px;
+
+            height: 26px;
+
+            background: #2864d7;
+
+            clip-path:
+                polygon(50% 0,
+                    100% 50%,
+                    50% 100%,
+                    0 50%);
+
+        }
+
+
+        .screen-lines {
+
+            position: absolute;
+
+            right: 22px;
+
+            top: 36px;
+
+            width: 76px;
+
+        }
+
+
+        .screen-line {
+
+            width: 76px;
+
+            height: 7px;
+
+            margin-bottom: 10px;
+
+            border-radius: 6px;
+
+            background: #e0e6ee;
+
+        }
+
+
+        .screen-line:nth-child(2) {
+
+            width: 60px;
+
+        }
+
+
+        .screen-line:nth-child(3) {
+
+            width: 67px;
+
+        }
+
+
+        .laptop-base {
+
+            position: absolute;
+
+            left: 0;
+
+            bottom: 2px;
+
+            width: 295px;
+
+            height: 23px;
+
+            border-radius:
+                5px 5px 19px 19px;
+
+            background: #163e77;
+
+        }
+
+
+        .trackpad {
+
+            position: absolute;
+
+            left: 112px;
+
+            bottom: 10px;
+
+            width: 70px;
+
+            height: 4px;
+
+            border-radius: 4px;
+
+            background: #8090a7;
+
+        }
+
+
+        /* PLANT */
+
+        .plant {
+
+            position: absolute;
+
+            left: 43px;
+
+            bottom: 27px;
+
+            width: 68px;
+
+            height: 132px;
+
+            z-index: 17;
+
+        }
+
+
+        .plant-stem {
+
+            position: absolute;
+
+            left: 32px;
+
+            bottom: 36px;
+
+            width: 5px;
+
+            height: 76px;
+
+            border-radius: 5px;
+
+            background: #48974e;
+
+        }
+
+
+        .leaf {
+
+            position: absolute;
+
+            width: 28px;
+
+            height: 45px;
+
+            border-radius:
+                100% 0 100% 0;
+
+            background: #43a451;
+
+        }
+
+
+        .leaf.one {
+
+            left: 3px;
+
+            bottom: 71px;
+
+            transform:
+                rotate(-39deg);
+
+        }
+
+
+        .leaf.two {
+
+            left: 30px;
+
+            bottom: 89px;
+
+            transform:
+                rotate(27deg);
+
+        }
+
+
+        .leaf.three {
+
+            left: -3px;
+
+            bottom: 45px;
+
+            transform:
+                rotate(-57deg) scale(.75);
+
+        }
+
+
+        .plant-pot {
+
+            position: absolute;
+
+            left: 10px;
+
+            bottom: 0;
+
+            width: 47px;
+
+            height: 47px;
+
+            border-radius:
+                3px 3px 15px 15px;
+
+            background: #f0f2f3;
+
+            box-shadow:
+                0 5px 9px rgba(0, 0, 0, .07);
+
+        }
+
+
+        .plant-pot::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: -3px;
+
+            top: -5px;
+
+            width: 53px;
+
+            height: 10px;
+
+            border-radius: 50%;
+
+            background: #dce1e5;
+
+        }
+
+
+        /* BOOKS */
+
+        .books {
+
+            position: absolute;
+
+            right: 2px;
+
+            bottom: 30px;
+
+            width: 110px;
+
+            height: 80px;
+
+            z-index: 18;
+
+        }
+
+
+        .book {
+
+            position: absolute;
+
+            height: 23px;
+
+            border-radius: 6px;
+
+        }
+
+
+        .book.one {
+
+            width: 102px;
+
+            bottom: 44px;
+
+            background: #2864d7;
+
+        }
+
+
+        .book.two {
+
+            width: 108px;
+
+            left: 5px;
+
+            bottom: 22px;
+
+            background: #f2b52b;
+
+        }
+
+
+        .book.three {
+
+            width: 96px;
+
+            bottom: 0;
+
+            background: #ffffff;
+
+            border:
+                2px solid #d7e0eb;
+
+        }
+
+
+        /* PENCIL CUP */
+
+        .pencil-cup {
+
+            position: absolute;
+
+            right: 44px;
+
+            bottom: 28px;
+
+            width: 43px;
+
+            height: 56px;
+
+            border-radius:
+                4px 4px 13px 13px;
+
+            background: #f4b322;
+
+            z-index: 22;
+
+        }
+
+
+        .pencil {
+
+            position: absolute;
+
+            top: -49px;
+
+            width: 6px;
+
+            height: 72px;
+
+            border-radius: 5px;
+
+        }
+
+
+        .pencil.blue {
+
+            left: 11px;
+
+            background: #2864d7;
+
+            transform: rotate(13deg);
+
+        }
+
+
+        .pencil.orange {
+
+            left: 23px;
+
+            background: #ef9b1f;
+
+            transform: rotate(27deg);
+
+        }
+
+
+        /* DESK */
+
+        .desk {
+
+            position: absolute;
+
+            left: 42px;
+
+            bottom: 5px;
+
+            width: 395px;
+
+            height: 22px;
+
+            border-radius: 50%;
+
+            background: #d89a51;
+
+            z-index: 16;
+
+        }
+
+
+        /* =====================================================
+           FEATURES
+        ===================================================== */
+
+        .features-section {
+
+            padding:
+                44px 20px 60px;
+
+            background: #ffffff;
+
+        }
+
+
+        .section-heading {
+
+            text-align: center;
+
+            max-width: 700px;
+
+            margin:
+                0 auto 30px;
+
+        }
+
+
+        .section-heading h2 {
+
+            color: #172844;
+
+            font-size: 29px;
+
+            letter-spacing: -.6px;
+
+            font-weight: 750;
+
+        }
+
+
+        .section-heading p {
+
+            margin-top: 8px;
+
+            color: #5a6980;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+        }
+
+
+        .feature-grid {
+
+            width:
+                min(1200px,
+                    100%);
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+
+        }
+
+
+        .feature-card {
+
+            min-height: 145px;
+
+            padding: 23px 20px;
+
+            border:
+                1px solid #e0e8f3;
+
+            border-radius: 14px;
+
+            background: #ffffff;
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 14px;
+
+            box-shadow:
+                0 6px 20px rgba(35, 69, 110, .05);
+
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
+
+        }
+
+
+        .feature-card:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 12px 27px rgba(35, 69, 110, .09);
+
+        }
+
+
+        .feature-icon {
+
+            width: 48px;
+
+            height: 48px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #ffffff;
+
+        }
+
+
+        .feature-icon.blue {
+            background: #2864d7;
+        }
+
+        .feature-icon.green {
+            background: #35b66b;
+        }
+
+        .feature-icon.purple {
+            background: #7c5ce5;
+        }
+
+        .feature-icon.orange {
+            background: #f5a623;
+        }
+
+
+        .feature-icon svg {
+
+            width: 23px;
+
+            height: 23px;
+
+            fill: none;
+
+            stroke: currentColor;
+
+            stroke-width: 1.7;
+
+        }
+
+
+        .feature-card h3 {
+
+            color: #17243d;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+        }
+
+
+        .feature-card p {
+
+            margin-top: 7px;
+
+            color: #627087;
+
+            font-size: 12px;
+
+            line-height: 1.55;
+
+        }
+
+
+        /* =====================================================
+           COURSES
+        ===================================================== */
+
+        .courses-section {
+
+            padding:
+                75px 20px;
+
+            background:
+                linear-gradient(180deg,
+                    #f6f9ff,
+                    #ffffff);
+
+        }
+
+
+        .section-badge {
+
+            display: inline-flex;
+
+            padding:
+                7px 14px;
+
+            border-radius: 20px;
+
+            background: #e7f0ff;
+
+            color: var(--blue);
+
+            font-size: 12px;
+
+            font-weight: 650;
+
+        }
+
+
+        .course-grid {
+
+            width:
+                min(1050px,
+                    100%);
+
+            margin: 35px auto 0;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 22px;
+
+        }
+
+
+        .course-card {
+
+            padding: 29px;
+
+            min-height: 190px;
+
+            border:
+                1px solid #dfe8f5;
+
+            border-radius: 15px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 8px 25px rgba(42, 76, 118, .06);
+
+        }
+
+
+        .course-card span {
+
+            color: var(--blue);
+
+            font-size: 11px;
+
+            font-weight: 750;
+
+            letter-spacing: .7px;
+
+        }
+
+
+        .course-card h3 {
+
+            margin-top: 11px;
+
+            color: #172844;
+
+            font-size: 20px;
+
+        }
+
+
+        .course-card p {
+
+            margin-top: 10px;
+
+            color: #617087;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* =====================================================
+           TEACHERS
+        ===================================================== */
+
+        .teachers-section {
+
+            padding:
+                80px 20px;
+
+            background:
+
+                radial-gradient(circle at 90% 50%,
+                    rgba(214, 229, 255, .7),
+                    transparent 30%),
+
+                #edf5ff;
+
+        }
+
+
+        .teachers-content {
+
+            width:
+                min(1000px,
+                    100%);
+
+            margin: auto;
+
+            text-align: center;
+
+        }
+
+
+        .teachers-content h2 {
+
+            margin-top: 17px;
+
+            color: #172844;
+
+            font-size: 34px;
+
+            letter-spacing: -1px;
+
+        }
+
+
+        .teachers-content p {
+
+            max-width: 680px;
+
+            margin:
+                15px auto 25px;
+
+            color: #526681;
+
+            font-size: 15px;
+
+            line-height: 1.7;
+
+        }
+
+
+        /* =====================================================
+           PRICING
+        ===================================================== */
+
+        .pricing-section {
+
+            padding:
+                80px 20px;
+
+            background: #ffffff;
+
+        }
+
+
+        .pricing-card {
+
+            width:
+                min(420px,
+                    100%);
+
+            margin: 35px auto 0;
+
+            padding: 35px;
+
+            text-align: center;
+
+            border:
+                1px solid #dce6f4;
+
+            border-radius: 17px;
+
+            background:
+
+                linear-gradient(145deg,
+                    #ffffff,
+                    #f5f9ff);
+
+            box-shadow:
+                0 15px 35px rgba(40, 75, 120, .08);
+
+        }
+
+
+        .pricing-card h3 {
+
+            color: #172844;
+
+            font-size: 22px;
+
+        }
+
+
+        .price {
+
+            margin-top: 13px;
+
+            color: var(--blue);
+
+            font-size: 38px;
+
+            font-weight: 800;
+
+        }
+
+
+        .pricing-card p {
+
+            margin:
+                12px auto 23px;
+
+            max-width: 320px;
+
+            color: #617087;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* =====================================================
+           CONTACT
+        ===================================================== */
+
+        .contact-section {
+
+            padding:
+                75px 20px;
+
+            background:
+                #f5f9ff;
+
+            text-align: center;
+
+        }
+
+
+        .contact-section h2 {
+
+            color: #172844;
+
+            font-size: 31px;
+
+        }
+
+
+        .contact-section p {
+
+            margin-top: 10px;
+
+            color: #5d6d84;
+
+            font-size: 14px;
+
+        }
+
+
+        .contact-button {
+
+            display: inline-flex;
+
+            margin-top: 24px;
+
+            height: 48px;
+
+            padding:
+                0 25px;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background: var(--blue);
+
+            color: #ffffff;
+
+            font-size: 14px;
+
+            font-weight: 650;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+
+            padding:
+                32px 20px;
+
+            background: #143b72;
+
+            color: #ffffff;
+
+        }
+
+
+        .footer-container {
+
+            width:
+                min(1200px,
+                    100%);
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 25px;
+
+        }
+
+
+        .footer-brand {
+
+            font-size: 20px;
+
+            font-weight: 750;
+
+        }
+
+
+        .footer-copy {
+
+            margin-top: 5px;
+
+            color: #c9d8ec;
+
+            font-size: 11px;
+
+        }
+
+
+        .footer-links {
+
+            display: flex;
+
+            gap: 22px;
+
+            color: #dce7f6;
+
+            font-size: 12px;
+
+        }
+
+
+        .footer-links a:hover {
+
+            color: #ffffff;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .nav-links {
+
+                gap: 18px;
+
+            }
+
+            .nav-link {
+
+                font-size: 13px;
+
+            }
+
+            .hero-container {
+
+                width:
+                    min(100% - 40px,
+                        1000px);
+
+            }
+
+            .hero-visual {
+
+                transform:
+                    scale(.9);
+
+            }
+
+            .feature-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 900px) {
+
+            .nav-links,
+            .nav-actions {
+
+                display: none;
+
+            }
+
+            .mobile-menu {
+
+                display: block;
+
+            }
+
+            .hero-container {
+
+                grid-template-columns: 1fr;
+
+                text-align: center;
+
+                padding-top: 50px;
+
+            }
+
+            .hero-title,
+            .hero-description {
+
+                margin-left: auto;
+
+                margin-right: auto;
+
+            }
+
+            .hero-buttons,
+            .hero-stats {
+
+                justify-content: center;
+
+            }
+
+            .hero-visual {
+
+                margin-top: 20px;
+
+            }
+
+            .course-grid {
+
+                grid-template-columns:
+                    1fr;
+
+                max-width: 500px;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+
+                height: 70px;
+
+            }
+
+            .nav-container {
+
+                width:
+                    calc(100% - 30px);
+
+            }
+
+            .hero {
+
+                min-height: auto;
+
+            }
+
+            .hero-container {
+
+                width:
+                    calc(100% - 30px);
+
+                min-height: auto;
+
+            }
+
+            .hero-title {
+
+                font-size: 38px;
+
+                letter-spacing: -1.5px;
+
+            }
+
+            .hero-description {
+
+                font-size: 14px;
+
+            }
+
+            .hero-buttons {
+
+                flex-direction: column;
+
+                max-width: 330px;
+
+                margin-left: auto;
+
+                margin-right: auto;
+
+            }
+
+            .hero-stats {
+
+                flex-wrap: wrap;
+
+                gap: 18px;
+
+            }
+
+            .hero-visual {
+
+                height: 390px;
+
+                transform:
+                    scale(.67);
+
+                transform-origin:
+                    top center;
+
+                margin-bottom: -70px;
+
+            }
+
+            .floating-card {
+
+                display: none;
+
+            }
+
+            .features-section,
+            .courses-section,
+            .teachers-section,
+            .pricing-section {
+
+                padding-top: 55px;
+
+                padding-bottom: 55px;
+
+            }
+
+            .feature-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .footer-container {
+
+                flex-direction: column;
+
+                text-align: center;
+
+            }
+
+            .footer-links {
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+     NAVIGATION
+========================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+
+            <!-- LOGO -->
+
+            <a href="{% url 'home' %}" class="brand">
+
+                <div class="brand-logo">
+
+                    <div class="logo-star">
+                        ★
+                    </div>
+
+                    <div class="logo-cap"></div>
+
+                    <div class="logo-book"></div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="brand-name">
+                        NEWEDU
+                    </div>
+
+                    <div class="brand-tagline">
+                        Learning&nbsp;&nbsp;•&nbsp;&nbsp;
+                        Growth&nbsp;&nbsp;•&nbsp;&nbsp;
+                        Success
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <!-- NAVIGATION -->
+
+            <nav class="nav-links">
+
+                <a href="{% url 'home' %}" class="nav-link active" data-section="home">
+                    Home
+                </a>
+
+                <a href="#about" class="nav-link" data-section="about">
+                    About
+                </a>
+
+                <a href="#features" class="nav-link" data-section="features">
+                    Features
+                </a>
+
+                <a href="#courses" class="nav-link" data-section="courses">
+                    Courses
+                </a>
+
+                <a href="#teachers" class="nav-link" data-section="teachers">
+                    Teachers
+                </a>
+
+                <a href="#pricing" class="nav-link" data-section="pricing">
+                    Pricing
+                </a>
+
+                <a href="#contact" class="nav-link" data-section="contact">
+                    Contact
+                </a>
+
+            </nav>
+
+
+            <!-- LOGIN / SIGNUP -->
+
+            <div class="nav-actions">
+
+                <a href="{% url 'accounts:login' %}" class="login-button">
+
+                    <svg width="17" height="17" viewBox="0 0 32 32" fill="none" stroke="currentColor"
+                        stroke-width="1.8">
+
+                        <path d="M18 7l8 9-8 9" />
+                        <path d="M26 16H5" />
+
+                    </svg>
+
+                    Login
+
+                </a>
+
+
+                <a href="{% url 'accounts:register' %}" class="signup-button">
+                    Sign Up
+                </a>
+
+            </div>
+
+
+            <!-- MOBILE -->
+
+            <button class="mobile-menu" id="mobileMenu" aria-label="Menu">
+
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+
+                    <path d="M5 8h22" />
+                    <path d="M5 16h22" />
+                    <path d="M5 24h22" />
+
+                </svg>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================================
+     HERO
+========================================================== -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-container">
+
+
+            <!-- LEFT -->
+
+            <div class="hero-content">
+
+
+                <div class="hero-badge">
+
+                    <span>
+                        ★
+                    </span>
+
+                    The Smarter Way to Learn
+
+                </div>
+
+
+                <h1 class="hero-title">
+
+                    Empowering Students.<br>
+
+                    Enabling
+                    <span class="blue">
+                        Futures.
+                    </span>
+
+                </h1>
+
+
+                <p class="hero-description">
+
+                    NEWEDU is your all-in-one platform
+                    for smart learning, progress tracking,
+                    assignments, quizzes, and more.
+                    Learn today, grow tomorrow!
+
+                </p>
+
+
+                <div class="hero-buttons">
+
+                    <a href="{% url 'accounts:register' %}" class="primary-button">
+
+                        Get Started for Free
+
+                        <svg width="17" height="17" viewBox="0 0 32 32" fill="none" stroke="currentColor"
+                            stroke-width="2">
+
+                            <path d="M16 5v13" />
+                            <path d="M11 14l5 5 5-5" />
+                            <path d="M6 26h20" />
+
+                        </svg>
+
+                    </a>
+
+
+                    <a href="#features" class="secondary-button">
+
+                        <svg width="17" height="17" viewBox="0 0 32 32" fill="none" stroke="currentColor"
+                            stroke-width="2">
+
+                            <circle cx="16" cy="16" r="12" />
+
+                            <path d="M13 11l7 5-7 5z" />
+
+                        </svg>
+
+                        Watch Demo
+
+                    </a>
+
+                </div>
+
+
+                <!-- STATS -->
+
+                <div class="hero-stats">
+
+
+                    <div class="hero-stat">
+
+                        <div class="stat-icon">
+
+                            <svg viewBox="0 0 32 32">
+
+                                <circle cx="12" cy="11" r="4" />
+
+                                <circle cx="22" cy="12" r="3" />
+
+                                <path d="M4 26c0-5 3-8 8-8s8 3 8 8" />
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <div class="stat-value">
+                                10K+
+                            </div>
+
+                            <div class="stat-label">
+                                Happy Students
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hero-stat">
+
+                        <div class="stat-icon">
+
+                            <svg viewBox="0 0 32 32">
+
+                                <path d="M5 6h8a5 5 0 0 1 5 5v15a5 5 0 0 0-5-3H5z" />
+
+                                <path d="M27 6h-8a5 5 0 0 0-5 5v15a5 5 0 0 1 5-3h8z" />
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <div class="stat-value">
+                                500+
+                            </div>
+
+                            <div class="stat-label">
+                                Courses
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hero-stat">
+
+                        <div class="stat-icon">
+
+                            <svg viewBox="0 0 32 32">
+
+                                <path d="M16 4l3.5 7 7.5 1-5.5 5.5 1.3 7.5L16 21.5 9.2 25l1.3-7.5L5 12l7.5-1z" />
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <div class="stat-value">
+                                98%
+                            </div>
+
+                            <div class="stat-label">
+                                Success Rate
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RIGHT -->
+            <div class="hero-visual" style="display: flex; justify-content: center; align-items: center; position: relative;">
+                <img src="{% static 'images/hero_student.jpg' %}" alt="Student Learning" style="max-width: 105%; height: auto; border-radius: 24px; box-shadow: 0 25px 50px rgba(23,40,68,0.15); z-index: 10; position: relative;">
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- =========================================================
+     FEATURES
+========================================================== -->
+
+    <section class="features-section" id="features">
+
+        <div class="section-heading">
+
+            <h2>
+                Everything You Need to Succeed
+            </h2>
+
+            <p>
+                Powerful tools and features designed
+                to enhance your learning experience
+            </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon blue">
+
+                    <svg viewBox="0 0 32 32">
+
+                        <path d="M5 6h8a5 5 0 0 1 5 5v15a5 5 0 0 0-5-3H5z" />
+
+                        <path d="M27 6h-8a5 5 0 0 0-5 5v15a5 5 0 0 1 5-3h8z" />
+
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Smart Learning
+                    </h3>
+
+                    <p>
+                        Access personalized study
+                        materials and resources
+                        tailored to your needs.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon green">
+
+                    <svg viewBox="0 0 32 32">
+
+                        <path d="M5 27V17" />
+                        <path d="M12 27V11" />
+                        <path d="M19 27V14" />
+                        <path d="M26 27V6" />
+                        <path d="M3 27h27" />
+
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Track Progress
+                    </h3>
+
+                    <p>
+                        Monitor your academic progress
+                        with detailed analytics
+                        and reports.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon purple">
+
+                    <svg viewBox="0 0 32 32">
+
+                        <path d="M7 6h18v20H7z" />
+
+                        <path d="M11 11h10" />
+
+                        <path d="M11 16h10" />
+
+                        <path d="M11 21h6" />
+
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Assignments
+                    </h3>
+
+                    <p>
+                        Get assignments, submit
+                        on time, and keep track
+                        of your deadlines.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon orange">
+
+                    <svg viewBox="0 0 32 32">
+
+                        <path d="M16 4l3.5 7 7.5 1-5.5 5.5 1.3 7.5L16 21.5 9.2 25l1.3-7.5L5 12l7.5-1z" />
+
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Quizzes &amp; Tests
+                    </h3>
+
+                    <p>
+                        Test your knowledge with
+                        interactive quizzes and
+                        instant results.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+     COURSES
+========================================================== -->
+
+    <section class="courses-section" id="courses">
+
+        <div class="section-heading">
+
+            <span class="section-badge">
+                Learning Programs
+            </span>
+
+            <h2 style="margin-top: 15px;">
+                Explore Our Courses
+            </h2>
+
+            <p>
+                Structured learning designed for
+                Classes 6–12.
+            </p>
+
+        </div>
+
+
+        <div class="course-grid">
+
+
+            <div class="course-card">
+
+                <span>
+                    CLASS 6–8
+                </span>
+
+                <h3>
+                    Foundation Learning
+                </h3>
+
+                <p>
+                    Build strong fundamentals across
+                    Mathematics, Science and Languages.
+                </p>
+
+            </div>
+
+
+            <div class="course-card">
+
+                <span>
+                    CLASS 9–10
+                </span>
+
+                <h3>
+                    Academic Excellence
+                </h3>
+
+                <p>
+                    Strengthen concepts and prepare
+                    for important examinations.
+                </p>
+
+            </div>
+
+
+            <div class="course-card">
+
+                <span>
+                    CLASS 11–12
+                </span>
+
+                <h3>
+                    Advanced Learning
+                </h3>
+
+                <p>
+                    Focused subject learning and
+                    examination preparation.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+     TEACHERS
+========================================================== -->
+
+    <section class="teachers-section" id="teachers">
+
+        <div class="teachers-content">
+
+            <span class="section-badge">
+                For Teachers
+            </span>
+
+            <h2>
+                Teach Smarter with NEWEDU
+            </h2>
+
+            <p>
+                Manage classes, create learning materials,
+                assignments, quizzes, reports and
+                AI-powered educational content from one place.
+            </p>
+
+            <a href="{% url 'accounts:register' %}" class="primary-button" style="display:inline-flex;">
+                Join NEWEDU
+            </a>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+     PRICING
+========================================================== -->
+
+    <section class="pricing-section" id="pricing">
+
+        <div class="section-heading">
+
+            <span class="section-badge">
+                Simple &amp; Accessible
+            </span>
+
+            <h2 style="margin-top: 15px;">
+                Learning That Fits Everyone
+            </h2>
+
+            <p>
+                Start learning with NEWEDU and
+                grow at your own pace.
+            </p>
+
+        </div>
+
+
+        <div class="pricing-card">
+
+            <h3>
+                NEWEDU Learning
+            </h3>
+
+            <div class="price">
+                Free
+            </div>
+
+            <p>
+                Access your learning experience
+                and explore the NEWEDU platform.
+            </p>
+
+            <a href="{% url 'accounts:register' %}" class="primary-button">
+                Get Started
+            </a>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+     CONTACT
+========================================================== -->
+
+    <section class="contact-section" id="contact">
+
+        <h2>
+            Ready to Start Learning?
+        </h2>
+
+        <p>
+            Join NEWEDU and begin your learning journey today.
+        </p>
+
+        <a href="{% url 'accounts:register' %}" class="contact-button">
+            Create Your Account
+        </a>
+
+    </section>
+
+
+
+    <!-- =========================================================
+     FOOTER
+========================================================== -->
+
+    <footer>
+
+        <div class="footer-container">
+
+
+            <div>
+
+                <div class="footer-brand">
+                    NEWEDU
+                </div>
+
+                <div class="footer-copy">
+                    © 2026 NEWEDU. All rights reserved.
+                </div>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="#about">
+                    About
+                </a>
+
+                <a href="#features">
+                    Features
+                </a>
+
+                <a href="#courses">
+                    Courses
+                </a>
+
+                <a href="#teachers">
+                    Teachers
+                </a>
+
+                <a href="#pricing">
+                    Pricing
+                </a>
+
+                <a href="#contact">
+                    Contact
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =========================================================
+     JAVASCRIPT
+========================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                const navLinks =
+                    document.querySelectorAll(
+                        ".nav-link"
+                    );
+
+
+                const sections =
+                    document.querySelectorAll(
+                        "section[id]"
+                    );
+
+
+                /*
+                 * Navigation active state
+                 */
+
+                function setActive(
+                    sectionId
+                ) {
+
+                    navLinks.forEach(
+                        function (link) {
+
+                            link.classList.remove(
+                                "active"
+                            );
+
+                            if (
+                                link.dataset.section ===
+                                sectionId
+                            ) {
+
+                                link.classList.add(
+                                    "active"
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /*
+                 * Scroll-based active navigation
+                 */
+
+                const observer =
+                    new IntersectionObserver(
+                        function (entries) {
+
+                            entries.forEach(
+                                function (entry) {
+
+                                    if (
+                                        entry.isIntersecting
+                                    ) {
+
+                                        setActive(
+                                            entry.target.id
+                                        );
+
+                                    }
+
+                                }
+                            );
+
+                        },
+                        {
+                            rootMargin:
+                                "-35% 0px -55% 0px"
+                        }
+                    );
+
+
+                sections.forEach(
+                    function (section) {
+
+                        observer.observe(
+                            section
+                        );
+
+                    }
+                );
+
+
+                /*
+                 * Navigation click
+                 */
+
+                navLinks.forEach(
+                    function (link) {
+
+                        link.addEventListener(
+                            "click",
+                            function () {
+
+                                navLinks.forEach(
+                                    function (item) {
+
+                                        item.classList.remove(
+                                            "active"
+                                        );
+
+                                    }
+                                );
+
+                                this.classList.add(
+                                    "active"
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+
+                /*
+                 * Mobile menu
+                 */
+
+                const mobileMenu =
+                    document.getElementById(
+                        "mobileMenu"
+                    );
+
+
+                mobileMenu.addEventListener(
+                    "click",
+                    function () {
+
+                        alert(
+                            "Mobile navigation"
+                        );
+
+                    }
+                );
+
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

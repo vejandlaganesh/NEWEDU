@@ -1,0 +1,27 @@
+{% extends 'teachers/teacher_base.html' %}
+{% block title %}AI Teacher Tools - NEWEDU{% endblock %}
+{% block teacher_content %}
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2>AI Teacher Tools</h2>
+</div>
+
+<p class="text-muted" style="margin-bottom: 2rem;">Generate educational content and assessments using our AI engine. All generated content must be reviewed before saving as a draft.</p>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+    
+    <div class="card" style="display: flex; flex-direction: column;">
+        <h3>Content Generator</h3>
+        <p class="text-muted" style="margin-bottom: 1.5rem; flex-grow: 1;">Generate lessons, explanations, practice questions, summaries, and worksheets tailored to your classes.</p>
+        <a href="{% url 'teacher_ai_content' %}" class="btn btn-primary" style="text-align: center; display: inline-block; padding: 0.75rem 1rem; border-radius: 4px; background: #2864d7; color: white; text-decoration: none; font-weight: 600;">Open Content Generator</a>
+    </div>
+
+    <div class="card" style="display: flex; flex-direction: column;">
+        <h3>Quiz Generator</h3>
+        <p class="text-muted" style="margin-bottom: 1.5rem; flex-grow: 1;">Generate multiple-choice quizzes and assessments with explanations for the correct answers.</p>
+        <a href="{% url 'teacher_ai_quiz' %}" class="btn btn-primary" style="text-align: center; display: inline-block; padding: 0.75rem 1rem; border-radius: 4px; background: #2864d7; color: white; text-decoration: none; font-weight: 600;">Open Quiz Generator</a>
+    </div>
+
+</div>
+
+{% endblock %}

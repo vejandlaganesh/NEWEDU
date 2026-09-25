@@ -1,0 +1,45 @@
+{% extends 'parents/parent_base.html' %}
+{% block title %}Assignments - NEWEDU{% endblock %}
+{% block parent_content %}
+<h2>Assignments for {{ selected_child.user.first_name }}</h2>
+
+<div class="card" style="margin-top: 1rem;">
+    {% if assignments %}
+        <ul>
+            {% for assignment in assignments %}
+                <li style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
+                    <strong>{{ assignment.title }}</strong>
+                    <br>
+                    <span class="text-muted">Due: {{ assignment.due_date }} | {{ assignment.class_subject.subject.name }}</span>
+                    <br>
+                    {% with submission=submissions_map|dictsort:"assignment_id" %}
+                        {% for k, v in submissions_map.items %}
+                            {% if k == assignment.id %}
+                                <div style="margin-top: 5px;">
+                                    <strong>Status:</strong> 
+                                    {% if v.status == 'PENDING' %}<span style="color: #f39c12;">Pending</span>
+                                    {% elif v.status == 'SUBMITTED' %}<span style="color: #3498db;">Submitted</span>
+                                    {% elif v.status == 'GRADED' %}<span style="color: #2ecc71;">Graded ({{ v.grade }}/{{ assignment.max_score }})</span>
+                                    {% endif %}
+                                </div>
+                                {% if v.status == 'GRADED' and v.feedback %}
+                                    <div style="background: #f9f9f9; padding: 10px; margin-top: 5px; border-left: 3px solid #2ecc71;">
+                                        <strong>Teacher Feedback:</strong> {{ v.feedback }}
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if assignment.id not in submissions_map %}
+                            <div style="margin-top: 5px;">
+                                <strong>Status:</strong> <span style="color: #f39c12;">Pending</span>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>{{ selected_child.user.first_name }} has no assignments at the moment.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,1983 @@
+{% extends 'students/student_base.html' %}
+
+{% block title %}Student Dashboard - NEWEDU{% endblock %}
+
+{% block student_content %}
+
+<style>
+    /* =========================================================
+       NEWEDU STUDENT DASHBOARD
+    ========================================================= */
+
+    .student-dashboard {
+        max-width: 1500px;
+        margin: 0 auto;
+        padding: 8px 0 40px;
+    }
+
+    /* ---------------------------------------------------------
+       HERO / WELCOME
+    --------------------------------------------------------- */
+
+    .dashboard-hero {
+        position: relative;
+        overflow: hidden;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        min-height: 190px;
+
+        padding: 30px 34px;
+
+        margin-bottom: 24px;
+
+        border-radius: 20px;
+
+        background:
+            radial-gradient(circle at 85% 20%,
+                rgba(255, 255, 255, .22),
+                transparent 28%),
+            linear-gradient(135deg,
+                #174681 0%,
+                #2864d7 58%,
+                #4b83e8 100%);
+
+        color: white;
+
+        box-shadow:
+            0 14px 35px rgba(30, 75, 140, .16);
+    }
+
+    .dashboard-hero::before {
+        content: "";
+
+        position: absolute;
+
+        width: 220px;
+        height: 220px;
+
+        right: -70px;
+        top: -100px;
+
+        border-radius: 50%;
+
+        background: rgba(255, 255, 255, .08);
+    }
+
+    .dashboard-hero::after {
+        content: "";
+
+        position: absolute;
+
+        width: 140px;
+        height: 140px;
+
+        right: 210px;
+        bottom: -95px;
+
+        border-radius: 50%;
+
+        background: rgba(255, 255, 255, .06);
+    }
+
+    .welcome-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .welcome-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+
+        margin-bottom: 10px;
+
+        padding: 6px 11px;
+
+        border-radius: 20px;
+
+        background: rgba(255, 255, 255, .13);
+
+        color: #eaf2ff;
+
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .welcome-title {
+        margin: 0;
+
+        color: #fff;
+
+        font-size: 31px;
+        line-height: 1.15;
+
+        font-weight: 750;
+
+        letter-spacing: -.7px;
+    }
+
+    .welcome-title span {
+        color: #dbeaff;
+    }
+
+    .welcome-description {
+        max-width: 620px;
+
+        margin: 10px 0 0;
+
+        color: #dce9ff;
+
+        font-size: 14px;
+
+        line-height: 1.6;
+    }
+
+    .welcome-actions {
+        position: relative;
+        z-index: 5;
+
+        display: flex;
+        gap: 10px;
+
+        margin-top: 18px;
+    }
+
+    .hero-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        min-height: 42px;
+
+        padding: 0 17px;
+
+        border-radius: 8px;
+
+        font-size: 13px;
+        font-weight: 650;
+
+        text-decoration: none;
+
+        transition: .2s ease;
+    }
+
+    .hero-button.primary {
+        background: #fff;
+        color: #2059b9;
+    }
+
+    .hero-button.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 7px 18px rgba(0, 0, 0, .12);
+    }
+
+    .hero-button.secondary {
+        border: 1px solid rgba(255, 255, 255, .35);
+
+        background: rgba(255, 255, 255, .08);
+
+        color: #fff;
+    }
+
+    .hero-button.secondary:hover {
+        background: rgba(255, 255, 255, .15);
+    }
+
+    /* Hero illustration */
+    .hero-decoration {
+        position: absolute;
+
+        right: 45px;
+        bottom: -8px;
+
+        width: 240px;
+        height: 170px;
+
+        opacity: .95;
+    }
+
+    .decoration-circle {
+        position: absolute;
+
+        right: 25px;
+        top: 5px;
+
+        width: 145px;
+        height: 145px;
+
+        border-radius: 50%;
+
+        border: 1px solid rgba(255, 255, 255, .18);
+    }
+
+    .decoration-circle::before {
+        content: "";
+
+        position: absolute;
+
+        inset: 15px;
+
+        border-radius: 50%;
+
+        border: 1px dashed rgba(255, 255, 255, .18);
+    }
+
+    .decoration-book {
+        position: absolute;
+
+        right: 30px;
+        bottom: 24px;
+
+        width: 120px;
+        height: 20px;
+
+        border-radius: 5px;
+
+        background: rgba(255, 255, 255, .85);
+
+        transform: rotate(-4deg);
+    }
+
+    .decoration-book:nth-child(2) {
+        right: 45px;
+        bottom: 47px;
+
+        width: 100px;
+
+        background: rgba(255, 255, 255, .42);
+    }
+
+    .decoration-star {
+        position: absolute;
+
+        right: 126px;
+        top: 22px;
+
+        font-size: 25px;
+
+        color: #ffd35a;
+    }
+
+
+    /* ---------------------------------------------------------
+       ENROLLMENT
+    --------------------------------------------------------- */
+
+    .section-label {
+        margin-bottom: 13px;
+
+        color: #182943;
+
+        font-size: 17px;
+        font-weight: 750;
+    }
+
+    .enrollment-card {
+        position: relative;
+
+        display: grid;
+
+        grid-template-columns:
+            1fr auto;
+
+        gap: 25px;
+
+        padding: 21px 23px;
+
+        margin-bottom: 24px;
+
+        border: 1px solid #e1e9f5;
+
+        border-radius: 16px;
+
+        background: #fff;
+
+        box-shadow:
+            0 6px 22px rgba(35, 67, 110, .05);
+    }
+
+    .enrollment-main {
+        display: flex;
+        align-items: center;
+
+        gap: 17px;
+    }
+
+    .class-icon {
+        width: 55px;
+        height: 55px;
+
+        flex-shrink: 0;
+
+        border-radius: 13px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #eaf2ff;
+
+        color: #2864d7;
+
+        font-size: 23px;
+    }
+
+    .enrollment-title {
+        margin: 0;
+
+        color: #17243d;
+
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .enrollment-subtitle {
+        margin-top: 5px;
+
+        color: #708097;
+
+        font-size: 12px;
+    }
+
+    .enrollment-details {
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+    }
+
+    .enrollment-pill {
+        min-width: 120px;
+
+        padding: 10px 14px;
+
+        border-radius: 10px;
+
+        background: #f6f9fd;
+
+        border: 1px solid #e8eef6;
+    }
+
+    .enrollment-pill-label {
+        color: #7b899e;
+
+        font-size: 10px;
+
+        text-transform: uppercase;
+
+        letter-spacing: .5px;
+
+        font-weight: 650;
+    }
+
+    .enrollment-pill-value {
+        margin-top: 3px;
+
+        color: #263955;
+
+        font-size: 13px;
+
+        font-weight: 700;
+    }
+
+
+    /* ---------------------------------------------------------
+       KPI CARDS
+    --------------------------------------------------------- */
+
+    .stats-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 16px;
+
+        margin-bottom: 26px;
+    }
+
+    .stat-card {
+        position: relative;
+
+        overflow: hidden;
+
+        padding: 19px;
+
+        border: 1px solid #e2e9f3;
+
+        border-radius: 15px;
+
+        background: #fff;
+
+        box-shadow:
+            0 5px 20px rgba(35, 67, 110, .04);
+
+        transition: .2s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-3px);
+
+        box-shadow:
+            0 10px 25px rgba(35, 67, 110, .08);
+    }
+
+    .stat-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .stat-icon {
+        width: 42px;
+        height: 42px;
+
+        border-radius: 11px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 18px;
+    }
+
+    .stat-icon.blue {
+        background: #eaf2ff;
+        color: #2864d7;
+    }
+
+    .stat-icon.green {
+        background: #e8f8ef;
+        color: #2ca563;
+    }
+
+    .stat-icon.purple {
+        background: #f0ecff;
+        color: #7558d9;
+    }
+
+    .stat-icon.orange {
+        background: #fff4df;
+        color: #e99b1b;
+    }
+
+    .stat-number {
+        margin-top: 16px;
+
+        color: #17243d;
+
+        font-size: 27px;
+
+        line-height: 1;
+
+        font-weight: 760;
+    }
+
+    .stat-title {
+        margin-top: 6px;
+
+        color: #66758b;
+
+        font-size: 12px;
+    }
+
+    .stat-description {
+        margin-top: 9px;
+
+        color: #8a97a9;
+
+        font-size: 10px;
+    }
+
+
+    /* ---------------------------------------------------------
+       MAIN GRID
+    --------------------------------------------------------- */
+
+    .dashboard-grid {
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 1.5fr) minmax(320px, .9fr);
+
+        gap: 20px;
+
+        align-items: start;
+    }
+
+    .dashboard-card {
+        border:
+            1px solid #e1e8f2;
+
+        border-radius: 16px;
+
+        background: #fff;
+
+        box-shadow:
+            0 6px 22px rgba(35, 67, 110, .045);
+
+        overflow: hidden;
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 18px 20px;
+
+        border-bottom:
+            1px solid #edf1f6;
+    }
+
+    .card-header-left {
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+    }
+
+    .card-header-icon {
+        width: 34px;
+        height: 34px;
+
+        border-radius: 9px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #edf4ff;
+
+        color: #2864d7;
+
+        font-size: 15px;
+    }
+
+    .card-title {
+        margin: 0;
+
+        color: #1b2b45;
+
+        font-size: 15px;
+
+        font-weight: 720;
+    }
+
+    .card-subtitle {
+        margin-top: 2px;
+
+        color: #8996a8;
+
+        font-size: 10px;
+    }
+
+    .view-link {
+        color: #2864d7;
+
+        font-size: 11px;
+
+        font-weight: 650;
+
+        text-decoration: none;
+    }
+
+    .view-link:hover {
+        text-decoration: underline;
+    }
+
+
+    /* ---------------------------------------------------------
+       SUBJECTS
+    --------------------------------------------------------- */
+
+    .subjects-list {
+        padding: 8px 14px 15px;
+    }
+
+    .subject-item {
+        display: flex;
+        align-items: center;
+
+        gap: 13px;
+
+        padding: 13px 8px;
+
+        border-bottom:
+            1px solid #f0f3f7;
+    }
+
+    .subject-item:last-child {
+        border-bottom: none;
+    }
+
+    .subject-number {
+        width: 35px;
+        height: 35px;
+
+        flex-shrink: 0;
+
+        border-radius: 9px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #edf4ff;
+
+        color: #2864d7;
+
+        font-size: 12px;
+
+        font-weight: 750;
+    }
+
+    .subject-info {
+        min-width: 0;
+
+        flex: 1;
+    }
+
+    .subject-name {
+        color: #253651;
+
+        font-size: 13px;
+
+        font-weight: 650;
+
+        text-decoration: none;
+    }
+
+    .subject-name:hover {
+        color: #2864d7;
+    }
+
+    .subject-meta {
+        margin-top: 4px;
+
+        color: #8996a8;
+
+        font-size: 10px;
+    }
+
+    .subject-arrow {
+        color: #a1adbd;
+
+        font-size: 16px;
+    }
+
+
+    /* ---------------------------------------------------------
+       QUICK ACTIONS
+    --------------------------------------------------------- */
+
+    .quick-actions {
+        padding: 15px;
+    }
+
+    .action-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 10px;
+    }
+
+    .action-card {
+        min-height: 108px;
+
+        padding: 15px;
+
+        border:
+            1px solid #e7edf5;
+
+        border-radius: 12px;
+
+        background: #fbfcfe;
+
+        text-decoration: none;
+
+        transition: .2s ease;
+    }
+
+    .action-card:hover {
+        transform: translateY(-2px);
+
+        border-color: #cbdcf5;
+
+        background: #f5f9ff;
+    }
+
+    .action-icon {
+        width: 36px;
+        height: 36px;
+
+        border-radius: 9px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 16px;
+
+        margin-bottom: 11px;
+    }
+
+    .action-icon.blue {
+        color: #2864d7;
+        background: #eaf2ff;
+    }
+
+    .action-icon.purple {
+        color: #7658da;
+        background: #f0ecff;
+    }
+
+    .action-icon.green {
+        color: #2da566;
+        background: #e8f8ef;
+    }
+
+    .action-icon.orange {
+        color: #e99b1b;
+        background: #fff3dc;
+    }
+
+    .action-title {
+        color: #253651;
+
+        font-size: 12px;
+
+        font-weight: 700;
+    }
+
+    .action-description {
+        margin-top: 4px;
+
+        color: #8491a4;
+
+        font-size: 10px;
+
+        line-height: 1.45;
+    }
+
+
+    /* ---------------------------------------------------------
+       AI RECOMMENDATION
+    --------------------------------------------------------- */
+
+    .ai-card {
+        position: relative;
+
+        overflow: hidden;
+
+        border:
+            1px solid #dbe6f8;
+
+        background:
+            linear-gradient(145deg,
+                #f7faff 0%,
+                #edf5ff 100%);
+    }
+
+    .ai-card::before {
+        content: "";
+
+        position: absolute;
+
+        width: 150px;
+        height: 150px;
+
+        right: -65px;
+        top: -65px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(40, 100, 215, .06);
+    }
+
+    .ai-header {
+        position: relative;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        padding: 19px 20px;
+
+        border-bottom:
+            1px solid #dfe9f7;
+    }
+
+    .ai-icon {
+        width: 43px;
+        height: 43px;
+
+        border-radius: 12px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background:
+            linear-gradient(135deg,
+                #2864d7,
+                #6b55d9);
+
+        color: white;
+
+        font-size: 19px;
+
+        box-shadow:
+            0 6px 14px rgba(40, 100, 215, .18);
+    }
+
+    .ai-title {
+        color: #1b2e4c;
+
+        font-size: 15px;
+
+        font-weight: 750;
+    }
+
+    .ai-label {
+        margin-top: 3px;
+
+        color: #72839c;
+
+        font-size: 10px;
+    }
+
+    .ai-body {
+        position: relative;
+
+        padding: 17px 20px 20px;
+    }
+
+    .ai-date {
+        color: #8a97a9;
+
+        font-size: 10px;
+
+        margin-bottom: 13px;
+    }
+
+    .focus-title {
+        color: #263853;
+
+        font-size: 12px;
+
+        font-weight: 700;
+    }
+
+    .weakness-list {
+        list-style: none;
+
+        margin: 9px 0 0;
+        padding: 0;
+    }
+
+    .weakness-list li {
+        position: relative;
+
+        margin-bottom: 7px;
+
+        padding-left: 17px;
+
+        color: #52647f;
+
+        font-size: 11px;
+
+        line-height: 1.45;
+    }
+
+    .weakness-list li::before {
+        content: "";
+
+        position: absolute;
+
+        left: 0;
+        top: 5px;
+
+        width: 6px;
+        height: 6px;
+
+        border-radius: 50%;
+
+        background: #2864d7;
+    }
+
+    .ai-button {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        width: 100%;
+
+        min-height: 42px;
+
+        margin-top: 15px;
+
+        border-radius: 9px;
+
+        background: #2864d7;
+
+        color: white;
+
+        font-size: 12px;
+
+        font-weight: 650;
+
+        text-decoration: none;
+
+        transition: .2s ease;
+    }
+
+    .ai-button:hover {
+        background: #1f57bf;
+
+        transform: translateY(-1px);
+    }
+
+
+    /* ---------------------------------------------------------
+       EMPTY STATE
+    --------------------------------------------------------- */
+
+    .empty-state {
+        padding: 30px 20px;
+
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 50px;
+        height: 50px;
+
+        margin: 0 auto 12px;
+
+        border-radius: 50%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #edf4ff;
+
+        color: #2864d7;
+
+        font-size: 20px;
+    }
+
+    .empty-title {
+        color: #33445d;
+
+        font-size: 13px;
+
+        font-weight: 700;
+    }
+
+    .empty-text {
+        max-width: 330px;
+
+        margin: 6px auto 0;
+
+        color: #8996a8;
+
+        font-size: 11px;
+
+        line-height: 1.5;
+    }
+
+
+    /* ---------------------------------------------------------
+       NOT ENROLLED
+    --------------------------------------------------------- */
+
+    .not-enrolled {
+        padding: 55px 30px;
+
+        border:
+            1px solid #e1e9f5;
+
+        border-radius: 18px;
+
+        text-align: center;
+
+        background:
+            linear-gradient(145deg,
+                #f7faff,
+                #ffffff);
+    }
+
+    .not-enrolled-icon {
+        width: 65px;
+        height: 65px;
+
+        margin: 0 auto 16px;
+
+        border-radius: 18px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #edf4ff;
+
+        color: #2864d7;
+
+        font-size: 27px;
+    }
+
+    .not-enrolled h3 {
+        margin: 0;
+
+        color: #243550;
+
+        font-size: 19px;
+    }
+
+    .not-enrolled p {
+        max-width: 550px;
+
+        margin: 9px auto 0;
+
+        color: #738198;
+
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+
+    /* ---------------------------------------------------------
+       RESPONSIVE
+    --------------------------------------------------------- */
+
+    @media (max-width: 1150px) {
+
+        .stats-grid {
+            grid-template-columns:
+                repeat(2, 1fr);
+        }
+
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-decoration {
+            opacity: .55;
+        }
+
+    }
+
+
+    @media (max-width: 800px) {
+
+        .dashboard-hero {
+            padding: 25px;
+
+        }
+
+        .welcome-title {
+            font-size: 26px;
+        }
+
+        .hero-decoration {
+            display: none;
+        }
+
+        .enrollment-card {
+            grid-template-columns: 1fr;
+        }
+
+        .enrollment-details {
+            flex-wrap: wrap;
+        }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+        .student-dashboard {
+            padding:
+                0 0 25px;
+        }
+
+        .dashboard-hero {
+            border-radius: 14px;
+
+            padding: 23px 19px;
+        }
+
+        .welcome-title {
+            font-size: 23px;
+        }
+
+        .welcome-description {
+            font-size: 12px;
+        }
+
+        .welcome-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .hero-button {
+            width: 100%;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .enrollment-main {
+            align-items: flex-start;
+        }
+
+        .enrollment-details {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            width: 100%;
+        }
+
+        .enrollment-pill {
+            min-width: 0;
+        }
+
+        .action-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+</style>
+
+
+<div class="student-dashboard">
+
+
+    <!-- =====================================================
+         WELCOME HERO
+    ====================================================== -->
+
+    <section class="dashboard-hero">
+
+        <div class="welcome-content">
+
+            <div class="welcome-label">
+                ✦ Student Learning Space
+            </div>
+
+            <h1 class="welcome-title">
+                Welcome back,
+                <span>
+                    {{ request.user.first_name|default:"Student" }}
+                </span>!
+            </h1>
+
+            <p class="welcome-description">
+                Continue your learning journey, explore your
+                subjects, complete assignments, take quizzes,
+                and improve your performance with NEWEDU.
+            </p>
+
+            <div class="welcome-actions">
+
+                <a href="{% url 'student_subjects' %}" class="hero-button primary">
+                    📚 Continue Learning
+                </a>
+
+                <a href="{% url 'student_ai_assistant' %}" class="hero-button secondary">
+                    ✦ AI Study Assistant
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-decoration">
+
+            <div class="decoration-circle"></div>
+
+            <div class="decoration-star">
+                ★
+            </div>
+
+            <div class="decoration-book"></div>
+
+            <div class="decoration-book"></div>
+
+        </div>
+
+    </section>
+
+
+
+    {% if enrollment %}
+
+
+    <!-- =================================================
+             ENROLLMENT
+        ================================================== -->
+
+    <div class="section-label">
+        Your Academic Profile
+    </div>
+
+
+    <section class="enrollment-card">
+
+        <div class="enrollment-main">
+
+            <div class="class-icon">
+                🎓
+            </div>
+
+            <div>
+
+                <h3 class="enrollment-title">
+                    {{ enrollment.class_level.name }}
+                    {% if enrollment.section %}
+                    · Section {{ enrollment.section.name }}
+                    {% endif %}
+                </h3>
+
+                <p class="enrollment-subtitle">
+                    Your current academic enrollment
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="enrollment-details">
+
+            <div class="enrollment-pill">
+
+                <div class="enrollment-pill-label">
+                    Class
+                </div>
+
+                <div class="enrollment-pill-value">
+                    {{ enrollment.class_level.name }}
+                </div>
+
+            </div>
+
+
+            <div class="enrollment-pill">
+
+                <div class="enrollment-pill-label">
+                    Section
+                </div>
+
+                <div class="enrollment-pill-value">
+                    {{ enrollment.section.name }}
+                </div>
+
+            </div>
+
+
+            <div class="enrollment-pill">
+
+                <div class="enrollment-pill-label">
+                    Academic Year
+                </div>
+
+                <div class="enrollment-pill-value">
+                    {{ enrollment.academic_year.name }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+             KPI STATS
+        ================================================== -->
+
+    <div class="stats-grid">
+
+
+        <!-- SUBJECTS -->
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon blue">
+                    📚
+                </div>
+
+            </div>
+
+            <div class="stat-number">
+                {{ subjects|length }}
+            </div>
+
+            <div class="stat-title">
+                Enrolled Subjects
+            </div>
+
+            <div class="stat-description">
+                Subjects available for your class
+            </div>
+
+        </div>
+
+
+        <!-- ASSIGNMENTS -->
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon purple">
+                    📝
+                </div>
+
+            </div>
+
+            <div class="stat-number">
+                {{ assignment_count }}
+            </div>
+
+            <div class="stat-title">
+                Assignments
+            </div>
+
+            <div class="stat-description">
+                Open the assignments section
+            </div>
+
+        </div>
+
+
+        <!-- QUIZZES -->
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon orange">
+                    ✓
+                </div>
+
+            </div>
+
+            <div class="stat-number">
+                {{ quiz_count }}
+            </div>
+
+            <div class="stat-title">
+                Quizzes
+            </div>
+
+            <div class="stat-description">
+                Practice and test your knowledge
+            </div>
+
+        </div>
+
+
+        <!-- AI -->
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon green">
+                    ✦
+                </div>
+
+            </div>
+
+            <div class="stat-number">
+                AI
+            </div>
+
+            <div class="stat-title">
+                Learning Assistant
+            </div>
+
+            <div class="stat-description">
+                Get personalized study guidance
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+             MAIN DASHBOARD
+        ================================================== -->
+
+    <div class="dashboard-grid">
+
+
+        <!-- =================================================
+                 LEFT COLUMN
+            ================================================== -->
+
+        <div>
+
+
+            <!-- SUBJECTS -->
+
+            <section class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div class="card-header-left">
+
+                        <div class="card-header-icon">
+                            📚
+                        </div>
+
+                        <div>
+
+                            <h3 class="card-title">
+                                My Subjects
+                            </h3>
+
+                            <div class="card-subtitle">
+                                Your current learning subjects
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <a href="{% url 'student_subjects' %}" class="view-link">
+                        View All →
+                    </a>
+
+                </div>
+
+
+                <div class="subjects-list">
+
+                    {% if subjects %}
+
+                    {% for cs in subjects %}
+
+                    <div class="subject-item">
+
+                        <div class="subject-number">
+                            {{ forloop.counter|stringformat:"02d" }}
+                        </div>
+
+
+                        <div class="subject-info">
+
+                            <a href="{% url 'student_subject_detail' cs.id %}" class="subject-name">
+                                {{ cs.subject.name }}
+                            </a>
+
+                            <div class="subject-meta">
+                                Continue learning →
+                            </div>
+
+                        </div>
+
+
+                        <div class="subject-arrow">
+                            ›
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                    {% else %}
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            📚
+                        </div>
+
+                        <div class="empty-title">
+                            No subjects assigned yet
+                        </div>
+
+                        <p class="empty-text">
+                            Your subjects will appear here once
+                            they are assigned to your class.
+                        </p>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+
+            <!-- QUICK ACTIONS -->
+
+            <section class="dashboard-card" style="margin-top: 20px;">
+
+                <div class="card-header">
+
+                    <div class="card-header-left">
+
+                        <div class="card-header-icon">
+                            ⚡
+                        </div>
+
+                        <div>
+
+                            <h3 class="card-title">
+                                Quick Actions
+                            </h3>
+
+                            <div class="card-subtitle">
+                                Jump directly to your learning tools
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+                    <div class="action-grid">
+
+
+                        <a href="{% url 'student_assignments' %}" class="action-card">
+
+                            <div class="action-icon purple">
+                                📝
+                            </div>
+
+                            <div class="action-title">
+                                Assignments
+                            </div>
+
+                            <div class="action-description">
+                                View and submit your assignments.
+                            </div>
+
+                        </a>
+
+
+                        <a href="{% url 'student_quizzes' %}" class="action-card">
+
+                            <div class="action-icon orange">
+                                ✓
+                            </div>
+
+                            <div class="action-title">
+                                Quizzes
+                            </div>
+
+                            <div class="action-description">
+                                Test your knowledge and improve.
+                            </div>
+
+                        </a>
+
+
+                        <a href="{% url 'student_ai_assistant' %}" class="action-card">
+
+                            <div class="action-icon blue">
+                                ✦
+                            </div>
+
+                            <div class="action-title">
+                                AI Study Assistant
+                            </div>
+
+                            <div class="action-description">
+                                Ask questions and get guided help.
+                            </div>
+
+                        </a>
+
+
+                        {% url 'student_reports' as reports_url %}
+
+                        {% if reports_url %}
+
+                        <a href="{{ reports_url }}" class="action-card">
+
+                            <div class="action-icon green">
+                                📊
+                            </div>
+
+                            <div class="action-title">
+                                My Reports
+                            </div>
+
+                            <div class="action-description">
+                                Review your academic performance.
+                            </div>
+
+                        </a>
+
+{% endif %}
+
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+                 RIGHT COLUMN
+            ================================================== -->
+
+        <div>
+
+
+            <!-- AI RECOMMENDATION -->
+
+            <section class="dashboard-card ai-card">
+
+                <div class="ai-header">
+
+                    <div class="ai-icon">
+                        ✦
+                    </div>
+
+                    <div>
+
+                        <div class="ai-title">
+                            AI Learning Recommendation
+                        </div>
+
+                        <div class="ai-label">
+                            Personalized for your learning journey
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ai-body">
+
+                    {% if latest_recommendation %}
+
+                    <div class="ai-date">
+                        Generated
+                        {{ latest_recommendation.created_at|date:"M d, Y" }}
+                    </div>
+
+
+                    <div class="focus-title">
+                        Recommended Focus Areas
+                    </div>
+
+
+                    <ul class="weakness-list">
+
+                        {% for w in latest_recommendation.recommendation.weaknesses|slice:":3" %}
+
+                        <li>
+                            {{ w }}
+                        </li>
+
+                        {% empty %}
+
+                        <li>
+                            Continue practicing your current subjects.
+                        </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+
+                    <a href="{% url 'student_ai_assistant' %}" class="ai-button">
+                        View Full Learning Plan
+                        →
+                    </a>
+
+                    {% else %}
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            ✦
+                        </div>
+
+                        <div class="empty-title">
+                            No learning plan yet
+                        </div>
+
+                        <p class="empty-text">
+                            Use the AI Study Assistant to get
+                            personalized guidance based on your
+                            learning progress.
+                        </p>
+
+                    </div>
+
+
+                    <a href="{% url 'student_ai_assistant' %}" class="ai-button">
+                        Generate Learning Plan
+                        →
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+
+
+            <!-- LEARNING JOURNEY -->
+
+            <section class="dashboard-card" style="margin-top: 20px;">
+
+                <div class="card-header">
+
+                    <div class="card-header-left">
+
+                        <div class="card-header-icon">
+                            🚀
+                        </div>
+
+                        <div>
+
+                            <h3 class="card-title">
+                                Your Learning Journey
+                            </h3>
+
+                            <div class="card-subtitle">
+                                Recommended next steps
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div style="padding: 18px 20px;">
+
+
+                    <div style="
+                                display:flex;
+                                gap:12px;
+                                align-items:flex-start;
+                                padding-bottom:17px;
+                                border-bottom:1px solid #edf1f6;
+                            ">
+
+                        <div style="
+                                    width:30px;
+                                    height:30px;
+                                    border-radius:50%;
+                                    background:#eaf2ff;
+                                    color:#2864d7;
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:center;
+                                    font-size:12px;
+                                    flex-shrink:0;
+                                ">
+                            1
+                        </div>
+
+                        <div>
+
+                            <div style="
+                                        color:#293b56;
+                                        font-size:12px;
+                                        font-weight:700;
+                                    ">
+                                Explore your subjects
+                            </div>
+
+                            <div style="
+                                        margin-top:4px;
+                                        color:#8996a8;
+                                        font-size:10px;
+                                        line-height:1.5;
+                                    ">
+                                Start with your assigned learning
+                                materials and lessons.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div style="
+                                display:flex;
+                                gap:12px;
+                                align-items:flex-start;
+                                padding:17px 0;
+                                border-bottom:1px solid #edf1f6;
+                            ">
+
+                        <div style="
+                                    width:30px;
+                                    height:30px;
+                                    border-radius:50%;
+                                    background:#f0ecff;
+                                    color:#7658da;
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:center;
+                                    font-size:12px;
+                                    flex-shrink:0;
+                                ">
+                            2
+                        </div>
+
+                        <div>
+
+                            <div style="
+                                        color:#293b56;
+                                        font-size:12px;
+                                        font-weight:700;
+                                    ">
+                                Complete your assignments
+                            </div>
+
+                            <div style="
+                                        margin-top:4px;
+                                        color:#8996a8;
+                                        font-size:10px;
+                                        line-height:1.5;
+                                    ">
+                                Stay on top of your deadlines and
+                                submit your work.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div style="
+                                display:flex;
+                                gap:12px;
+                                align-items:flex-start;
+                                padding-top:17px;
+                            ">
+
+                        <div style="
+                                    width:30px;
+                                    height:30px;
+                                    border-radius:50%;
+                                    background:#e8f8ef;
+                                    color:#2ca563;
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:center;
+                                    font-size:12px;
+                                    flex-shrink:0;
+                                ">
+                            3
+                        </div>
+
+                        <div>
+
+                            <div style="
+                                        color:#293b56;
+                                        font-size:12px;
+                                        font-weight:700;
+                                    ">
+                                Practice with quizzes
+                            </div>
+
+                            <div style="
+                                        margin-top:4px;
+                                        color:#8996a8;
+                                        font-size:10px;
+                                        line-height:1.5;
+                                    ">
+                                Test your understanding and identify
+                                areas for improvement.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </div>
+
+
+    {% else %}
+
+
+    <!-- =================================================
+             NOT ENROLLED
+        ================================================== -->
+
+    <div class="not-enrolled">
+
+        <div class="not-enrolled-icon">
+            🎓
+        </div>
+
+        <h3>
+            You're Not Enrolled Yet
+        </h3>
+
+        <p>
+            You are not currently enrolled in any class for
+            the active academic year. Please contact your
+            administrator to complete your enrollment.
+        </p>
+
+    </div>
+
+
+    {% endif %}
+
+
+</div>
+
+{% endblock %}

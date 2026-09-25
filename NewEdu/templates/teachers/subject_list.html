@@ -1,0 +1,18 @@
+{% extends 'teachers/teacher_base.html' %}
+{% block title %}My Subjects - NEWEDU{% endblock %}
+{% block teacher_content %}
+<h2>My Subjects</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
+    {% for cs in subjects %}
+        <div class="card">
+            <h3>{{ cs.subject.name }}</h3>
+            <p><strong>Code:</strong> {{ cs.subject.code }}</p>
+            <p><strong>Class:</strong> {{ cs.class_level.name }}</p>
+        </div>
+    {% empty %}
+        <div class="card" style="grid-column: 1 / -1;">
+            <p>You have no subjects assigned for the active academic year.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

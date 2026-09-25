@@ -1,0 +1,2222 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | NEWEDU</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2864d7;
+            --primary-dark: #143b72;
+            --text: #172033;
+            --muted: #69758a;
+            --border: #cbd4e1;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            min-height: 100vh;
+            margin: 0;
+            padding: 28px;
+            background:
+                radial-gradient(circle at 90% 8%, rgba(255, 255, 255, .9), transparent 30%),
+                linear-gradient(135deg, #edf4ff 0%, #dfeaff 48%, #f7faff 100%);
+            color: var(--text);
+        }
+
+        a {
+            text-decoration: none !important;
+        }
+
+        a:hover {
+            text-decoration: underline !important;
+        }
+
+        .register-page {
+            width: min(1440px, 100%);
+            height: min(900px, calc(100vh - 56px));
+            min-height: 680px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+
+            border: 1px solid rgba(111, 145, 190, .22);
+            border-radius: 24px;
+            background: #f8fbff;
+            box-shadow:
+                0 28px 70px rgba(37, 73, 120, .16),
+                0 8px 24px rgba(37, 73, 120, .08);
+        }
+
+        /* =====================================================
+           LEFT SIDE — REGISTER
+        ====================================================== */
+
+        .form-panel {
+            min-height: 0;
+            height: 100%;
+            background:
+                radial-gradient(circle at 0% 100%, rgba(226, 238, 255, .58), transparent 34%),
+                linear-gradient(145deg, #ffffff 0%, #f8fbff 100%);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 35px 55px;
+        }
+
+        .form-wrapper {
+            width: 100%;
+            max-width: 720px;
+        }
+
+        .register-card {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 32px 40px 36px;
+            box-shadow: none;
+        }
+
+        .register-heading {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .register-heading h1 {
+            color: #143b72;
+            font-size: 35px;
+            line-height: 1.2;
+            font-weight: 750;
+            letter-spacing: -1px;
+        }
+
+        .register-heading p {
+            margin-top: 8px;
+            color: #687489;
+            font-size: 15px;
+        }
+
+        /* Errors */
+
+        .form-errors {
+            margin-top: 8px;
+            padding: 11px 14px;
+
+            background: #fff1f1;
+            border: 1px solid #f1c5c5;
+
+            border-radius: 8px;
+
+            color: #b42318;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .form-errors ul {
+            margin-left: 17px;
+        }
+
+        /* Form */
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+
+            margin-bottom: 9px;
+
+            color: #131b27;
+
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+
+            left: 17px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            width: 22px;
+            height: 22px;
+
+            color: #667387;
+
+            pointer-events: none;
+        }
+
+        .input-icon svg {
+            width: 100%;
+            height: 100%;
+
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 48px;
+
+            padding: 0 18px 0 56px;
+
+            border: 1px solid #cbd4df;
+            border-radius: 8px;
+
+            outline: none;
+
+            background: #ffffff;
+
+            color: #172033;
+
+            font-size: 15px;
+
+            transition:
+                border-color .2s ease,
+                box-shadow .2s ease;
+        }
+
+        .form-input::placeholder {
+            color: #8993a4;
+        }
+
+        .form-input:focus {
+            border-color: #2864d7;
+
+            box-shadow:
+                0 0 0 3px rgba(40, 100, 215, .12);
+        }
+
+        /* Hide native edge/ie password reveal icon */
+        .form-input::-ms-reveal,
+        .form-input::-ms-clear {
+            display: none;
+        }
+
+        /* Two column */
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 18px;
+        }
+
+        /* Role */
+
+        .role-label {
+            display: block;
+
+            margin-bottom: 10px;
+
+            color: #131b27;
+
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .role-options {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+        }
+
+        .role-option {
+            position: relative;
+        }
+
+        .role-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .role-option label {
+            min-height: 52px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid #cbd4df;
+            border-radius: 8px;
+
+            background: #ffffff;
+
+            color: #4e5b70;
+
+            font-size: 14px;
+            font-weight: 500;
+
+            cursor: pointer;
+
+            transition:
+                border-color .2s ease,
+                background .2s ease,
+                color .2s ease;
+        }
+
+        .role-option input:checked+label {
+            border-color: #2864d7;
+
+            background: #eef5ff;
+
+            color: #1458d2;
+
+            font-weight: 650;
+
+            box-shadow:
+                0 0 0 2px rgba(40, 100, 215, .07);
+        }
+
+        .role-option label:hover {
+            border-color: #2864d7;
+        }
+
+        /* Password toggle */
+
+        .password-toggle {
+            position: absolute;
+
+            right: 16px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            width: 25px;
+            height: 25px;
+
+            border: none;
+
+            background: transparent;
+
+            color: #5d697c;
+
+            cursor: pointer;
+
+            padding: 2px;
+        }
+
+        .password-toggle svg {
+            width: 100%;
+            height: 100%;
+
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+        }
+
+        .password-input {
+            padding-right: 52px;
+        }
+
+        /* Terms */
+
+        .terms-row {
+            display: flex;
+            align-items: flex-start;
+
+            gap: 10px;
+
+            margin: 4px 0 22px;
+        }
+
+        .terms-checkbox {
+            width: 20px;
+            height: 20px;
+
+            flex-shrink: 0;
+
+            margin-top: 1px;
+
+            appearance: none;
+
+            border: 1.5px solid #adb8c7;
+            border-radius: 4px;
+
+            background: #ffffff;
+
+            cursor: pointer;
+
+            position: relative;
+        }
+
+        .terms-checkbox:checked {
+            background: #2864d7;
+            border-color: #2864d7;
+        }
+
+        .terms-checkbox:checked::after {
+            content: "✓";
+
+            position: absolute;
+
+            left: 3px;
+            top: -2px;
+
+            color: #ffffff;
+
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .terms-text {
+            color: #69758a;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+        .terms-text a {
+            color: #1458d2;
+
+            text-decoration: none;
+
+            font-weight: 500;
+        }
+
+        .terms-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* Register button */
+
+        .register-button {
+            width: 100%;
+            height: 48px;
+
+            border: none;
+            border-radius: 8px;
+
+            background:
+                linear-gradient(135deg,
+                    #2864d7,
+                    #2860ce);
+
+            color: #ffffff;
+
+            font-size: 17px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 12px;
+
+            box-shadow:
+                0 5px 12px rgba(40, 100, 215, .16);
+
+            transition:
+                transform .15s ease,
+                box-shadow .15s ease;
+        }
+
+        .register-button:hover {
+            box-shadow:
+                0 8px 18px rgba(40, 100, 215, .22);
+
+            transform: translateY(-1px);
+        }
+
+        .register-button:active {
+            transform: translateY(0);
+        }
+
+        .register-button svg {
+            width: 22px;
+            height: 22px;
+
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.9;
+        }
+
+        /* Divider */
+
+        .divider {
+            display: flex;
+            align-items: center;
+
+            gap: 18px;
+
+            margin: 25px 0 21px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+
+            height: 1px;
+
+            flex: 1;
+
+            background: #d8dde5;
+        }
+
+        .divider span {
+            color: #687286;
+
+            font-size: 14px;
+        }
+
+        /* Google */
+
+        .google-button {
+            width: 100%;
+            height: 48px;
+
+            border: 1.5px solid #2864d7;
+            border-radius: 8px;
+
+            background: #ffffff;
+
+            color: #171d27;
+
+            font-size: 16px;
+            font-weight: 500;
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 14px;
+
+            transition: background .2s ease;
+        }
+
+        .google-button:hover {
+            background: #f7faff;
+        }
+
+        .google-icon {
+            font-family: Arial, sans-serif;
+
+            font-size: 23px;
+            font-weight: 700;
+
+            color: #4285f4;
+        }
+
+        /* Login link */
+
+        .login-link {
+            margin-top: 25px;
+
+            text-align: center;
+
+            color: #687489;
+
+            font-size: 15px;
+        }
+
+        .login-link a {
+            margin-left: 5px;
+
+            color: #1458d2;
+
+            text-decoration: none;
+
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* =====================================================
+           RIGHT SIDE — WELCOME PANEL
+        ====================================================== */
+
+        .welcome-panel {
+            position: relative;
+
+            min-height: 0;
+            height: 100%;
+
+            padding: 40px 42px 28px;
+
+            overflow: hidden;
+
+            background:
+                radial-gradient(circle at 5% 22%,
+                    rgba(255, 255, 255, .75) 0,
+                    rgba(255, 255, 255, .75) 90px,
+                    transparent 91px),
+                linear-gradient(135deg,
+                    #f1f7ff 0%,
+                    #e7f0ff 100%);
+        }
+
+        .welcome-panel::before {
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+            height: 260px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, .35);
+
+            top: -100px;
+            left: -100px;
+        }
+
+        .welcome-panel::after {
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, .25);
+
+            bottom: -80px;
+            right: -60px;
+        }
+
+        .left-content {
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 600px;
+
+            height: 100%;
+
+            margin: 0 auto;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Brand */
+
+        .brand {
+            display: flex;
+            align-items: center;
+
+            gap: 15px;
+        }
+
+        .brand-logo {
+            width: 67px;
+            height: 67px;
+
+            position: relative;
+
+            flex-shrink: 0;
+        }
+
+        .logo-book {
+            position: absolute;
+
+            left: 5px;
+            bottom: 5px;
+
+            width: 56px;
+            height: 42px;
+
+            background: #123b75;
+
+            border-radius:
+                5px 18px 8px 8px;
+
+            transform: skewY(-4deg);
+        }
+
+        .logo-book::before {
+            content: "";
+
+            position: absolute;
+
+            width: 25px;
+            height: 37px;
+
+            background: #2864d7;
+
+            left: 3px;
+            top: 2px;
+
+            border-radius:
+                4px 14px 3px 3px;
+        }
+
+        .logo-book::after {
+            content: "";
+
+            position: absolute;
+
+            width: 26px;
+            height: 37px;
+
+            background: #ffffff;
+
+            right: 3px;
+            top: 2px;
+
+            border-radius:
+                14px 4px 3px 3px;
+        }
+
+        .graduation-cap {
+            position: absolute;
+
+            top: 3px;
+            left: 16px;
+
+            width: 38px;
+            height: 21px;
+
+            background: #143b72;
+
+            clip-path:
+                polygon(50% 0,
+                    100% 50%,
+                    50% 100%,
+                    0 50%);
+
+            z-index: 3;
+        }
+
+        .star {
+            position: absolute;
+
+            top: -5px;
+            right: 2px;
+
+            color: #f7b51d;
+
+            font-size: 22px;
+
+            z-index: 5;
+        }
+
+        .brand-name {
+            color: #143b72;
+
+            font-size: 34px;
+
+            line-height: 1;
+
+            font-weight: 800;
+
+            letter-spacing: -1.2px;
+        }
+
+        .brand-tagline {
+            margin-top: 7px;
+
+            color: #243957;
+
+            font-size: 15px;
+
+            letter-spacing: .2px;
+        }
+
+        /* Welcome copy */
+
+        .welcome-copy {
+            margin-top: 48px;
+        }
+
+        .welcome-copy h1 {
+            color: #143b72;
+
+            font-size:
+                clamp(34px, 3.2vw, 40px);
+
+            line-height: 1.08;
+
+            font-weight: 750;
+
+            letter-spacing: -1.5px;
+        }
+
+        .welcome-copy h2 {
+            margin-top: 10px;
+
+            font-size:
+                clamp(31px, 3vw, 38px);
+
+            line-height: 1.05;
+
+            color: #111820;
+
+            font-weight: 500;
+
+            letter-spacing: -1.5px;
+        }
+
+        .welcome-copy h2 span {
+            display: block;
+
+            margin-top: 5px;
+
+            color: #2864d7;
+
+            font-weight: 650;
+        }
+
+        .welcome-description {
+            max-width: 400px;
+
+            margin-top: 18px;
+
+            font-size: 15px;
+
+            line-height: 1.55;
+
+            color: #364257;
+        }
+
+        /* Illustration */
+
+        .illustration {
+            position: relative;
+
+            height: 180px;
+
+            margin-top: 24px;
+
+            transform: scale(.85);
+            transform-origin: center bottom;
+
+            display: flex;
+
+            align-items: flex-end;
+
+            justify-content: center;
+        }
+
+        .desk-shadow {
+            position: absolute;
+
+            bottom: 18px;
+
+            width: 490px;
+            height: 20px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(83, 124, 177, .12);
+        }
+
+        /* Plant */
+
+        .plant {
+            position: absolute;
+
+            left: 30px;
+            bottom: 29px;
+
+            width: 105px;
+            height: 150px;
+        }
+
+        .pot {
+            position: absolute;
+
+            bottom: 0;
+            left: 28px;
+
+            width: 52px;
+            height: 55px;
+
+            background: #f0f2f3;
+
+            border-radius:
+                3px 3px 18px 18px;
+
+            box-shadow:
+                0 5px 10px rgba(0, 0, 0, .08);
+        }
+
+        .pot::before {
+            content: "";
+
+            position: absolute;
+
+            width: 58px;
+            height: 10px;
+
+            left: -3px;
+            top: -5px;
+
+            border-radius: 50%;
+
+            background: #dfe3e6;
+        }
+
+        .stem {
+            position: absolute;
+
+            left: 54px;
+            bottom: 48px;
+
+            width: 5px;
+            height: 90px;
+
+            border-radius: 5px;
+
+            background: #4d914f;
+
+            transform: rotate(-4deg);
+        }
+
+        .leaf {
+            position: absolute;
+
+            width: 32px;
+            height: 50px;
+
+            border-radius:
+                100% 0 100% 0;
+
+            background: #419d4d;
+
+            transform: rotate(-38deg);
+        }
+
+        .leaf.one {
+            left: 23px;
+            bottom: 91px;
+        }
+
+        .leaf.two {
+            left: 54px;
+            bottom: 107px;
+
+            transform:
+                rotate(25deg) scale(.85);
+        }
+
+        .leaf.three {
+            left: 8px;
+            bottom: 64px;
+
+            transform:
+                rotate(-55deg) scale(.8);
+        }
+
+        /* Books */
+
+        .books {
+            position: absolute;
+
+            left: 105px;
+            bottom: 35px;
+
+            width: 150px;
+            height: 100px;
+        }
+
+        .book {
+            position: absolute;
+
+            left: 0;
+
+            height: 29px;
+
+            border-radius: 9px;
+
+            box-shadow:
+                0 4px 5px rgba(0, 0, 0, .1);
+        }
+
+        .book.blue {
+            width: 132px;
+
+            bottom: 47px;
+
+            background: #2864d7;
+        }
+
+        .book.dark {
+            width: 145px;
+
+            bottom: 24px;
+            left: 7px;
+
+            background: #153e77;
+        }
+
+        .book.yellow {
+            width: 148px;
+
+            bottom: 2px;
+            left: -2px;
+
+            background: #f2b522;
+        }
+
+        .book::after {
+            content: "";
+
+            position: absolute;
+
+            right: 10px;
+            top: 7px;
+
+            width: 50px;
+            height: 14px;
+
+            background:
+                rgba(255, 255, 255, .7);
+
+            border-radius: 8px;
+        }
+
+        /* Laptop */
+
+        .laptop {
+            position: absolute;
+
+            left: 210px;
+            bottom: 32px;
+
+            width: 225px;
+            height: 150px;
+        }
+
+        .screen {
+            position: absolute;
+
+            left: 17px;
+            top: 0;
+
+            width: 185px;
+            height: 120px;
+
+            background: #ffffff;
+
+            border:
+                7px solid #143b72;
+
+            border-radius: 9px;
+
+            box-shadow:
+                0 7px 12px rgba(0, 0, 0, .12);
+        }
+
+        .screen-cap {
+            position: absolute;
+
+            left: 50px;
+            top: 27px;
+
+            width: 46px;
+            height: 25px;
+
+            background: #2864d7;
+
+            clip-path:
+                polygon(50% 0,
+                    100% 50%,
+                    50% 100%,
+                    0 50%);
+        }
+
+        .screen-lines {
+            position: absolute;
+
+            right: 16px;
+            top: 27px;
+
+            width: 72px;
+        }
+
+        .screen-lines span {
+            display: block;
+
+            height: 7px;
+
+            margin-bottom: 10px;
+
+            border-radius: 5px;
+
+            background: #e4e9f0;
+        }
+
+        .screen-lines span:nth-child(2) {
+            width: 55px;
+        }
+
+        .screen-lines span:nth-child(3) {
+            width: 63px;
+        }
+
+        .laptop-base {
+            position: absolute;
+
+            bottom: 0;
+            left: 0;
+
+            width: 225px;
+            height: 18px;
+
+            background: #153e77;
+
+            border-radius:
+                4px 4px 18px 18px;
+
+            box-shadow:
+                0 5px 5px rgba(0, 0, 0, .12);
+        }
+
+        .laptop-base::after {
+            content: "";
+
+            position: absolute;
+
+            width: 60px;
+            height: 4px;
+
+            background: #8090a5;
+
+            left: 83px;
+            top: 4px;
+
+            border-radius: 4px;
+        }
+
+        /* Pencil */
+
+        .pencil-holder {
+            position: absolute;
+
+            right: 50px;
+            bottom: 27px;
+
+            width: 46px;
+            height: 65px;
+
+            background: #f6b52a;
+
+            border-radius:
+                5px 5px 12px 12px;
+        }
+
+        .pencil {
+            position: absolute;
+
+            width: 7px;
+            height: 68px;
+
+            background: #2864d7;
+
+            border-radius: 5px;
+
+            top: -45px;
+        }
+
+        .pencil.one {
+            left: 12px;
+
+            transform: rotate(12deg);
+        }
+
+        .pencil.two {
+            left: 24px;
+
+            transform: rotate(25deg);
+
+            background: #f39c23;
+        }
+
+        /* Features */
+
+        .features {
+            margin-top: 14px;
+
+            padding: 16px 14px;
+
+            background:
+                rgba(255, 255, 255, .82);
+
+            border-radius: 17px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            box-shadow:
+                0 8px 25px rgba(35, 76, 125, .06);
+        }
+
+        .feature {
+            text-align: center;
+
+            padding: 0 9px;
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+
+            margin: 0 auto 8px;
+
+            color: #2864d7;
+        }
+
+        .feature-icon svg {
+            width: 100%;
+            height: 100%;
+
+            stroke: currentColor;
+
+            fill: none;
+
+            stroke-width: 1.8;
+        }
+
+        .feature p {
+            color: #17243a;
+
+            font-size: 11px;
+
+            line-height: 1.45;
+        }
+
+        .left-footer {
+            margin-top: auto;
+
+            padding-top: 30px;
+
+            color: #63718a;
+
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 1200px) {
+
+            body {
+                padding: 20px;
+            }
+
+            .register-page {
+                height: min(900px, calc(100vh - 40px));
+                min-height: 650px;
+                border-radius: 20px;
+            }
+
+            .form-panel {
+                padding-left: 35px;
+                padding-right: 35px;
+            }
+
+            .welcome-panel {
+                padding-left: 38px;
+                padding-right: 38px;
+            }
+
+            .register-card {
+                padding-left: 32px;
+                padding-right: 32px;
+            }
+
+            .welcome-copy {
+                margin-top: 60px;
+            }
+
+            .illustration {
+                transform: scale(.88);
+
+                transform-origin: center;
+            }
+        }
+
+        @media (max-width: 950px) {
+
+            body {
+                padding: 0;
+            }
+
+            .register-page {
+                width: 100%;
+                height: auto;
+                min-height: 100vh;
+                margin: 0;
+                border-radius: 0;
+                border: none;
+                box-shadow: none;
+                grid-template-columns: 1fr;
+            }
+
+            /*
+             * Register remains first on tablet/mobile.
+             */
+
+            .form-panel {
+                min-height: auto;
+                height: auto;
+                padding: 50px 30px;
+                order: 1;
+            }
+
+            .welcome-panel {
+                min-height: auto;
+                height: auto;
+                padding-bottom: 45px;
+                order: 2;
+            }
+
+            .form-wrapper {
+                max-width: 700px;
+            }
+
+            .left-content {
+                max-width: 760px;
+            }
+
+            .welcome-copy {
+                margin-top: 55px;
+            }
+
+            .illustration {
+                max-width: 540px;
+
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .left-footer {
+                margin-top: 35px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .form-panel {
+                padding: 25px 15px 35px;
+            }
+
+            .register-card {
+                padding:
+                    32px 22px 38px;
+
+                border-radius: 13px;
+            }
+
+            .register-heading {
+                margin-bottom: 28px;
+            }
+
+            .register-heading h1 {
+                font-size: 29px;
+            }
+
+            .register-heading p {
+                font-size: 14px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+
+                gap: 0;
+            }
+
+            .role-options {
+                grid-template-columns: 1fr;
+            }
+
+            .role-option label {
+                min-height: 48px;
+            }
+
+            .form-input {
+                height: 55px;
+
+                font-size: 15px;
+            }
+
+            .register-button,
+            .google-button {
+                height: 56px;
+
+                font-size: 16px;
+            }
+
+            .welcome-panel {
+                padding:
+                    32px 22px;
+            }
+
+            .brand-logo {
+                width: 55px;
+                height: 55px;
+            }
+
+            .brand-name {
+                font-size: 27px;
+            }
+
+            .brand-tagline {
+                font-size: 12px;
+            }
+
+            .welcome-copy {
+                margin-top: 45px;
+            }
+
+            .welcome-copy h1 {
+                font-size: 39px;
+            }
+
+            .welcome-copy h2 {
+                font-size: 35px;
+            }
+
+            .welcome-description {
+                font-size: 17px;
+            }
+
+            .illustration {
+                transform: scale(.65);
+
+                height: 170px;
+
+                margin-top: 20px;
+                margin-bottom: -15px;
+            }
+
+            .features {
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                gap: 27px 10px;
+
+                padding:
+                    24px 10px;
+            }
+
+            .left-footer {
+                text-align: center;
+
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="register-page">
+
+        <!-- =====================================================
+         LEFT — REGISTER FORM
+    ====================================================== -->
+
+        <section class="form-panel">
+
+            <div class="form-wrapper">
+
+                <div class="register-card">
+
+                    <div class="register-heading">
+
+                        <h1>
+                            Create Your Account
+                        </h1>
+
+                    </div>
+
+
+                    <!-- Django non-field errors -->
+
+                    {% if form.non_field_errors %}
+
+                    <div class="form-errors">
+
+                        {% for error in form.non_field_errors %}
+
+                        {{ error }}
+
+                        {% endfor %}
+
+                    </div>
+
+                    {% endif %}
+
+
+                    <form method="post" action="{% url 'accounts:register' %}">
+
+                        {% csrf_token %}
+
+
+                        <!-- FIRST + LAST NAME -->
+
+                        <div class="form-row">
+
+                            <div class="form-group">
+
+                                <label class="form-label" for="id_first_name">
+                                    First Name
+                                </label>
+
+                                <div class="input-wrapper">
+
+                                    <div class="input-icon">
+
+                                        <svg viewBox="0 0 32 32">
+
+                                            <circle cx="16" cy="10" r="5" />
+
+                                            <path d="M6 28c0-6 4-10 10-10s10 4 10 10" />
+
+                                        </svg>
+
+                                    </div>
+
+                                    <input type="text" name="first_name" id="id_first_name" class="form-input"
+                                        placeholder="First name" autocomplete="given-name"
+                                        value="{{ form.first_name.value|default:'' }}" required>
+
+                                </div>
+
+                                {% if form.first_name.errors %}
+
+                                <div class="form-errors">
+
+                                    {% for error in form.first_name.errors %}
+                                    {{ error }}
+                                    {% endfor %}
+
+                                </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label class="form-label" for="id_last_name">
+                                    Last Name
+                                </label>
+
+                                <div class="input-wrapper">
+
+                                    <div class="input-icon">
+
+                                        <svg viewBox="0 0 32 32">
+
+                                            <circle cx="16" cy="10" r="5" />
+
+                                            <path d="M6 28c0-6 4-10 10-10s10 4 10 10" />
+
+                                        </svg>
+
+                                    </div>
+
+                                    <input type="text" name="last_name" id="id_last_name" class="form-input"
+                                        placeholder="Last name" autocomplete="family-name"
+                                        value="{{ form.last_name.value|default:'' }}" required>
+
+                                </div>
+
+                                {% if form.last_name.errors %}
+
+                                <div class="form-errors">
+
+                                    {% for error in form.last_name.errors %}
+                                    {{ error }}
+                                    {% endfor %}
+
+                                </div>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="form-group">
+
+                            <label class="form-label" for="id_email">
+                                Email Address
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <div class="input-icon">
+
+                                    <svg viewBox="0 0 32 32">
+
+                                        <rect x="4" y="7" width="24" height="18" rx="2" />
+
+                                        <path d="M5 9l11 9L27 9" />
+
+                                    </svg>
+
+                                </div>
+
+                                <input type="email" name="email" id="id_email" class="form-input"
+                                    placeholder="Enter your email address" autocomplete="email"
+                                    value="{{ form.email.value|default:'' }}" required>
+
+                            </div>
+
+                            {% if form.email.errors %}
+
+                            <div class="form-errors">
+
+                                {% for error in form.email.errors %}
+                                {{ error }}
+                                {% endfor %}
+
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- ROLE -->
+
+                        <div class="form-group">
+
+                            <label class="role-label">
+                                I am a
+                            </label>
+
+                            <div class="role-options">
+
+                                <div class="role-option">
+
+                                    <input type="radio" name="role" value="STUDENT" id="roleStudent" {% if form.role.value == "STUDENT" or not form.role.value %}checked{% endif %}>
+
+                                    <label for="roleStudent">
+                                        Student
+                                    </label>
+
+                                </div>
+
+
+                                <div class="role-option">
+
+                                    <input type="radio" name="role" value="TEACHER" id="roleTeacher" {% if form.role.value == "TEACHER" %}checked{% endif %}>
+
+                                    <label for="roleTeacher">
+                                        Teacher
+                                    </label>
+
+                                </div>
+
+
+                                <div class="role-option">
+
+                                    <input type="radio" name="role" value="PARENT" id="roleParent" {% if form.role.value == "PARENT" %}checked{% endif %}>
+
+                                    <label for="roleParent">
+                                        Parent
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+                            {% if form.role.errors %}
+
+                            <div class="form-errors">
+
+                                {% for error in form.role.errors %}
+                                {{ error }}
+                                {% endfor %}
+
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="form-row">
+
+                            <div class="form-group">
+
+                                <label class="form-label" for="id_password1">
+                                    Password
+                                </label>
+
+                                <div class="input-wrapper">
+
+                                    <div class="input-icon">
+
+                                        <svg viewBox="0 0 32 32">
+
+                                            <rect x="7" y="13" width="18" height="14" rx="2" />
+
+                                            <path d="M11 13V9a5 5 0 0 1 10 0v4" />
+
+                                            <circle cx="16" cy="20" r="1.5" />
+
+                                        </svg>
+
+                                    </div>
+
+
+                                    <input type="password" name="password1" id="id_password1"
+                                        class="form-input password-input" placeholder="Create password"
+                                        autocomplete="new-password" required>
+
+
+                                    <button type="button" class="password-toggle" data-target="id_password1"
+                                        aria-label="Show password">
+
+                                        <svg viewBox="0 0 32 32">
+
+                                            <path d="M3 16s5-8 13-8 13 8 13 8-5 8-13 8S3 16 3 16z" />
+
+                                            <circle cx="16" cy="16" r="3" />
+
+                                        </svg>
+
+                                    </button>
+
+                                </div>
+
+                                {% if form.password1.errors %}
+
+                                <div class="form-errors">
+
+                                    {% for error in form.password1.errors %}
+                                    {{ error }}
+                                    {% endfor %}
+
+                                </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- CONFIRM PASSWORD -->
+
+                            <div class="form-group">
+
+                                <label class="form-label" for="id_password2">
+                                    Confirm Password
+                                </label>
+
+                                <div class="input-wrapper">
+
+                                    <div class="input-icon">
+
+                                        <svg viewBox="0 0 32 32">
+
+                                            <rect x="7" y="13" width="18" height="14" rx="2" />
+
+                                            <path d="M11 13V9a5 5 0 0 1 10 0v4" />
+
+                                            <circle cx="16" cy="20" r="1.5" />
+
+                                        </svg>
+
+                                    </div>
+
+
+                                    <input type="password" name="password2" id="id_password2"
+                                        class="form-input password-input" placeholder="Confirm password"
+                                        autocomplete="new-password" required>
+
+
+                                    <button type="button" class="password-toggle" data-target="id_password2"
+                                        aria-label="Show password">
+
+                                        <svg viewBox="0 0 32 32">
+
+                                            <path d="M3 16s5-8 13-8 13 8 13 8-5 8-13 8S3 16 3 16z" />
+
+                                            <circle cx="16" cy="16" r="3" />
+
+                                        </svg>
+
+                                    </button>
+
+                                </div>
+
+                                {% if form.password2.errors %}
+
+                                <div class="form-errors">
+
+                                    {% for error in form.password2.errors %}
+                                    {{ error }}
+                                    {% endfor %}
+
+                                </div>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- TERMS -->
+
+                        <div class="terms-row">
+
+                            <input type="checkbox" id="terms" name="terms" class="terms-checkbox" required>
+
+                            <label for="terms" class="terms-text">
+                                I agree to the NEWEDU Terms of Service and Privacy Policy.
+                            </label>
+
+                        </div>
+
+
+                        <!-- REGISTER -->
+
+                        <button type="submit" class="register-button">
+
+                            <svg viewBox="0 0 32 32">
+
+                                <path d="M16 4v16" />
+
+                                <path d="M10 14l6 6 6-6" />
+
+                                <path d="M6 27h20" />
+
+                            </svg>
+
+                            Create Account
+
+                        </button>
+
+
+                        <!-- DIVIDER -->
+
+                        <div class="divider">
+
+                            <span>OR</span>
+
+                        </div>
+
+
+                        <!-- GOOGLE -->
+
+                        <button type="button" class="google-button" onclick="handleGoogleSignup()">
+
+                            <span class="google-icon">
+                                G
+                            </span>
+
+                            Sign up with Google
+
+                        </button>
+
+
+                        <!-- LOGIN -->
+
+                        <div class="login-link">
+
+                            Already have an account?
+
+                            <a href="{% url 'accounts:login' %}">
+                                Login
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+         RIGHT — WELCOME PANEL
+    ====================================================== -->
+
+        <section class="welcome-panel">
+
+            <div class="left-content">
+
+                <!-- BRAND -->
+
+                <div class="brand">
+
+                    <div class="brand-logo">
+
+                        <div class="star">
+                            ★
+                        </div>
+
+                        <div class="graduation-cap"></div>
+
+                        <div class="logo-book"></div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="brand-name">
+                            NEWEDU
+                        </div>
+
+                        <div class="brand-tagline">
+                            Learning&nbsp;&nbsp;•&nbsp;&nbsp;Growth&nbsp;&nbsp;•&nbsp;&nbsp;Success
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- WELCOME -->
+
+                <div class="welcome-copy">
+
+                    <h1>
+                        Start Your Journey!
+                    </h1>
+
+                    <h2>
+                        Learn Today,
+                        <span>Grow Tomorrow</span>
+                    </h2>
+
+                    <p class="welcome-description">
+                        Create your NEWEDU account and unlock
+                        personalized learning, progress tracking,
+                        assignments, quizzes, and more.
+                    </p>
+
+                </div>
+
+
+                <!-- ILLUSTRATION -->
+
+                <div class="illustration">
+
+                    <div class="desk-shadow"></div>
+
+
+                    <!-- Plant -->
+
+                    <div class="plant">
+
+                        <div class="stem"></div>
+
+                        <div class="leaf one"></div>
+
+                        <div class="leaf two"></div>
+
+                        <div class="leaf three"></div>
+
+                        <div class="pot"></div>
+
+                    </div>
+
+
+                    <!-- Books -->
+
+                    <div class="books">
+
+                        <div class="book blue"></div>
+
+                        <div class="book dark"></div>
+
+                        <div class="book yellow"></div>
+
+                    </div>
+
+
+                    <!-- Laptop -->
+
+                    <div class="laptop">
+
+                        <div class="screen">
+
+                            <div class="screen-cap"></div>
+
+                            <div class="screen-lines">
+
+                                <span></span>
+                                <span></span>
+                                <span></span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="laptop-base"></div>
+
+                    </div>
+
+
+                    <!-- Pencil Holder -->
+
+                    <div class="pencil-holder">
+
+                        <div class="pencil one"></div>
+
+                        <div class="pencil two"></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FEATURES -->
+
+                <div class="features">
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+
+                            <svg viewBox="0 0 32 32">
+
+                                <path d="M5 6h8a5 5 0 0 1 5 5v15a5 5 0 0 0-5-3H5z" />
+
+                                <path d="M27 6h-8a5 5 0 0 0-5 5v15a5 5 0 0 1 5-3h8z" />
+
+                            </svg>
+
+                        </div>
+
+                        <p>
+                            Smart Learning<br>
+                            Resources
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+
+                            <svg viewBox="0 0 32 32">
+
+                                <path d="M5 27V17" />
+
+                                <path d="M13 27V10" />
+
+                                <path d="M21 27V14" />
+
+                                <path d="M29 27V5" />
+
+                                <path d="M3 27h28" />
+
+                            </svg>
+
+                        </div>
+
+                        <p>
+                            Track Progress<br>
+                            &amp; Performance
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+
+                            <svg viewBox="0 0 32 32">
+
+                                <circle cx="16" cy="9" r="5" />
+
+                                <path d="M7 28c0-5 4-9 9-9s9 4 9 9" />
+
+                                <circle cx="5" cy="14" r="3" />
+
+                                <circle cx="27" cy="14" r="3" />
+
+                            </svg>
+
+                        </div>
+
+                        <p>
+                            Connect with<br>
+                            Teachers
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+
+                            <svg viewBox="0 0 32 32">
+
+                                <path d="M16 3l11 4v8c0 7-4.5 11.5-11 14C9.5 26.5 5 22 5 15V7z" />
+
+                                <path d="M11 16l3 3 7-8" />
+
+                            </svg>
+
+                        </div>
+
+                        <p>
+                            Secure &amp; Safe<br>
+                            Platform
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="left-footer">
+                    © 2026 NEWEDU. All rights reserved.
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <script>
+
+        /* =====================================================
+           PASSWORD VISIBILITY
+        ===================================================== */
+
+        document
+            .querySelectorAll(".password-toggle")
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const targetId =
+                            button.dataset.target;
+
+                        const input =
+                            document.getElementById(targetId);
+
+                        if (!input) {
+                            return;
+                        }
+
+                        const isPassword =
+                            input.type === "password";
+
+                        input.type =
+                            isPassword
+                                ? "text"
+                                : "password";
+
+                        button.setAttribute(
+                            "aria-label",
+                            isPassword
+                                ? "Hide password"
+                                : "Show password"
+                        );
+
+                    }
+                );
+
+            });
+
+
+        }
+
+
+        /* =====================================================
+           PASSWORD MATCH FEEDBACK
+        ===================================================== */
+
+        const password1 =
+            document.getElementById("id_password1");
+
+        const password2 =
+            document.getElementById("id_password2");
+
+        if (password1 && password2) {
+
+            password2.addEventListener(
+                "input",
+                function () {
+
+                    if (
+                        password2.value &&
+                        password1.value !== password2.value
+                    ) {
+
+                        password2.style.borderColor =
+                            "#d92d20";
+
+                    } else {
+
+                        password2.style.borderColor =
+                            "";
+
+                    }
+
+                }
+            );
+
+    </script>
+
+</body>
+
+</html>

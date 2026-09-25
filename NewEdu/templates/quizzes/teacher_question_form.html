@@ -1,0 +1,13 @@
+{% extends 'teachers/teacher_base.html' %}
+{% block title %}Add Question - NEWEDU{% endblock %}
+{% block teacher_content %}
+<h2>Add Question to {{ quiz.title }}</h2>
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Save Question</button>
+        <a href="{% url 'teacher_quiz_detail' quiz.id %}" class="btn" style="background-color: #6c757d;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

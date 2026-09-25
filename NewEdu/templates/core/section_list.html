@@ -1,0 +1,17 @@
+{% extends 'core/admin_base.html' %}
+{% block title %}Sections - NEWEDU{% endblock %}
+{% block admin_content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>Sections</h2>
+    <a href="{% url 'admin_section_create' %}" class="btn">+ Add Section</a>
+</div>
+<div class="card" style="margin-top: 1rem;">
+    <ul>
+        {% for sec in sections %}
+            <li>{{ sec.name }} (Class: {{ sec.class_level.name }}) <a href="{% url 'admin_section_edit' sec.id %}">[Edit]</a></li>
+        {% empty %}
+            <li>No sections defined.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
